@@ -1,2 +1,3 @@
 # PI4_SistemasOrientadoAWeb
-Integrantes do grupo: Marcus Rodrigues, Rafael Ferraz, Thiago Gilabel, Victor Santos.
+PROJETO INTEGRADOR4: DESENVOLVIMENTO DE SISTEMAS ORIENTADOS A WEB
+
