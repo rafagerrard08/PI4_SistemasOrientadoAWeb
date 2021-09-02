@@ -1,3 +1,3 @@
 # PI4_SistemasOrientadoAWeb
-Integrantes do grupo: Marcus Rodrigues, Rafael Ferraz, Thiago Gilabel, Victor Santos.
+Desenvolvimento de sistemas orientados a web - 4º semestre do curso de TADS do Senac.
 
