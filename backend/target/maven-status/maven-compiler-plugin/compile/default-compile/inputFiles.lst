@@ -1,0 +1,10 @@
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/dto/ProdutoDTO.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/repository/CategoriaRepository.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/service/ProdutoService.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/model/Produto.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/controller/ProdutoController.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/model/Categoria.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/service/CategoriaService.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/repository/ProdutoRepository.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/Pi4EcommerceApplication.java
+/Users/victor/git/PI4_ecommerce/src/main/java/com/senac/PI4_ecommerce/model/enums/EstadoProduto.java
