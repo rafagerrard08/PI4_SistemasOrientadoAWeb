@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,13 +30,15 @@ public class ProdutoController {
 	private CategoriaService categoriaService;
 
 	/***
-	 * Listar os produtos armazenados
+	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
+	 * mais novo primeiro) Pode receber parametro com "desc"(padrao) ou "asc" na
+	 * requisicao para alterar a ordem
 	 * 
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> getProdutos() {
-		List<Produto> produtos = produtoService.getAllProdutos();
+	public ResponseEntity<?> getProdutos(@RequestParam(value="ordem", defaultValue = "desc") String ordem) {
+		List<Produto> produtos = produtoService.getAllProdutos(ordem);
 		return ResponseEntity.ok().body(produtos);
 	}
 
