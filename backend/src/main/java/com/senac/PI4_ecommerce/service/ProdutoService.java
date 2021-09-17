@@ -1,9 +1,11 @@
 package com.senac.PI4_ecommerce.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.senac.PI4_ecommerce.model.Categoria;
@@ -20,20 +22,13 @@ public class ProdutoService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public List<Produto> getAllProdutos(String ordem) {
-		List<Produto> produtos = null;
-		if (ordem.equals("desc"))
-			produtos = produtoRepository.findAllDesc();
-		if (ordem.equals("asc"))
-			produtos = produtoRepository.findAll();
-		if (ordem != "desc" && ordem != "desc")
-			System.out.println(ordem); // Implementar erro
-
-		if (!produtos.isEmpty()) {
-			return produtos;
+	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
+			String direcao) {
+		if(pagina<0) {
+			// Implementar erro
 		}
-		// Implementar erro
-		return produtos;
+		PageRequest pr = PageRequest.of(pagina, itensPorPagina, Direction.valueOf(direcao), ordenarPor);
+		return produtoRepository.search(nome, pr);
 	}
 
 	public Produto getProduto(Integer id) {
