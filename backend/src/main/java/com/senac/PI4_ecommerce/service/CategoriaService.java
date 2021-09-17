@@ -16,6 +16,7 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 	
 	public Categoria getCategoria(Integer id) {
+		System.out.println("Entrou em getCategoria id: " + id);
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
 		if(!categoria.isEmpty()) {
 			return categoria.get();

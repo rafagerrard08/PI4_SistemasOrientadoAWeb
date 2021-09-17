@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.senac.PI4_ecommerce.Utils.Converts;
+import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.repository.CategoriaRepository;
@@ -31,13 +33,14 @@ public class ProdutoService {
 		return produtoRepository.search(nome, pr);
 	}
 
-	public Produto getProduto(Integer id) {
+	public ProdutoDTO getProduto(Integer id) {
 		Optional<Produto> produto = produtoRepository.findById(id);
+		
 		if (!produto.isEmpty()) {
-			return produto.get();
+			return Converts.toProdutoDTO(produto.get());
 		}
 		// Implementar erro
-		return produto.get();
+		return Converts.toProdutoDTO(produto.get());
 	}
 
 	public Produto postProduto(Produto produto) {

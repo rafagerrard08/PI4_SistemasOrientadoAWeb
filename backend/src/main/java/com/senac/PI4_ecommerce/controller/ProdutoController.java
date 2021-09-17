@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Categoria;
@@ -60,8 +61,8 @@ public class ProdutoController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> getProduto(@PathVariable Integer id) {
-		Produto produto = produtoService.getProduto(id);
-		return ResponseEntity.ok().body(produto);
+		ProdutoDTO produtoDTO = produtoService.getProduto(id);
+		return ResponseEntity.ok().body(produtoDTO);
 	}
 
 	/***
@@ -73,9 +74,9 @@ public class ProdutoController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> postProduto(@RequestBody ProdutoDTO produtoDTO) {
 		Categoria categoria = categoriaService.getCategoria(produtoDTO.getCategoriaId());
-		produtoDTO.setCategoria(categoria);
+		produtoDTO.setCategoriaId(categoria.getId());
 
-		Produto produto = new Produto(produtoDTO);
+		Produto produto = Converts.toProduto(produtoDTO);
 		produto = produtoService.postProduto(produto);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
@@ -95,9 +96,9 @@ public class ProdutoController {
 		produtoDTO.setId(id);
 
 		Categoria categoria = categoriaService.getCategoria(produtoDTO.getCategoriaId());
-		produtoDTO.setCategoria(categoria);
+		produtoDTO.setCategoriaId(categoria.getId());
 
-		Produto produto = new Produto(produtoDTO);
+		Produto produto = Converts.toProduto(produtoDTO);
 		produto = produtoService.putProduto(produto);
 
 		return ResponseEntity.noContent().build();

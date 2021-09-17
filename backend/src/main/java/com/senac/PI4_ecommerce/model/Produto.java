@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 
 @Entity
@@ -26,13 +25,16 @@ public class Produto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column(columnDefinition = "VARCHAR(200)")
 	private String nome;
+	@Column(columnDefinition = "VARCHAR(200)")
 	private String marca;
 	private Integer quantidade;
 	private BigDecimal preco;
-	@Column(columnDefinition = "VARCHAR(1000)")
+	@Column(columnDefinition = "VARCHAR(2000)")
 	private String descricao;
 	private Integer estado;
+	private Double avaliacao;
 
 	// Associaçoes
 	@ManyToOne
@@ -49,7 +51,7 @@ public class Produto implements Serializable {
 	}
 
 	public Produto(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Categoria categoria, Set<String> imagens) {
+			EstadoProduto estado, Categoria categoria, Set<String> imagens, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -60,20 +62,7 @@ public class Produto implements Serializable {
 		this.estado = estado.getId();
 		this.categoria = categoria;
 		this.imagensLocation = imagens;
-
-	}
-
-	public Produto(ProdutoDTO produto) {
-		super();
-		this.id = produto.getId();
-		this.nome = produto.getNome();
-		this.marca = produto.getMarca();
-		this.quantidade = produto.getQuantidade();
-		this.preco = produto.getPreco();
-		this.descricao = produto.getDescricao();
-		this.estado = produto.getEstado().getId();
-		this.categoria = produto.getCategoria();
-		this.imagensLocation = produto.getImagens();
+		this.avaliacao = avaliacao;
 
 	}
 
@@ -148,6 +137,14 @@ public class Produto implements Serializable {
 
 	public void setImagens(Set<String> imagens) {
 		this.imagensLocation = imagens;
+	}
+
+	public Double getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Double avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 
 	// Hash Code e Equals Padrao (somente Id)
