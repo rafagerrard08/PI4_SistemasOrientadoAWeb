@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Produto;
+import com.senac.PI4_ecommerce.service.CategoriaService;
 import com.senac.PI4_ecommerce.service.ProdutoService;
 
 @RestController
@@ -24,6 +26,8 @@ public class ProdutoController {
 
 	@Autowired
 	private ProdutoService produtoService;
+	@Autowired
+	private CategoriaService categoriaService;
 
 	/***
 	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
@@ -41,8 +45,7 @@ public class ProdutoController {
 
 		String nomeDecode = Util.decodeParam(nome);
 
-		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor,
-				direcao);
+		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao);
 
 		return ResponseEntity.ok().body(produtos);
 	}
@@ -55,7 +58,10 @@ public class ProdutoController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> getProduto(@PathVariable Integer id) {
-		ProdutoDTO produtoDTO = produtoService.getProduto(id);
+		Produto produto = produtoService.getProduto(id);
+
+		ProdutoDTO produtoDTO = Converts.toProdutoDTO(produto);
+
 		return ResponseEntity.ok().body(produtoDTO);
 	}
 
@@ -67,8 +73,12 @@ public class ProdutoController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> postProduto(@RequestBody ProdutoDTO produtoDTO) {
-		
-		Produto produto = produtoService.postProduto(produtoDTO);
+
+		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		Produto produto = Converts.toProduto(produtoDTO);
+		produto.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+
+		produto = produtoService.postProduto(produto);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
 				.toUri();
@@ -85,13 +95,18 @@ public class ProdutoController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> putProduto(@PathVariable Integer id, @RequestBody ProdutoDTO produtoDTO) {
 		produtoDTO.setId(id);
+		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		
+		System.out.println("ID DTO:" + produtoDTO.getId());
 
-		produtoService.putProduto(produtoDTO);
+		Produto produto = Converts.toProduto(produtoDTO);
+		
+		System.out.println("ID Domain:" + produto.getId());
+
+
+		produtoService.putProduto(produto);
 
 		return ResponseEntity.noContent().build();
 	}
-	
-	
-	
-	
+
 }
