@@ -45,15 +45,33 @@ public class ProdutoService {
 		produtoDTO.setId(null);
 		produtoDTO.setEstado(EstadoProduto.ATIVO);
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
-		
+				
 		Produto produto = Converts.toProduto(produtoDTO);
 		
-		produto = produtoRepository.save(produto);
-		return produto;
-	}
-
-	public Produto putProduto(Produto produto) {
 		return produtoRepository.save(produto);
 	}
 
+	public Produto putProduto(ProdutoDTO produtoDTO) {
+		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		Produto novoProduto = Converts.toProduto(produtoDTO);
+		
+		Produto produto = Converts.toProduto(getProduto(produtoDTO.getId()));
+		
+		novoProduto = atualizaProduto(novoProduto, produto);
+		System.out.println("IDs: " + novoProduto.getId() + produto.getId());
+		return produtoRepository.save(novoProduto);
+	}
+	
+	public Produto atualizaProduto(Produto produto, Produto novoProduto) {
+		novoProduto.setId(produto.getId());
+		novoProduto.setNome(produto.getNome());
+		novoProduto.setMarca(produto.getMarca());
+		novoProduto.setQuantidade(produto.getQuantidade());
+		novoProduto.setPreco(produto.getPreco());
+		novoProduto.setDescricao(produto.getDescricao());
+		novoProduto.setEstado(produto.getEstado());
+		novoProduto.setCategoria(produto.getCategoria());
+		novoProduto.getImagens().addAll(produto.getImagens());
+		return novoProduto;
+	}
 }

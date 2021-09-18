@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
-import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.Produto;
-import com.senac.PI4_ecommerce.service.CategoriaService;
 import com.senac.PI4_ecommerce.service.ProdutoService;
 
 @RestController
@@ -27,9 +24,6 @@ public class ProdutoController {
 
 	@Autowired
 	private ProdutoService produtoService;
-
-	@Autowired
-	private CategoriaService categoriaService;
 
 	/***
 	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
@@ -73,8 +67,6 @@ public class ProdutoController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> postProduto(@RequestBody ProdutoDTO produtoDTO) {
-		Categoria categoria = categoriaService.getCategoria(produtoDTO.getCategoriaId());
-		produtoDTO.setCategoriaId(categoria.getId());
 		
 		Produto produto = produtoService.postProduto(produtoDTO);
 
@@ -94,12 +86,12 @@ public class ProdutoController {
 	public ResponseEntity<Void> putProduto(@PathVariable Integer id, @RequestBody ProdutoDTO produtoDTO) {
 		produtoDTO.setId(id);
 
-		Categoria categoria = categoriaService.getCategoria(produtoDTO.getCategoriaId());
-		produtoDTO.setCategoriaId(categoria.getId());
-
-		Produto produto = Converts.toProduto(produtoDTO);
-		produto = produtoService.putProduto(produto);
+		produtoService.putProduto(produtoDTO);
 
 		return ResponseEntity.noContent().build();
 	}
+	
+	
+	
+	
 }

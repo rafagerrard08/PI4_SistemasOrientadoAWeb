@@ -24,6 +24,8 @@ public class CatregoriaController {
 		
 		return ResponseEntity.ok().body(cat);
 	}
+	
+	
 
 
 }
