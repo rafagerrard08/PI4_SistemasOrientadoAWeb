@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
-import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.Produto;
-import com.senac.PI4_ecommerce.repository.CategoriaRepository;
+import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.repository.ProdutoRepository;
 
 @Service
@@ -20,9 +19,8 @@ public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
-
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private CategoriaService categoriaService;
 
 	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
 			String direcao) {
@@ -43,24 +41,19 @@ public class ProdutoService {
 		return Converts.toProdutoDTO(produto.get());
 	}
 
-	public Produto postProduto(Produto produto) {
-		produto.setId(null);
+	public Produto postProduto(ProdutoDTO produtoDTO) {
+		produtoDTO.setId(null);
+		produtoDTO.setEstado(EstadoProduto.ATIVO);
+		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		
+		Produto produto = Converts.toProduto(produtoDTO);
+		
 		produto = produtoRepository.save(produto);
 		return produto;
 	}
 
 	public Produto putProduto(Produto produto) {
 		return produtoRepository.save(produto);
-	}
-
-	public Categoria getProdutoByCategoria(Integer id) {
-		Optional<Categoria> categoria = categoriaRepository.findById(id);
-
-		if (!categoria.isEmpty()) {
-			return categoria.get();
-		}
-		// Implementar erro
-		return categoria.get();
 	}
 
 }

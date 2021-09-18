@@ -56,7 +56,7 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		img4.add("/assets/images/eletrodomesticos/Electrolux_Lavadora_Tecnologia_Jet_&_Clean_13_Kg_I2.jpg");
 		img4.add("/assets/images/eletrodomesticos/Electrolux_Lavadora_Tecnologia_Jet_&_Clean_13_Kg_I3.jpg");
 
-		Produto p1 = new Produto(null, "Micro-ondas 20L CM020", "Consul", 42, 678.30,
+		Produto p1 = new Produto(null, "Micro-ondas 20L CM020", "Electrolux", 42, 678.30,
 				"Micro-ondas CM020 Consul Espelhado 20 litros. Compacto e moderno, ele possui o Menu Uso Fácil e receitas pré-programadas que descomplicam o seu dia-a-dia. Descongelar a carne do almoço, preparar o lanche das crianças, aquecer o jantar. Com ele você faz tudo isso e muito mais em questão de minutos. É tão fácil que até parece mágica: com apenas um toque você consegue preparar massas, pipoca e até vegetais. Possui ainda porta espelhada com puxador, 10 opções de potência para você preparar sua refeição na medida certa, opção desliga visor que proporciona uma economia de até 12% de energia desligando o visor luminoso e comando cancelar que além de interromper o preparo, também serve para travar o teclado e deixar sua cozinha mais segura.",
 				EstadoProduto.ATIVO, cat1, img1, 4.0);
 		Produto p2 = new Produto(null, "iPhone 12 Pro 128GB Azul-Pacífico 6,1”", "Apple", 50, 7199.10,

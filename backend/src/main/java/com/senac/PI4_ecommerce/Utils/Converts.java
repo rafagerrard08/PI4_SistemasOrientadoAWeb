@@ -38,7 +38,7 @@ public class Converts {
 		produto.setPreco(produtoDTO.getPreco());
 		produto.setDescricao(produtoDTO.getDescricao());
 		produto.setEstado(produtoDTO.getEstado());
-		produto.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		produto.setCategoria(produtoDTO.getCategoria());
 		produto.setImagens(produtoDTO.getImagens());
 		produto.setAvaliacao(produtoDTO.getAvaliacao());
 		

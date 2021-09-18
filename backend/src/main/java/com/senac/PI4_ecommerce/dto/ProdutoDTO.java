@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 
 public class ProdutoDTO implements Serializable {
@@ -19,7 +20,7 @@ public class ProdutoDTO implements Serializable {
 	private Integer estado;
 	private Double avaliacao;
 
-
+	private Categoria categoria;
 	private Integer categoriaId;
 
 	private Set<String> imagens = new HashSet<>();
@@ -122,6 +123,14 @@ public class ProdutoDTO implements Serializable {
 
 	public void setAvaliacao(Double avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 }

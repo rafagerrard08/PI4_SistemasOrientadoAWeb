@@ -75,9 +75,8 @@ public class ProdutoController {
 	public ResponseEntity<Void> postProduto(@RequestBody ProdutoDTO produtoDTO) {
 		Categoria categoria = categoriaService.getCategoria(produtoDTO.getCategoriaId());
 		produtoDTO.setCategoriaId(categoria.getId());
-
-		Produto produto = Converts.toProduto(produtoDTO);
-		produto = produtoService.postProduto(produto);
+		
+		Produto produto = produtoService.postProduto(produtoDTO);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
 				.toUri();
@@ -103,11 +102,4 @@ public class ProdutoController {
 
 		return ResponseEntity.noContent().build();
 	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/categoria/{id}")
-	public ResponseEntity<?> getProdutoByCategoria(@PathVariable Integer id) {
-		Categoria categoria = produtoService.getProdutoByCategoria(id);
-		return ResponseEntity.ok().body(categoria);
-	}
-
 }
