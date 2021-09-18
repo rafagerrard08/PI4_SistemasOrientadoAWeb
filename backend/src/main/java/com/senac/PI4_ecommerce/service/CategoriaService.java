@@ -1,5 +1,6 @@
 package com.senac.PI4_ecommerce.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,12 @@ public class CategoriaService {
 		return categoria.get();
 	}
 
+	public List<Categoria> getCategorias() {
+		List<Categoria> categorias = categoriaRepository.findAll();
+		
+			// Implementar erro
+		return categorias;
+	}
+
 }
+

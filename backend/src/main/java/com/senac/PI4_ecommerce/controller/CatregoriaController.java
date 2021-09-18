@@ -1,5 +1,7 @@
 package com.senac.PI4_ecommerce.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +27,13 @@ public class CatregoriaController {
 		return ResponseEntity.ok().body(cat);
 	}
 	
+	@RequestMapping (method = RequestMethod.GET)
+	public ResponseEntity<?> getCategorias() {
+		
+		List<Categoria> categorias = categoriaService.getCategorias();
+		
+		return ResponseEntity.ok().body(categorias);
+	}
 	
-
 
 }
