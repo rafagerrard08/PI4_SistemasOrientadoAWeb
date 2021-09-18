@@ -2,9 +2,12 @@ package com.senac.PI4_ecommerce.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +75,7 @@ public class ProdutoController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> postProduto(@RequestBody ProdutoDTO produtoDTO) {
+	public ResponseEntity<BindingResult> postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
 
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
 		Produto produto = Converts.toProduto(produtoDTO);
