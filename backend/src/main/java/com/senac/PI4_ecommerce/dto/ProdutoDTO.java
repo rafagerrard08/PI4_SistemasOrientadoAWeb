@@ -6,12 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.senac.PI4_ecommerce.model.Categoria;
-import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 
 public class ProdutoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	private Integer id;
 	private String nome;
 	private String marca;
@@ -19,6 +18,7 @@ public class ProdutoDTO implements Serializable {
 	private BigDecimal preco;
 	private String descricao;
 	private Integer estado;
+	private Double avaliacao;
 
 	private Categoria categoria;
 	private Integer categoriaId;
@@ -30,7 +30,7 @@ public class ProdutoDTO implements Serializable {
 	}
 
 	public ProdutoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Integer categoriaId, Set<String> imagens) {
+			EstadoProduto estado, Integer categoriaId, Set<String> imagens, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -41,22 +41,9 @@ public class ProdutoDTO implements Serializable {
 		this.estado = estado.getId();
 		this.categoriaId = categoriaId;
 		this.imagens = imagens;
+		this.avaliacao = avaliacao;
 	}
-
-	public ProdutoDTO(Produto produto) {
-		super();
-		this.id = produto.getId();
-		this.nome = produto.getNome();
-		this.marca = produto.getMarca();
-		this.quantidade = produto.getQuantidade();
-		this.preco = produto.getPreco();
-		this.descricao = produto.getDescricao();
-		this.estado = produto.getEstado().getId();
-		this.categoria = produto.getCategoria();
-		this.imagens = produto.getImagens();
-
-	}
-
+	
 	// Getters e Setters
 	public Integer getId() {
 		return id;
@@ -114,14 +101,6 @@ public class ProdutoDTO implements Serializable {
 		this.estado = estado.getId();
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
 	public Set<String> getImagens() {
 		return imagens;
 	}
@@ -136,6 +115,22 @@ public class ProdutoDTO implements Serializable {
 
 	public void setCategoriaId(Integer catgoriaId) {
 		this.categoriaId = catgoriaId;
+	}
+
+	public Double getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Double avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 }
