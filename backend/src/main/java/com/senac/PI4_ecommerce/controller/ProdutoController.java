@@ -20,6 +20,7 @@ import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Produto;
+import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.service.CategoriaService;
 import com.senac.PI4_ecommerce.service.ProdutoService;
 
@@ -35,7 +36,8 @@ public class ProdutoController {
 	/***
 	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
 	 * mais novo primeiro) Pode receber parametro com "DESC"(padrao) ou "ASC" na
-	 * requisicao para alterar a ordem
+	 * requisicao para alterar a ordem e o estado de produto que, por padrao é
+	 * ativo, mas pode ser tambem inativo ou todos
 	 * 
 	 * @return
 	 */
@@ -44,11 +46,23 @@ public class ProdutoController {
 			@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
 			@RequestParam(value = "itensPorPagina", defaultValue = "10") Integer itensPorPagina,
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
-			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao) {
+			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
+			@RequestParam(value = "estado", defaultValue = "ativo") String status) {
+		
 
 		String nomeDecode = Util.decodeParam(nome);
+		EstadoProduto estado = null;
+		if(status.equals("ativo")) {
+			estado = EstadoProduto.ATIVO;
+		} else if(status.equals("inativo")){
+			estado = EstadoProduto.INATIVO;
+			System.out.println("caiu no inativo");
+		}
+		System.out.println(estado.getId());
 
-		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao);
+		
+		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao,
+				estado);
 
 		return ResponseEntity.ok().body(produtos);
 	}
@@ -99,13 +113,12 @@ public class ProdutoController {
 	public ResponseEntity<Void> putProduto(@PathVariable Integer id, @RequestBody ProdutoDTO produtoDTO) {
 		produtoDTO.setId(id);
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
-		
+
 		System.out.println("ID DTO:" + produtoDTO.getId());
 
 		Produto produto = Converts.toProduto(produtoDTO);
-		
-		System.out.println("ID Domain:" + produto.getId());
 
+		System.out.println("ID Domain:" + produto.getId());
 
 		produtoService.putProduto(produto);
 
