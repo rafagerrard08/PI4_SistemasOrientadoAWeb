@@ -44,7 +44,10 @@
       "_": true,
       "vm": true
     },
-    "rules": {}
+    "rules": {
+      "no-debugger": "off",
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",

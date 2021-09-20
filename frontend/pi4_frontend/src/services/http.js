@@ -34,19 +34,19 @@ http.interceptors.response.use(function(response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     if (error.response.status == 401) {
-      router.push({ name: '401' })
+      // router.push({ name: '401' })
       return Promise.reject(error);
     }
     if (error.response.status == 403) {
-      router.push({ name: '403' })
+      // router.push({ name: '403' })
       return Promise.reject(error);
     }
     if (error.response.status == 404) {
-      router.push({ name: '404' })
+      // router.push({ name: '404' })
       return Promise.reject(error);
     }
     if (error.response.status == 500) {
-      router.push({ name: '500' })
+      // router.push({ name: '500' })
       return Promise.reject(error);
     }
   }

@@ -8,6 +8,7 @@
           <div class="row">
             <div class="col form-group">
               <label>Produto</label>
+
               <input type="text" class="form-control form-control-sm" />
               <button class="btn btn-primary btn-sm">
                 <i class="fa fa-search fa-fw"></i>Buscar
@@ -36,11 +37,10 @@ export default {
   },
 
   created() {
-    const retorno = ProdutoService.listar()
+    ProdutoService.listar()
       .then(console.log)
       .catch(this.handleErrors);
 
-    console.log(retorno);
   },
 
   methods: {
