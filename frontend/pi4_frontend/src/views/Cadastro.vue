@@ -8,18 +8,22 @@
 
           <div class="row">
             <div class="col form-group">
-              <label>Nome Produto</label>
+              <label>Nome do Produto</label>
               <input v-model="nomeProduto" type="text" class="form-control form-control-sm" />
             </div>
           </div>
-
           <div class="row">
             <div class="col form-group">
-              <label>Avaliacão</label>
-              <input v-model="avaliacao" type="number" class="form-control form-control-sm" />
+              <label>Marca</label>
+              <input v-model="marca" type="text" class="form-control form-control-sm" />
             </div>
           </div>
-
+          <div class="row">
+            <div class="col form-group">
+              <label>Descrição detalhada</label>
+              <textarea v-model="detalhes" type="text" class="form-control form-control-sm" />
+            </div>
+          </div>
           <div class="row">
             <div class="col form-group">
               <label>Descrição detalhada</label>
@@ -55,6 +59,7 @@
 
 <script>
 import ProdutoService from "@/services/produtos.js";
+import axios from 'axios';
 import alertUtils from '@/utils/alertUtils';
 
 export default {
@@ -64,32 +69,40 @@ export default {
   data() {
     return {
       nomeProduto: null,
-      avaliacao: null,
       detalhes: null,
       preco: null,
       quantidade: null,
+      marca: null,
+
+      produto: []
     };
   },
 
-  created() {},
+  mounted(){
+    this.ListaCategorias()
+  },
 
   methods: {
     salvar() {
 
-      const produto = {};
-      produto.nome = this.nomeProduto;
-      produto.avaliacao = this.avaliacao;
-      produto.descricao = this.detalhes;
-      produto.preco = this.preco;
-      produto.quantidade = this.quantidade;
+      
+      this.produto.nome = this.nomeProduto;
+      this.produto.avaliacao = this.avaliacao;
+      this.produto.descricao = this.detalhes;
+      this.produto.preco = this.preco;
+      this.produto.quantidade = this.quantidade;
 
-      console.log(produto);
+      console.log(this.produto);
       //debugger; 
-      ProdutoService.salvar(produto)
-      .then(console.log)
-      .catch(this.handleErrors);
+      // axios.post("http://localhost:8080/produtos",{
+      //   params
+      // })
     },
-
+    ListaCategorias(){
+      axios.get('http://localhost:8080/categorias').then(res=>{
+        alert(JSON.stringify(res.data))
+      })
+    },
     handleErrors(erro) {
       alertUtils.alertFinalMid(erro, 'Ok', 'error');
       console.log("erro: ", erro);
@@ -100,4 +113,3 @@ export default {
 
 <style scoped>
 </style>
-
