@@ -9,39 +9,89 @@
           <div class="row">
             <div class="col form-group">
               <label>Nome do Produto</label>
-              <input v-model="nomeProduto" type="text" class="form-control form-control-sm" />
+              <input
+                v-model="nomeProduto"
+                type="text"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col form-group">
               <label>Marca</label>
-              <input v-model="marca" type="text" class="form-control form-control-sm" />
+              <input
+                v-model="marca"
+                type="text"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col form-group">
               <label>Descrição detalhada</label>
-              <textarea v-model="detalhes" type="text" class="form-control form-control-sm" />
+              <textarea
+                v-model="detalhes"
+                type="text"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col form-group">
               <label>Descrição detalhada</label>
-              <textarea v-model="detalhes" type="text" class="form-control form-control-sm" />
+              <textarea
+                v-model="detalhes"
+                type="text"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
 
           <div class="row">
             <div class="col form-group">
               <label>Preço produto</label>
-              <input v-model="preco" type="number" class="form-control form-control-sm" />
+              <input
+                v-model="preco"
+                type="number"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
 
           <div class="row">
             <div class="col form-group">
               <label>Quantidade estoque</label>
-              <input v-model="quantidade" type="number" class="form-control form-control-sm" />
+              <input
+                v-model="quantidade"
+                type="number"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <label>Categoria</label><br>
+              <select
+                class="form-select form-select-sm"
+                aria-label=".form-select-sm example"
+               v-model="categoria" 
+              >
+                <option selected>Selecionle uma categoria</option>
+                <option v-for="categoria of categorias" :key="categoria.id" :value="categoria.id">{{
+                  categoria.nome
+                }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col form-group">
+              <label>Local Imagem</label>
+              <input
+                v-model="locationImagem"
+                type="text"
+                class="form-control form-control-sm"
+              />
             </div>
           </div>
 
@@ -59,8 +109,8 @@
 
 <script>
 import ProdutoService from "@/services/produtos.js";
-import axios from 'axios';
-import alertUtils from '@/utils/alertUtils';
+import axios from "axios";
+import alertUtils from "@/utils/alertUtils";
 
 export default {
   name: "Cadastro",
@@ -73,43 +123,47 @@ export default {
       preco: null,
       quantidade: null,
       marca: null,
-
-      produto: []
+      categoria: null,
+      produto: [],
+      categorias: [],
     };
   },
 
-  mounted(){
-    this.ListaCategorias()
+  mounted() {
+    this.ListaCategorias();
   },
 
   methods: {
     salvar() {
-
-      
       this.produto.nome = this.nomeProduto;
-      this.produto.avaliacao = this.avaliacao;
+      this.produto.marca = this.marca;
       this.produto.descricao = this.detalhes;
       this.produto.preco = this.preco;
       this.produto.quantidade = this.quantidade;
-
+      this.produto.categoria = this.categoria;
       console.log(this.produto);
-      //debugger; 
-      // axios.post("http://localhost:8080/produtos",{
-      //   params
-      // })
-    },
-    ListaCategorias(){
-      axios.get('http://localhost:8080/categorias').then(res=>{
-        alert(JSON.stringify(res.data))
+      //debugger;
+      axios.post("http://localhost:8080/produtos",{
+        
+          nome: this.produto.nome,
+          marca: this.produto.marca,
+          descricao: this.produto.descricao,
+          preco:  this.produto.preco,
+          quantidade: this.produto.quantidade,
+          categoriaId: this.produto.categoria
       })
     },
+    ListaCategorias() {
+      axios.get("http://localhost:8080/categorias").then((res) => {
+        this.categorias = res.data;
+      });
+    },
     handleErrors(erro) {
-      alertUtils.alertFinalMid(erro, 'Ok', 'error');
+      alertUtils.alertFinalMid(erro, "Ok", "error");
       console.log("erro: ", erro);
     },
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

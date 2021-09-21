@@ -89,7 +89,6 @@ export default {
           for (let i = 0; i < res.data.totalPages; i++) {
             this.paginas.push(i+1)
           }
-          alert(this.paginas)
         });
     },
     pesquisarProduto(campoBuscar) {
