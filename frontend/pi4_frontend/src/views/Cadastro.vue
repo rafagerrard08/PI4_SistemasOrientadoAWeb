@@ -1,6 +1,43 @@
 <template>
   <div class="container" v-if="id == null">
-    <router-link to="/home">Listagem</router-link>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#mynavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.html" class="navbar-brand">eLoja</a>
+        </div>
+        <div class="collapse navbar-collapse" id="mynavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-shopping-cart">
+                  Carrinho</span
+                ></a
+              >
+            </li>
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-user"> Configuracoes</span></a
+              >
+            </li>
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-log-out"> Sair</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class="content">
       <div class="card">
         <div class="card-body">
@@ -10,9 +47,10 @@
             <div class="col form-group">
               <label>Nome do Produto</label>
               <input
+                required
                 v-model="nomeProduto"
                 type="text"
-                class="form-control form-control-sm" 
+                class="form-control form-control-sm"
               />
             </div>
           </div>
@@ -20,6 +58,7 @@
             <div class="col form-group">
               <label>Marca</label>
               <input
+                required
                 v-model="marca"
                 type="text"
                 class="form-control form-control-sm"
@@ -36,21 +75,12 @@
               />
             </div>
           </div>
-          <div class="row">
-            <div class="col form-group">
-              <label>Descrição detalhada</label>
-              <textarea
-                v-model="detalhes"
-                type="text"
-                class="form-control form-control-sm"
-              />
-            </div>
-          </div>
 
           <div class="row">
             <div class="col form-group">
               <label>Preço produto</label>
               <input
+                required
                 v-model="preco"
                 type="number"
                 class="form-control form-control-sm"
@@ -62,6 +92,7 @@
             <div class="col form-group">
               <label>Quantidade estoque</label>
               <input
+                required
                 v-model="quantidade"
                 type="number"
                 class="form-control form-control-sm"
@@ -70,16 +101,19 @@
           </div>
           <div class="row">
             <div class="col form-group">
-              <label>Categoria</label><br>
+              <label>Categoria</label><br />
               <select
                 class="form-select form-select-sm"
                 aria-label=".form-select-sm example"
-               v-model="categoria" 
+                v-model="categoria"
               >
                 <option selected>Selecionle uma categoria</option>
-                <option v-for="categoria of categorias" :key="categoria.id" :value="categoria.id">{{
-                  categoria.nome
-                }}</option>
+                <option
+                  v-for="categoria of categorias"
+                  :key="categoria.id"
+                  :value="categoria.id"
+                  >{{ categoria.nome }}</option
+                >
               </select>
             </div>
           </div>
@@ -87,23 +121,65 @@
           <div class="row">
             <div class="col form-group uploadform">
               <label>Insira as Imagem</label>
-              <input type="file" @change="onFileSelect">
-              <button class="btn btn-primary btn-sm" @click="startUpload" name="Upload"/>
+              <input required type="file" @change="onFileSelect" />
+              <button
+                class="btn btn-primary btn-sm"
+                @click="startUpload"
+                name="Upload"
+              />
             </div>
           </div>
 
-          <button class="btn btn-primary btn-sm" @click.prevent="salvar()">
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+            @click.prevent="salvar()"
+          >
             <i class="fa fa-search fa-fw"></i>Incluir
-          </button>
-          <button class="btn btn-primary btn-sm">
-            <i class="fa fa-search fa-fw"></i>Cancelar
           </button>
         </div>
       </div>
     </div>
   </div>
   <div class="container" v-else>
-    <router-link to="/home">Listagem</router-link>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#mynavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.html" class="navbar-brand">eLoja</a>
+        </div>
+        <div class="collapse navbar-collapse" id="mynavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-shopping-cart">
+                  Carrinho</span
+                ></a
+              >
+            </li>
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-user"> Configuracoes</span></a
+              >
+            </li>
+            <li>
+              <a href=""
+                ><span class="glyphicon glyphicon-log-out"> Sair</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class="content">
       <div class="card">
         <div class="card-body">
@@ -113,9 +189,10 @@
             <div class="col form-group">
               <label>Nome do Produto</label>
               <input
+                required
                 v-model="produto.nome"
                 type="text"
-                class="form-control form-control-sm" 
+                class="form-control form-control-sm"
               />
             </div>
           </div>
@@ -123,13 +200,14 @@
             <div class="col form-group">
               <label>Marca</label>
               <input
+                required
                 v-model="produto.marca"
                 type="text"
                 class="form-control form-control-sm"
               />
             </div>
           </div>
-          
+
           <div class="row">
             <div class="col form-group">
               <label>Descrição detalhada</label>
@@ -145,6 +223,7 @@
             <div class="col form-group">
               <label>Preço produto</label>
               <input
+                required
                 v-model="produto.preco"
                 type="number"
                 class="form-control form-control-sm"
@@ -156,6 +235,7 @@
             <div class="col form-group">
               <label>Quantidade estoque</label>
               <input
+                required
                 v-model="produto.quantidade"
                 type="number"
                 class="form-control form-control-sm"
@@ -164,33 +244,43 @@
           </div>
           <div class="row">
             <div class="col form-group">
-              <label>Categoria</label><br>
+              <label>Categoria</label><br />
               <select
                 class="form-select form-select-sm"
                 aria-label=".form-select-sm example"
-               :value="produto.categoria" 
+                :value="produto.categoria"
               >
                 <option v-if="categoria == produto.categoria" selected>{{
                   categoria.nome
                 }}</option>
-                <option v-for="categoria of categorias" :key="categoria.id" :value="categoria.id">{{
-                  categoria.nome
-                }}</option>
+                <option
+                  v-for="categoria of categorias"
+                  :key="categoria.id"
+                  :value="categoria.id"
+                  >{{ categoria.nome }}</option
+                >
               </select>
             </div>
           </div>
           <div class="row">
             <div class="col form-group">
-              <label>Estado</label><br>
+              <label>Estado</label><br />
               <select
                 class="form-select form-select-sm"
                 aria-label=".form-select-sm example"
-               :value="produto.estado" 
+                :value="produto.estado"
               >
-                <option v-if="produto.estado == 'ATIVO'" selected value="ATIVO">Ativo</option>
+                <option v-if="produto.estado == 'ATIVO'" selected value="ATIVO"
+                  >Ativo</option
+                >
                 <option v-else value="ATIVO">Ativo</option>
-                
-                <option v-if="produto.estado == 'INATIVO'" selected value="INATIVO">Inativo</option>
+
+                <option
+                  v-if="produto.estado == 'INATIVO'"
+                  selected
+                  value="INATIVO"
+                  >Inativo</option
+                >
                 <option v-else value="INATIVO">Inativo</option>
               </select>
             </div>
@@ -198,16 +288,18 @@
           <div class="row">
             <div class="col form-group uploadform">
               <label>Insira as Imagem</label>
-              <input type="file" @change="onFileSelect">
-              <button class="btn btn-primary btn-sm" @click="startUpload" name="Upload"/>
+              <input required type="file" @change="onFileSelect" />
+              <button
+                type="submit"
+                class="btn btn-primary btn-sm"
+                @click="startUpload"
+                name="Upload"
+              />
             </div>
           </div>
 
           <button class="btn btn-primary btn-sm" @click.prevent="Alterar()">
             <i class="fa fa-search fa-fw"></i>Alterar
-          </button>
-          <button class="btn btn-primary btn-sm">
-            <i class="fa fa-search fa-fw"></i>Cancelar
           </button>
         </div>
       </div>
@@ -242,10 +334,10 @@ export default {
   },
 
   mounted() {
-/*     alert(this.id)
- */    if (this.id != null) {
-      this.buscarDadosProduto()
-    }else{
+    /*     alert(this.id)
+     */ if (this.id != null) {
+      this.buscarDadosProduto();
+    } else {
       this.ListaCategorias();
     }
   },
@@ -260,15 +352,14 @@ export default {
       this.produto.categoria = this.categoria;
       console.log(this.produto);
       //debugger;
-      axios.post("http://localhost:8080/produtos",{
-        
-          nome: this.produto.nome,
-          marca: this.produto.marca,
-          descricao: this.produto.descricao,
-          preco:  this.produto.preco,
-          quantidade: this.produto.quantidade,
-          categoriaId: this.produto.categoria
-      })
+      axios.post("http://localhost:8080/produtos", {
+        nome: this.produto.nome,
+        marca: this.produto.marca,
+        descricao: this.produto.descricao,
+        preco: this.produto.preco,
+        quantidade: this.produto.quantidade,
+        categoriaId: this.produto.categoria,
+      });
     },
     ListaCategorias() {
       axios.get("http://localhost:8080/categorias").then((res) => {
@@ -282,43 +373,54 @@ export default {
     buscarDadosProduto() {
       // alert(this.id)
       axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
-/*         alert(res.data);
- */        this.produto = res.data;
-        this.ListaCategorias()
+        /*         alert(res.data);
+         */ this.produto = res.data;
+        this.ListaCategorias();
       });
     },
-    onFileSelect(event){
-      this.selectedFile = event.target.files[0]
+    onFileSelect(event) {
+      this.selectedFile = event.target.files[0];
     },
 
-    startUpload(){
+    startUpload() {
       const fd = new FormData();
       fd.append("arquivo", this.selectedFile, this.selectedFile.name);
-      axios.post('http://localhost:8080/produtos/upload', fd)
-      .then( res => {
+      axios.post("http://localhost:8080/produtos/upload", fd).then((res) => {
         console.log(res);
-      })
+      });
     },
-    Alterar(){
-/*       alert(JSON.stringify(this.produto))
- */      axios.put("http://localhost:8080/produtos/"+ this.id,{
-        
+    Alterar() {
+      /*       alert(JSON.stringify(this.produto))
+       */ axios
+        .put("http://localhost:8080/produtos/" + this.id, {
           nome: this.produto.nome,
           marca: this.produto.marca,
           quantidade: this.produto.quantidade,
-          preco:  this.produto.preco,
+          preco: this.produto.preco,
           estado: this.produto.estado,
           descricao: this.produto.descricao,
           categoriaId: this.produto.categoria.id,
-          categoria:  {id: this.produto.categoria.id,nome: this.produto.categoria.nome}
-      }).then(()=>{
-        alert("Produto alterado com sucesso!!")
-      }).catch(()=>{
-        alert("Não foi possível alterar este produto, tente novamente!!")
-      })
-    }
+          categoria: {
+            id: this.produto.categoria.id,
+            nome: this.produto.categoria.nome,
+          },
+        })
+        .then(() => {
+          alert("Produto alterado com sucesso!!");
+        })
+        .catch(() => {
+          alert("Não foi possível alterar este produto, tente novamente!!");
+        });
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+
+.content{
+    padding: 75px;
+}
+
+</style>
