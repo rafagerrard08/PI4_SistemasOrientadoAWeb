@@ -12,7 +12,7 @@ import com.senac.PI4_ecommerce.model.Produto;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
-	@Query("SELECT DISTINCT p FROM Produto AS p WHERE p.nome LIKE %:nome% OR p.marca LIKE %:nome%")
-	public Page<Produto> search(@Param("nome") String nome, Pageable pageRequest);
+	@Query("SELECT DISTINCT p FROM Produto AS p WHERE p.nome LIKE %:nome% AND p.estado LIKE :estado")
+	public Page<Produto> search(@Param("nome") String nome, Pageable pageRequest, @Param("estado") Integer estado);
 
 }

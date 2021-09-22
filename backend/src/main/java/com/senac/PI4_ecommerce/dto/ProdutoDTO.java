@@ -5,22 +5,33 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 
 public class ProdutoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
+	@NotBlank(message = "Nome nao pode estar vazio")
 	private String nome;
+	@NotBlank(message = "Marca nao pode estar vazio")
 	private String marca;
+	@NotNull(message = "Quantidade nao pode estar vazio")
 	private Integer quantidade;
+	@NotNull(message = "Preco nao pode estar vazio")
+	@Min(value = 0)
 	private BigDecimal preco;
+	@NotBlank(message = "Descricao nao pode estar vazio")
 	private String descricao;
 	private Integer estado;
 	private Double avaliacao;
 
 	private Categoria categoria;
+	@NotNull(message = "CategoriaId nao pode estar vazio")
 	private Integer categoriaId;
 
 	private Set<String> imagens = new HashSet<>();
@@ -43,7 +54,7 @@ public class ProdutoDTO implements Serializable {
 		this.imagens = imagens;
 		this.avaliacao = avaliacao;
 	}
-	
+
 	// Getters e Setters
 	public Integer getId() {
 		return id;

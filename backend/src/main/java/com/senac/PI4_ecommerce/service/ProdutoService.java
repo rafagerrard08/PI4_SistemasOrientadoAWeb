@@ -19,12 +19,14 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
-			String direcao) {
+			String direcao, EstadoProduto estado) {
 		if (pagina < 0) {
 			// Implementar erro
 		}
 		PageRequest pr = PageRequest.of(pagina, itensPorPagina, Direction.valueOf(direcao), ordenarPor);
-		return produtoRepository.search(nome, pr);
+		System.out.println(estado.getId());
+
+		return produtoRepository.search(nome, pr, estado.getId());
 	}
 
 	public Produto getProduto(Integer id) {
