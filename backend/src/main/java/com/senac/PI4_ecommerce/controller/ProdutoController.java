@@ -45,7 +45,7 @@ public class ProdutoController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Page<Produto>> getProdutosPage(@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
-			@RequestParam(value = "itensPorPagina", defaultValue = "10") Integer itensPorPagina,
+			@RequestParam(value = "itensPorPagina", defaultValue = "9") Integer itensPorPagina,
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
 			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
 			@RequestParam(value = "estado", defaultValue = "ativo") String status) {
@@ -90,7 +90,7 @@ public class ProdutoController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<BindingResult> postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
+	public String postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
 
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
 		Produto produto = Converts.toProduto(produtoDTO);
@@ -100,8 +100,9 @@ public class ProdutoController {
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
 				.toUri();
-		return ResponseEntity.created(uri).build();
-	}
+		
+		return "Produto Criado: " + uri.toString();
+		}
 
 	/***
 	 * Alterar um produto e suas imagens e Inativar ou Reativar um produto
@@ -126,8 +127,8 @@ public class ProdutoController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String fileUpload(@RequestParam("arquivo") MultipartFile arquivo){
+	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
+	public String fileUpload(@PathVariable Integer id, @RequestParam("arquivo") MultipartFile arquivo){
 		System.out.println(arquivo.getOriginalFilename());
 		
 		return String.format("Arquivo recebido: ", arquivo.getOriginalFilename());
