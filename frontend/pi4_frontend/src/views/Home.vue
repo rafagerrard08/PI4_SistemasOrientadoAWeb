@@ -29,7 +29,7 @@
                     <div class="caption">
                       <h3>{{ produto.nome }}</h3>
                       <p>R${{ produto.preco }}</p>
-                      <button class="add-to-cart">Comprar</button>
+                      <button class="add-to-cart" @click="redirecionar(produto.id)">Comprar</button>
                     </div>
                   </div>
                 </div>
@@ -61,6 +61,7 @@
 
 <script>
 import axios from "axios";
+import router from '../router'
 // import alertUtils from '@/utils/AlertUtils';
 
 export default {
@@ -94,6 +95,9 @@ export default {
     pesquisarProduto(campoBuscar) {
       this.ListaProdutos(0, campoBuscar);
     },
+    redirecionar(id){
+      router.push({ name: 'produto', params: { Id: id } })
+    }
   },
 };
 </script>
