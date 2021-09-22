@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.senac.PI4_ecommerce.Utils.Converts;
@@ -124,5 +125,14 @@ public class ProdutoController {
 
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String fileUpload(@RequestParam("arquivo") MultipartFile arquivo){
+		System.out.println(arquivo.getOriginalFilename());
+		
+		return String.format("Arquivo recebido: ", arquivo.getOriginalFilename());
+		
+	}
+
 
 }
