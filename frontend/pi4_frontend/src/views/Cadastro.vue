@@ -137,6 +137,9 @@
           >
             <i class="fa fa-search fa-fw"></i>Incluir
           </button>
+          <button class="btn btn-secundary btn-sm" onclick="window.location.href = 'index.html'">
+            <i class="fa fa-search fa-fw"></i>Cancelar
+          </button>
         </div>
       </div>
     </div>
@@ -300,6 +303,9 @@
 
           <button class="btn btn-primary btn-sm" @click.prevent="Alterar()">
             <i class="fa fa-search fa-fw"></i>Alterar
+          </button>
+           <button class="btn btn-secundary btn-sm" onclick="window.location.href = 'index.html'">
+            <i class="fa fa-search fa-fw"></i>Cancelar
           </button>
         </div>
       </div>
