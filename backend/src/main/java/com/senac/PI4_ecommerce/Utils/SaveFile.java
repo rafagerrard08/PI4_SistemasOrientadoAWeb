@@ -18,10 +18,11 @@ public class SaveFile {
 	@Value("${ecommerce.dir.diretorio-imagens}")
 	private String diretorioFotos = "imagens/";
 	
-	public void salvarImg(MultipartFile foto, Integer idProduto) {
+	public String salvarImg(MultipartFile foto, Integer idProduto) {
 		String diretorio = this.diretorioFotos + idProduto;
 		this.salvar(diretorio, foto);
 		System.out.println( "Foto salva no diretorio " + diretorio );
+		return raiz + diretorioFotos + foto.getOriginalFilename();
 	}
 	
 	public void salvar(String diretorio, MultipartFile arquivo) {

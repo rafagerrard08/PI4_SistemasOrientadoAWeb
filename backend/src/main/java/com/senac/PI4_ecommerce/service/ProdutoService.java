@@ -69,14 +69,13 @@ public class ProdutoService {
 	}
 
 	public void saveImg(MultipartFile[] arquivos, Integer idProduto) {
-//		String caminho = getResource()
-		SaveFile sf = new SaveFile();
+		Produto produto = this.getProduto(idProduto);
 		
+		SaveFile sf = new SaveFile();
 
 		for (MultipartFile arquivo : arquivos) {
-			sf.salvarImg(arquivo, idProduto);
-			System .out.println(arquivo.getOriginalFilename());
-
+			produto.getImagens().add(sf.salvarImg(arquivo, idProduto));
 		}
+		produtoRepository.save(produto);
 	}
 }

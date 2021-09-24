@@ -37,9 +37,6 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		Categoria cat6 = new Categoria(null, "Informática");
 
 		Set<String> img1 = new HashSet<String>();
-		img1.add("/assets/images/eletrodomesticos/consul_micro-ondas_20L_CM020_I1.jpg");
-		img1.add("/assets/images/eletrodomesticos/consul_micro-ondas_20L_CM020_I2.jpg");
-		img1.add("/assets/images/eletrodomesticos/consul_micro-ondas_20L_CM020_I3.jpg");
 
 		Set<String> img2 = new HashSet<String>();
 		img2.add("/assets/images/eletrodomesticos/apple_iphone_12_pro_128gb_azul_pacifico_61P_I1.jpg");
