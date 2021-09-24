@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -128,11 +127,11 @@ public class ProdutoController {
 	}
 	
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
-	public String fileUpload(@PathVariable Integer id, @RequestParam("arquivo") MultipartFile arquivo){
-		System.out.println(arquivo.getOriginalFilename());
+	public String submit(@RequestParam("files") MultipartFile[] files, @PathVariable Integer id) {
 		
-		return String.format("Arquivo recebido: ", arquivo.getOriginalFilename());
-		
+		produtoService.saveImg(files, id);
+
+	    return "fileUploadView";
 	}
 
 

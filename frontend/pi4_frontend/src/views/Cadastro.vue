@@ -390,8 +390,8 @@ export default {
 
     startUpload() {
       const fd = new FormData();
-      fd.append("arquivo", this.selectedFile, this.selectedFile.name);
-      axios.post("http://localhost:8080/produtos/upload", fd).then((res) => {
+      fd.append("files", this.selectedFile, this.selectedFile.name);
+      axios.post("http://localhost:8080/produtos/uploadImages/1", fd).then((res) => {
         console.log(res);
       });
     },

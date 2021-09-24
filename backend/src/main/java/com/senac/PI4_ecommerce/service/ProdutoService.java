@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.senac.PI4_ecommerce.Utils.SaveFile;
 import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.repository.ProdutoRepository;
@@ -49,7 +51,7 @@ public class ProdutoService {
 	public Produto putProduto(Produto produtoAtualizado) {
 
 		Produto produtoAtual = getProduto(produtoAtualizado.getId());
-		
+
 		produtoAtualizado = atualizaProduto(produtoAtual, produtoAtualizado);
 		return produtoRepository.save(produtoAtualizado);
 	}
@@ -64,5 +66,17 @@ public class ProdutoService {
 		produtoAtual.setCategoria(produtoAtualizado.getCategoria());
 		produtoAtual.getImagens().addAll(produtoAtualizado.getImagens());
 		return produtoAtual;
+	}
+
+	public void saveImg(MultipartFile[] arquivos, Integer idProduto) {
+//		String caminho = getResource()
+		SaveFile sf = new SaveFile();
+		
+
+		for (MultipartFile arquivo : arquivos) {
+			sf.salvarImg(arquivo, idProduto);
+			System .out.println(arquivo.getOriginalFilename());
+
+		}
 	}
 }
