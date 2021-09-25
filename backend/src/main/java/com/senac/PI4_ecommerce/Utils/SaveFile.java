@@ -20,12 +20,12 @@ public class SaveFile {
 	
 	public String salvarImg(MultipartFile foto, Integer idProduto) {
 		String diretorio = this.diretorioFotos + idProduto;
-		this.salvar(diretorio, foto);
+		String path = this.salvar(diretorio, foto);
 		System.out.println( "Foto salva no diretorio " + diretorio );
-		return raiz + diretorioFotos + foto.getOriginalFilename();
+		return path;
 	}
 	
-	public void salvar(String diretorio, MultipartFile arquivo) {
+	public String salvar(String diretorio, MultipartFile arquivo) {
 		Path diretorioPath = Paths.get(this.raiz, diretorio);
 		Path arquivoPath = diretorioPath.resolve(arquivo.getOriginalFilename());
 		
@@ -35,7 +35,8 @@ public class SaveFile {
 			arquivo.transferTo(arquivoPath.toFile());			
 		} catch (IOException e) {
 			throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
-		}		
+		}
+		return diretorioPath.toString() + "/" + arquivo.getOriginalFilename();
 	}
 	
 }
