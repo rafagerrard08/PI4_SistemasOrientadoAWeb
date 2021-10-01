@@ -1,43 +1,6 @@
 <template>
   <div class="container" v-if="id == null">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle"
-            data-toggle="collapse"
-            data-target="#mynavbar"
-          >
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="index.html" class="navbar-brand">eLoja</a>
-        </div>
-        <div class="collapse navbar-collapse" id="mynavbar">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-shopping-cart">
-                  Carrinho</span
-                ></a
-              >
-            </li>
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-user"> Configuracoes</span></a
-              >
-            </li>
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-log-out"> Sair</span></a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <NavbarComponent />
     <div class="content">
       <div class="card">
         <div class="card-body">
@@ -145,44 +108,7 @@
     </div>
   </div>
   <div class="container" v-else>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle"
-            data-toggle="collapse"
-            data-target="#mynavbar"
-          >
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="index.html" class="navbar-brand">eLoja</a>
-        </div>
-        <div class="collapse navbar-collapse" id="mynavbar">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-shopping-cart">
-                  Carrinho</span
-                ></a
-              >
-            </li>
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-user"> Configuracoes</span></a
-              >
-            </li>
-            <li>
-              <a href=""
-                ><span class="glyphicon glyphicon-log-out"> Sair</span></a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <NavbarComponent />
     <div class="content">
       <div class="card">
         <div class="card-body">
@@ -317,10 +243,11 @@
 import ProdutoService from "@/services/produtos.js";
 import axios from "axios";
 import alertUtils from "@/utils/alertUtils";
+import NavbarComponent from "../components/NavbarComponent.vue"
 
 export default {
   name: "Cadastro",
-  components: {},
+  components: {NavbarComponent},
 
   data() {
     return {

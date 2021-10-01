@@ -3,46 +3,7 @@
     <div class="content">
       <div class="card">
         <div class="card-body">
-          <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-              <div class="navbar-header">
-                <button
-                  type="button"
-                  class="navbar-toggle"
-                  data-toggle="collapse"
-                  data-target="#mynavbar"
-                >
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a href="index.html" class="navbar-brand">eLoja</a>
-              </div>
-              <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-shopping-cart">
-                        Carrinho</span
-                      ></a
-                    >
-                  </li>
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-user">
-                        Configuracoes</span
-                      ></a
-                    >
-                  </li>
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-log-out"> Sair</span></a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+          <NavbarComponent />
           <div class="row" id="first">
             <div class="col form-group">
               <nav class="navbar navbar-light bg-light">
@@ -66,9 +27,12 @@
             <div class="row text-center">
               <div v-for="produto of produtos" :key="produto.id">
                 <div class="col-md-4 col-sm-4">
-                  <div class="thumbnail card">
-                    <img src="../assets/imagens/not-found.png" alt="foto" />
+                  <CardComponent :produto="produto"/>
+                  <!-- <div class="thumbnail card">
+                    <p>{{ produto.imagens[0] }}</p>
+                    <img v-bind:src="produto.imagens[0]" alt="foto" />
                     <div class="caption">
+                      <h5>{{ produto.marca }}</h5>
                       <h3>{{ produto.nome }}</h3>
                       <p>R${{ produto.preco }}</p>
                       <button
@@ -77,19 +41,13 @@
                       >
                         Comprar
                       </button>
-                    </div>
-                  </div>
+                    </div> 
+                  </div>-->
                 </div>
               </div>
             </div>
             <nav aria-label="Page navigation example">
               <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
                 <li class="page-item">
                   <a
                     class="page-link"
@@ -99,12 +57,6 @@
                     @click="ListaProdutos(pagina - 1, '')"
                     >{{ pagina }}</a
                   >
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                    <span class="sr-only">Next</span>
-                  </a>
                 </li>
               </ul>
             </nav>
@@ -119,10 +71,12 @@
 import axios from "axios";
 import router from "../router";
 // import alertUtils from '@/utils/AlertUtils';
+import NavbarComponent from "../components/NavbarComponent.vue";
+import CardComponent from "../components/CardComponent.vue";
 
 export default {
   name: "Home",
-  components: {},
+  components: { NavbarComponent, CardComponent },
 
   data() {
     return {
