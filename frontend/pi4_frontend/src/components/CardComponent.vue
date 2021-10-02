@@ -4,16 +4,24 @@
       <a href="#!">
         <mdb-card-image
           id="imagemPrincipal"
-          src="''"
+          :src="require('/Users/victor/tmp/pi4_ecommerce/imagens/3/IMG1.jpg')"
           alt="Card image cap"
         />
       </a>
     </mdb-view>
     <mdb-card-body id="corpo">
-      <mdb-card-title>{{ produto.nome }}</mdb-card-title>
+      <mdb-card-title>{{ produto.nome }} </mdb-card-title>
       <mdb-card-text>{{ produto.marca }}</mdb-card-text>
-      <mdb-card-text id="preco">R$ {{ produto.preco }} <small>á vista</small></mdb-card-text>
-      <mdb-btn color="primary" id="botao">Comprar</mdb-btn>
+      <mdb-card-text id="preco"
+        >R$ {{ produto.preco }} <small>á vista</small></mdb-card-text
+      >
+      <b-button
+        variant="success"
+        id="botao"
+        @click="redirecionarProduto(produto.id)"
+      >
+        Comprar
+      </b-button>
     </mdb-card-body>
   </mdb-card>
 </template>
@@ -28,31 +36,39 @@ import {
   mdbBtn,
   mdbView,
 } from "mdbvue";
+import router from "../router.js";
 
 export default {
-  name: "CardPage",
+  name: "CardComponent",
   components: {
     mdbCard,
     mdbCardImage,
     mdbCardBody,
     mdbCardTitle,
     mdbCardText,
-    mdbBtn,
     mdbView,
   },
-  data() {
-    return {
-      urlImagem: this.produto.imagens[0],
 
-    };
+  data() {
+    return {};
   },
+
   props: ["produto"],
+
+  methods: {
+    redirecionarProduto(id) {
+      router.push({ name: "produto", params: { Id: id } });
+    },
+    getUrl(){
+      return this.produto.imagens[0];
+    }
+  },
 };
 </script>
 
 <style>
 #imagemPrincipal img {
-max-width: 100%;
+  max-width: 100%;
   min-height: 100%;
   object-fit: cover;
   margin: 0;
@@ -84,7 +100,7 @@ max-width: 100%;
   font-style: inherit;
 }
 
-#preco small{
+#preco small {
   font-size: 50%;
 }
 </style>

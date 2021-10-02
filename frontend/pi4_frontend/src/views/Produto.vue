@@ -1,93 +1,55 @@
 <template>
   <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-              <div class="navbar-header">
-                <button
-                  type="button"
-                  class="navbar-toggle"
-                  data-toggle="collapse"
-                  data-target="#mynavbar"
-                >
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a href="index.html" class="navbar-brand">eLoja</a>
-              </div>
-              <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-shopping-cart">
-                        Carrinho</span
-                      ></a
-                    >
-                  </li>
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-user">
-                        Configuracoes</span
-                      ></a
-                    >
-                  </li>
-                  <li>
-                    <a href=""
-                      ><span class="glyphicon glyphicon-log-out"> Sair</span></a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-  <div class="principal">
-
-    <!-- Left Column / Headphones Image -->
-    <div class="left-column">
-      <img data-image="black" src="../assets/imagens/not-found.png" alt="" />
-      <img data-image="blue" src="../assets/imagens/not-found.png" alt="" />
-      <img
-        data-image="red"
-        class="active"
-        src="../assets/imagens/not-found.png"
-        alt=""
-      />
-    </div>
-
-    <!-- Right Column -->
-    <div class="right-column">
-      <!-- Product Description -->
-      <div class="product-description">
-        <div>
-          <span>{{ produto.categoria.nome }} </span>
-          <button class="btn btn-primary p-100" @click="Editar()">Editar</button>
-        </div>
-        <h1>{{ produto.nome }}</h1>
-        <h3>Marca: {{ produto.marca }}</h3>
-        <h4>Código do produto: {{ produto.id }}</h4>
-        <br />
-        <p>
-          {{ produto.descricao }}
-        </p>
+    <NavbarComponent />
+    <div class="principal">
+      <!-- Left Column / Headphones Image -->
+      <div class="left-column">
+        <img data-image="black" src="../assets/imagens/not-found.png" alt="" />
+        <img data-image="blue" src="../assets/imagens/not-found.png" alt="" />
+        <img
+          data-image="red"
+          class="active"
+          src="../assets/imagens/not-found.png"
+          alt=""
+        />
       </div>
 
-      <!-- Product Configuration -->
-      <div class="product-configuration">
-        <!-- Product Color -->
-        <div class="row">
-          <i class="fas fa-star"></i>
-          <h3>Avaliação dos Usuarios: {{ produto.avaliacao }}</h3>
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Product Description -->
+        <div class="product-description">
+          <div>
+            <span>{{ produto.categoria.nome }} </span>
+            <button class="btn btn-primary p-100" @click="Editar()">
+              Editar
+            </button>
+          </div>
+          <h1>{{ produto.nome }}</h1>
+          <h3>Marca: {{ produto.marca }}</h3>
+          <h4>Código do produto: {{ produto.id }}</h4>
+          <br />
+          <p>
+            {{ produto.descricao }}
+          </p>
         </div>
-        <!-- Cable Configuration -->
-      </div>
 
-      <!-- Product Pricing -->
-      <div class="product-price">
-        <span>R${{ produto.preco }}</span>
-        <a href="#" class="cart-btn">Comprar</a>
+        <!-- Product Configuration -->
+        <div class="product-configuration">
+          <!-- Product Color -->
+          <div class="row">
+            <i class="fas fa-star"></i>
+            <h3>Avaliação dos Usuarios: {{ produto.avaliacao }}</h3>
+          </div>
+          <!-- Cable Configuration -->
+        </div>
+
+        <!-- Product Pricing -->
+        <div class="product-price">
+          <span>R${{ produto.preco }}</span>
+          <a href="#" class="cart-btn">Comprar</a>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 

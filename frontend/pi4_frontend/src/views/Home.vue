@@ -107,9 +107,7 @@ export default {
     pesquisarProduto(campoBuscar) {
       this.ListaProdutos(0, campoBuscar);
     },
-    redirecionar(id) {
-      router.push({ name: "produto", params: { Id: id } });
-    },
+    
   },
 };
 </script>
