@@ -1,12 +1,17 @@
 package com.senac.PI4_ecommerce.controller;
 
+import java.io.IOException;
 import java.net.URI;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,19 +53,17 @@ public class ProdutoController {
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
 			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
 			@RequestParam(value = "estado", defaultValue = "ativo") String status) {
-		
 
 		String nomeDecode = Util.decodeParam(nome);
 		EstadoProduto estado = null;
-		if(status.equals("ativo")) {
+		if (status.equals("ativo")) {
 			estado = EstadoProduto.ATIVO;
-		} else if(status.equals("inativo")){
+		} else if (status.equals("inativo")) {
 			estado = EstadoProduto.INATIVO;
 			System.out.println("caiu no inativo");
 		}
 		System.out.println(estado.getId());
 
-		
 		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao,
 				estado);
 
@@ -99,9 +102,9 @@ public class ProdutoController {
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
 				.toUri();
-		
+
 		return "Produto Criado: " + uri.toString();
-		}
+	}
 
 	/***
 	 * Alterar um produto e suas imagens e Inativar ou Reativar um produto
@@ -125,14 +128,22 @@ public class ProdutoController {
 
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
 	public String submit(@RequestParam("files") MultipartFile[] files, @PathVariable Integer id) {
-		
+
 		produtoService.saveImg(files, id);
 
-	    return "fileUploadView";
+		return "fileUploadView";
 	}
 
+	@RequestMapping(value = "/img/{id}/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
+			throws IOException {
 
+		var imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);
+
+		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+	}
 }

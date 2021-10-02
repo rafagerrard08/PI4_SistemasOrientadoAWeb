@@ -37,17 +37,17 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		Categoria cat6 = new Categoria(null, "Informática");
 
 		Set<String> img1 = new HashSet<String>();
-		img1.add("/Users/victor/tmp/pi4_ecommerce/imagens/1/IMG_1.jpg");
+		img1.add("/src/main/resources/imagens/1/IMG_1.jpg");
 
 
 		Set<String> img2 = new HashSet<String>();
-		img2.add("/Users/victor/tmp/pi4_ecommerce/imagens/2/IMG_1.jpg");
+		img2.add("/src/main/resources/imagens/2/IMG_1.jpg");
 
 		Set<String> img3 = new HashSet<String>();
-		img3.add("/Users/victor/tmp/pi4_ecommerce/imagens/3/IMG_1.jpg");
+		img3.add("/src/main/resources/imagens/3/IMG_1.jpg");
 
 		Set<String> img4 = new HashSet<String>();
-		img4.add("/Users/victor/tmp/pi4_ecommerce/imagens/4/IMG_1.jpg");
+		img4.add("/src/main/resources/imagens/4/IMG_1.jpg");
 
 		Produto p1 = new Produto(null, "Micro-ondas 20L CM020", "Electrolux", 42, 678.30,
 				"Micro-ondas CM020 Consul Espelhado 20 litros. Compacto e moderno, ele possui o Menu Uso Fácil e receitas pré-programadas que descomplicam o seu dia-a-dia. Descongelar a carne do almoço, preparar o lanche das crianças, aquecer o jantar. Com ele você faz tudo isso e muito mais em questão de minutos. É tão fácil que até parece mágica: com apenas um toque você consegue preparar massas, pipoca e até vegetais. Possui ainda porta espelhada com puxador, 10 opções de potência para você preparar sua refeição na medida certa, opção desliga visor que proporciona uma economia de até 12% de energia desligando o visor luminoso e comando cancelar que além de interromper o preparo, também serve para travar o teclado e deixar sua cozinha mais segura.",

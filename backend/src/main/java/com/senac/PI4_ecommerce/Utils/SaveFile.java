@@ -5,18 +5,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class SaveFile {
 
-	@Value("${ecommerce.dir.raiz}")
-	private String raiz = "/Users/victor/tmp/pi4_ecommerce/";
+//	@Value("${ecommerce.dir.raiz}")
+	private String raiz = "/Users/victor/git/PI4_SistemasOrientadoAWeb/backend";
 	
-	@Value("${ecommerce.dir.diretorio-imagens}")
-	private String diretorioFotos = "imagens/";
+//	@Value("${ecommerce.dir.diretorio-imagens}")
+	private String diretorioFotos = "/src/main/resources/imagens/";
 	
 	public String salvarImg(MultipartFile foto, Integer idProduto) {
 		String diretorio = this.diretorioFotos + idProduto;
@@ -26,7 +25,7 @@ public class SaveFile {
 	}
 	
 	public String salvar(String diretorio, MultipartFile arquivo) {
-		Path diretorioPath = Paths.get(this.raiz, diretorio);
+		Path diretorioPath = Paths.get(this.raiz + diretorio);
 		Path arquivoPath = diretorioPath.resolve(arquivo.getOriginalFilename());
 		
 		try {
@@ -36,7 +35,7 @@ public class SaveFile {
 		} catch (IOException e) {
 			throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
 		}
-		return diretorioPath.toString() + "/" + arquivo.getOriginalFilename();
+		return diretorio + "/" + arquivo.getOriginalFilename();
 	}
 	
 }
