@@ -4,7 +4,7 @@
       <a href="#!">
         <mdb-card-image
           id="imagemPrincipal"
-          :src="require('/Users/victor/tmp/pi4_ecommerce/imagens/3/IMG1.jpg')"
+          src="http://localhost:8080/produtos/imagens/klebi.jpg"
           alt="Card image cap"
         />
       </a>
@@ -22,6 +22,7 @@
       >
         Comprar
       </b-button>
+
     </mdb-card-body>
   </mdb-card>
 </template>
@@ -37,6 +38,8 @@ import {
   mdbView,
 } from "mdbvue";
 import router from "../router.js";
+
+import router from "../router";
 
 export default {
   name: "CardComponent",
@@ -56,9 +59,11 @@ export default {
   props: ["produto"],
 
   methods: {
+    
     redirecionarProduto(id) {
       router.push({ name: "produto", params: { Id: id } });
     },
+
     getUrl(){
       return this.produto.imagens[0];
     }
@@ -70,6 +75,7 @@ export default {
 #imagemPrincipal img {
   max-width: 100%;
   min-height: 100%;
+
   object-fit: cover;
   margin: 0;
 

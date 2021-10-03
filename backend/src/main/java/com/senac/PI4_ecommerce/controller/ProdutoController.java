@@ -37,6 +37,16 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 	@Autowired
 	private CategoriaService categoriaService;
+	
+    @RequestMapping(value = "/imagens/{nomeImagem}", method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public void getImage(@PathVariable("nomeImagem") String nomeImagem, HttpServletResponse response) throws IOException {
+
+        var imgFile = new ClassPathResource("images/"+nomeImagem);
+
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+    }
 
 	/***
 	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
