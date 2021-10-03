@@ -4,7 +4,7 @@
       <a href="#!">
         <mdb-card-image
           id="imagemPrincipal"
-          src="http://localhost:8080/produtos/imagens/klebi.jpg"
+          src="https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg"
           alt="Card image cap"
         />
       </a>
@@ -37,7 +37,6 @@ import {
   mdbBtn,
   mdbView,
 } from "mdbvue";
-import router from "../router.js";
 
 import router from "../router";
 
@@ -59,7 +58,7 @@ export default {
   props: ["produto"],
 
   methods: {
-    
+
     redirecionarProduto(id) {
       router.push({ name: "produto", params: { Id: id } });
     },

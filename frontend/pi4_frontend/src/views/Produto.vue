@@ -8,7 +8,7 @@
         <img
           data-image="red"
           class="active"
-          src="http://localhost:8080/produtos/imagens/klebi.jpg"
+          src="https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg"
           alt=""
         />
 
@@ -89,11 +89,11 @@ export default {
         touchThreshold: 5,
       },
       imagensCarrossel: [
-        "http://localhost:8080/produtos/imagens/klebi.jpg",
-        "http://localhost:8080/produtos/imagens/klebi.jpg",
-        "http://localhost:8080/produtos/imagens/klebi.jpg",
-        "http://localhost:8080/produtos/imagens/klebi.jpg",
-        "http://localhost:8080/produtos/imagens/klebi.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
       ],
     };
   },
