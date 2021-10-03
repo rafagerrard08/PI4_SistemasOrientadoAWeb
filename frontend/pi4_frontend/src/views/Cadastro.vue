@@ -100,11 +100,21 @@
           >
             <i class="fa fa-search fa-fw"></i>Incluir
           </button>
-          <button class="btn btn-secundary btn-sm" onclick="window.location.href = 'index.html'">
+          <button
+            class="btn btn-secundary btn-sm"
+            onclick="window.location.href = 'index.html'"
+          >
             <i class="fa fa-search fa-fw"></i>Cancelar
           </button>
         </div>
       </div>
+      <div>
+          <b-button v-b-modal.modal-1>Launch demo modal</b-button>
+
+          <b-modal id="modal-1" title="BootstrapVue">
+            <p class="my-4">Hello from modal!</p>
+          </b-modal>
+        </div>
     </div>
   </div>
   <div class="container" v-else>
@@ -230,12 +240,16 @@
           <button class="btn btn-primary btn-sm" @click.prevent="Alterar()">
             <i class="fa fa-search fa-fw"></i>Alterar
           </button>
-           <button class="btn btn-secundary btn-sm" onclick="window.location.href = 'index.html'">
+          <button
+            class="btn btn-secundary btn-sm"
+            onclick="window.location.href = 'index.html'"
+          >
             <i class="fa fa-search fa-fw"></i>Cancelar
           </button>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -243,11 +257,11 @@
 import ProdutoService from "@/services/produtos.js";
 import axios from "axios";
 import alertUtils from "@/utils/alertUtils";
-import NavbarComponent from "../components/NavbarComponent.vue"
+import NavbarComponent from "../components/NavbarComponent.vue";
 
 export default {
   name: "Cadastro",
-  components: {NavbarComponent},
+  components: { NavbarComponent },
 
   data() {
     return {
@@ -318,9 +332,11 @@ export default {
     startUpload() {
       const fd = new FormData();
       fd.append("files", this.selectedFile, this.selectedFile.name);
-      axios.post("http://localhost:8080/produtos/uploadImages/1", fd).then((res) => {
-        console.log(res);
-      });
+      axios
+        .post("http://localhost:8080/produtos/uploadImages/1", fd)
+        .then((res) => {
+          console.log(res);
+        });
     },
     Alterar() {
       /*       alert(JSON.stringify(this.produto))
@@ -350,10 +366,7 @@ export default {
 </script>
 
 <style scoped>
-
-
-.content{
-    padding: 75px;
+.content {
+  padding: 75px;
 }
-
 </style>

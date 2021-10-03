@@ -20,6 +20,7 @@ public class Converts {
 		produtoDTO.setCategoria(produto.getCategoria());
 		produtoDTO.getImagens().addAll(produto.getImagens());
 		produtoDTO.setAvaliacao(produto.getAvaliacao());
+		produtoDTO.setImagemPrincipal(produto.getImagemPrincipal());
 
 		return produtoDTO;
 	}
@@ -41,6 +42,7 @@ public class Converts {
 		produto.setCategoria(produtoDTO.getCategoria());
 		produto.getImagens().addAll(produto.getImagens());
 		produto.setAvaliacao(produtoDTO.getAvaliacao());
+		produto.setImagemPrincipal(produtoDTO.getImagemPrincipal());
 
 		return produto;
 	}
