@@ -141,7 +141,7 @@ public class ProdutoController {
 	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
 			throws IOException {
 
-		var imgFile = new ClassPathResource("imagens/" + id + "/" + nomeImagem);
+		var imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);
 
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
