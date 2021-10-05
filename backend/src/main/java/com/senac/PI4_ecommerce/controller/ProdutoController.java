@@ -126,7 +126,7 @@ public class ProdutoController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> putProduto(@PathVariable Integer id, @RequestBody ProdutoDTO produtoDTO) {
 		produtoDTO.setId(id);
-		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+//		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
 
 		System.out.println("ID DTO:" + produtoDTO.getId());
 
@@ -150,8 +150,14 @@ public class ProdutoController {
 	@RequestMapping(value = "/img/{id}/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
 			throws IOException {
+		ClassPathResource imgFile = null;
+		
+		try {
+			imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);
+		} catch (Exception e) {
+			imgFile = new ClassPathResource("imagens/" + id + "/" + nomeImagem);
+		}
 
-		var imgFile = new ClassPathResource("imagens/" + id + "/" + nomeImagem);
 
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());

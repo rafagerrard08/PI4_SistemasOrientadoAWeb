@@ -27,12 +27,24 @@ public class ProdutoDTO implements Serializable {
 	private BigDecimal preco;
 	@NotBlank(message = "Descricao nao pode estar vazio")
 	private String descricao;
-	private Integer estado;
+	private EstadoProduto estado;
 	private Double avaliacao;
 
 	private Categoria categoria;
 	@NotNull(message = "CategoriaId nao pode estar vazio")
 	private Integer categoriaId;
+	
+	@NotNull(message = "Produto deve ter ao menos uma imagem")
+	private String imagemPrincipal;
+
+
+	public String getImagemPrincipal() {
+		return imagemPrincipal;
+	}
+
+	public void setImagemPrincipal(String imagemPrincipal) {
+		this.imagemPrincipal = imagemPrincipal;
+	}
 
 	private Set<String> imagens = new HashSet<>();
 
@@ -41,7 +53,7 @@ public class ProdutoDTO implements Serializable {
 	}
 
 	public ProdutoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Integer categoriaId, Set<String> imagens, Double avaliacao) {
+			EstadoProduto estado, Integer categoriaId,  String imagemPrincipal, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -49,9 +61,8 @@ public class ProdutoDTO implements Serializable {
 		this.quantidade = quantidade;
 		this.preco = BigDecimal.valueOf(preco);
 		this.descricao = descricao;
-		this.estado = estado.getId();
+		this.estado = estado;
 		this.categoriaId = categoriaId;
-		this.imagens = imagens;
 		this.avaliacao = avaliacao;
 	}
 
@@ -105,11 +116,11 @@ public class ProdutoDTO implements Serializable {
 	}
 
 	public EstadoProduto getEstado() {
-		return EstadoProduto.toEnum(estado);
+		return estado;
 	}
 
 	public void setEstado(EstadoProduto estado) {
-		this.estado = estado.getId();
+		this.estado = estado;
 	}
 
 	public Set<String> getImagens() {

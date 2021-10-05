@@ -40,10 +40,12 @@ public class Produto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+	
+	private String imagemPrincipal;
 
 	@ElementCollection
-	@CollectionTable(name = "imagem")
-	private Set<String> imagensLocation = new HashSet<>();
+	@CollectionTable(name = "demais_imagens")
+	private Set<String> imagens = new HashSet<>();
 
 	// Construtores (Nao Incluir coleções)
 	public Produto() {
@@ -51,7 +53,7 @@ public class Produto implements Serializable {
 	}
 
 	public Produto(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Categoria categoria, Set<String> imagens, Double avaliacao) {
+			EstadoProduto estado, Categoria categoria, String imagemPrincipal, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -61,7 +63,7 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 		this.estado = estado.getId();
 		this.categoria = categoria;
-		this.imagensLocation = imagens;
+		this.imagemPrincipal = imagemPrincipal;
 		this.avaliacao = avaliacao;
 
 	}
@@ -132,11 +134,11 @@ public class Produto implements Serializable {
 	}
 
 	public Set<String> getImagens() {
-		return imagensLocation;
+		return imagens;
 	}
 
 	public void setImagens(Set<String> imagens) {
-		this.imagensLocation = imagens;
+		this.imagens = imagens;
 	}
 
 	public Double getAvaliacao() {
@@ -145,6 +147,14 @@ public class Produto implements Serializable {
 
 	public void setAvaliacao(Double avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	public String getImagemPrincipal() {
+		return imagemPrincipal;
+	}
+
+	public void setImagemPrincipal(String imagemPrincipal) {
+		this.imagemPrincipal = imagemPrincipal;
 	}
 
 	// Hash Code e Equals Padrao (somente Id)
