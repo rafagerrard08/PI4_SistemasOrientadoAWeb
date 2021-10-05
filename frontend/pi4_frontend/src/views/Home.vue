@@ -98,6 +98,7 @@ export default {
         )
         .then((res) => {
           this.produtos = res.data.content;
+          debugger
           this.paginas = [];
           for (let i = 0; i < res.data.totalPages; i++) {
             this.paginas.push(i + 1);

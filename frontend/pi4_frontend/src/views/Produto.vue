@@ -2,16 +2,25 @@
   <div class="container">
     <NavbarComponent />
     <div class="principal">
+
       <!-- Left Column / Headphones Image -->
       <div class="left-column">
-        <img data-image="black" src="../assets/imagens/not-found.png" alt="" />
-        <img data-image="blue" src="../assets/imagens/not-found.png" alt="" />
         <img
           data-image="red"
           class="active"
-          src="../assets/imagens/not-found.png"
+          src="https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg"
           alt=""
         />
+
+        <div id="carrossel">
+          <VueSlickCarousel v-bind="settings">
+            <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
+              <div>
+                <img class="active imagem-carrossel" :src="imagem" />
+              </div>
+            </div>
+          </VueSlickCarousel>
+        </div>
       </div>
 
       <!-- Right Column -->
@@ -58,15 +67,34 @@
 // import alertUtils from '@/utils/AlertUtils';
 import axios from "axios";
 import router from "../router.js";
+import VueSlickCarousel from "vue-slick-carousel";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
 export default {
   name: "Produto",
-  components: {},
+  components: { VueSlickCarousel },
 
   data() {
     return {
       id: this.$route.params.Id,
       produto: [],
+      settings: {
+        dots: true,
+        focusOnSelect: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        touchThreshold: 5,
+      },
+      imagensCarrossel: [
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
+      ],
     };
   },
 
@@ -89,7 +117,25 @@ export default {
 };
 </script>
 
+<style>
+.slick-prev,
+.slick-next {
+  color: black;
+  background: black !important;
+}
+</style>
+
 <style scoped>
+#carrossel {
+  padding-right: 40px;
+}
+
+.imagem-carrossel {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .principal {
   max-width: 1200px;
   margin: 0 auto;
@@ -99,6 +145,7 @@ export default {
 .left-column {
   width: 65%;
   position: relative;
+  margin-top: 60px;
 }
 
 .right-column {
@@ -106,8 +153,8 @@ export default {
   margin-top: 60px;
 }
 .left-column img {
-  width: 100%;
-  position: absolute;
+  width: 50%;
+
   left: 0;
   top: 0;
   opacity: 0;
@@ -116,8 +163,6 @@ export default {
 
 .left-column img.active {
   opacity: 1;
-  width: 700px;
-  height: 450;
 }
 .product-description {
   border-bottom: 1px solid #e1e8ee;
