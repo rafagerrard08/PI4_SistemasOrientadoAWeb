@@ -110,10 +110,10 @@ public class ProdutoController {
 
 		produto = produtoService.postProduto(produto);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
-				.toUri();
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
+//				.toUri();
 
-		return "Produto Criado: " + uri.toString();
+		return produto.getId().toString();
 	}
 
 	/***
@@ -141,7 +141,7 @@ public class ProdutoController {
 
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
 	public String submit(@RequestParam("files") MultipartFile[] files, @PathVariable Integer id) {
-
+		
 		produtoService.saveImg(files, id);
 
 		return "fileUploadView";

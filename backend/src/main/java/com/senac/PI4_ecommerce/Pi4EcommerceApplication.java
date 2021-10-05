@@ -33,6 +33,8 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		Categoria cat4 = new Categoria(null, "Esporte e Lazer");
 		Categoria cat5 = new Categoria(null, "Móveis");
 		Categoria cat6 = new Categoria(null, "Informática");
+		
+		
 
 
 		Produto p1 = new Produto(null, "Micro-ondas 20L CM020", "Electrolux", 42, 678.30,
@@ -47,6 +49,13 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		Produto p4 = new Produto(null, "Lavadora Tecnologia Jet & Clean 13 Kg", "Electrolux", 7, 1456.27,
 				"Não precisa mais lavar suas roupas favoritas à mão para que elas não fiquem com fiapos. A máquina de lavar LAC13 possui um volume de filtragem seis vezes maior do que as outras lavadoras, o que evita que você passe o fim de semana tirando pelos das peças.A tecnologia Jet & Clean te livra de ter que ficar limpando o dispenser após cada ciclo e você ainda fica seguro com a garantia de dez anos do cesto de propileno da sua máquina de lavar Electrolux.",
 				EstadoProduto.ATIVO, cat1, "/produtos/img/3/principal.jpg", 5.0);
+		
+		p1.getImagens().addAll(Arrays.asList("/produtos/img/1/img1.jpg","/produtos/img/1/img2.jpg","/produtos/img/1/img3.jpg"));
+		p2.getImagens().addAll(Arrays.asList("/produtos/img/3/img1.jpg","/produtos/img/3/img2.jpg","/produtos/img/3/img3.jpg"));
+		p3.getImagens().addAll(Arrays.asList("/produtos/img/2/img1.jpg","/produtos/img/2/img2.jpg","/produtos/img/2/img3.jpg"));
+		p4.getImagens().addAll(Arrays.asList("/produtos/img/4/img1.jpg","/produtos/img/4/img2.jpg","/produtos/img/4/img3.jpg"));
+
+
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p4));
 		cat2.getProdutos().add(p2);

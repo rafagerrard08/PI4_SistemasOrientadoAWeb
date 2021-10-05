@@ -72,10 +72,22 @@ public class ProdutoService {
 		Produto produto = this.getProduto(idProduto);
 		
 		SaveFile sf = new SaveFile();
+		Boolean principal = true;
+		Integer count = 1;
 
 		for (MultipartFile arquivo : arquivos) {
-			produto.getImagens().add(sf.salvarImg(arquivo, idProduto));
+			if(principal.equals(true)) {
+				sf.salvarImg(arquivo, idProduto, "principal.jpg");
+				produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
+				principal = false;
+			} else {
+				sf.salvarImg(arquivo, idProduto, "img" + count + ".jpg");
+				produto.getImagens().add("/produtos/img/" + idProduto + "/" + "img" + count + ".jpg");
+				count++;
+			}
 		}
+		
+		
 		produtoRepository.save(produto);
 	}
 }
