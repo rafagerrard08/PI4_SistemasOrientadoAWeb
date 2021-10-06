@@ -4,7 +4,7 @@
       <a href="#!">
         <mdb-card-image
           id="imagemPrincipal"
-          src="https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg"
+          :src="imagemPrincipalProduto"
           alt="Card image cap"
         />
       </a>
@@ -52,10 +52,16 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      imagemPrincipalProduto: null
+    };
   },
 
   props: ["produto"],
+
+  mounted() {
+    this.getImagemPrincipal();
+  },
 
   methods: {
 
@@ -63,8 +69,8 @@ export default {
       router.push({ name: "produto", params: { Id: id } });
     },
 
-    getUrl(){
-      return this.produto.imagens[0];
+    getImagemPrincipal(){
+     this.imagemPrincipalProduto = "http://localhost:8080/" + this.produto.imagemPrincipal;
     }
   },
 };
@@ -72,20 +78,25 @@ export default {
 
 <style>
 #imagemPrincipal img {
-  max-width: 100%;
-  min-height: 100%;
 
   object-fit: cover;
-  margin: 0;
+  margin-top: 5px;
 
-  display: flex;
   align-content: center;
+
+  max-width:250px;
+  max-height:200px;
+  width: auto;
+  height: auto;
 }
 
 #card {
+  max-width:400px;
+  min-height:400px;
+  
   margin: 15px;
   width: 100%;
-  height: 42vh;
+  height: 100%;
 
   border: 2px solid gray;
   border-radius: 5px;

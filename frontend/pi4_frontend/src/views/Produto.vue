@@ -2,21 +2,25 @@
   <div class="container">
     <NavbarComponent />
     <div class="principal">
-
-      <!-- Left Column / Headphones Image -->
       <div class="left-column">
-        <img
-          data-image="red"
-          class="active"
-          src="https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg"
-          alt=""
-        />
+        
 
         <div id="carrossel">
+          <img
+          id="imgProduto"
+          data-image="red"
+          class="active"
+          :src="imagemPrincipalProduto"
+          alt=""
+        />
           <VueSlickCarousel v-bind="settings">
             <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
               <div>
-                <img class="active imagem-carrossel" :src="imagem" />
+                <img
+                  class="active imagem-carrossel"
+                  :src="imagem"
+                  @click="setImagem(imagem)"
+                />
               </div>
             </div>
           </VueSlickCarousel>
@@ -70,31 +74,32 @@ import router from "../router.js";
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
+import NavbarComponent from "../components/NavbarComponent.vue";
 
 export default {
   name: "Produto",
-  components: { VueSlickCarousel },
+  components: { VueSlickCarousel, NavbarComponent },
 
   data() {
     return {
       id: this.$route.params.Id,
-      produto: [],
+      produto: null,
       settings: {
+        arrows: false,
         dots: true,
         focusOnSelect: true,
         infinite: true,
-        speed: 500,
-        slidesToShow: 2,
+        speed: 300,
+        slidesToShow: 3,
         slidesToScroll: 1,
         touchThreshold: 5,
+        swipe: true,
+        
       },
-      imagensCarrossel: [
-        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
-        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
-        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
-        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
-        "https://i.zst.com.br/images/celulares-mais-vendidos-em-janeiro-de-2020-redmi-note-8-segue-na-lideranca-photo1007291553-44-15-2a.jpg",
-      ],
+      imagensCarrossel: [],
+      imagemPrincipalProduto: null,
+      imagensProduto: [],
+      imagem: null,
     };
   },
 
@@ -106,18 +111,43 @@ export default {
     buscarDadosProduto() {
       // alert(this.id)
       axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
-        /*         alert(res.data);
-         */ this.produto = res.data;
+        this.produto = res.data;
+
+        this.imagemPrincipalProduto =
+          "http://localhost:8080/" + this.produto.imagemPrincipal;
+
+        this.imagensCarrossel.push(this.imagemPrincipalProduto);
+        for (var i in this.produto.imagens) {
+          this.imagensCarrossel.push(
+            "http://localhost:8080" + this.produto.imagens[i]
+          );
+        }
+        alert(this.imagensCarrossel);
       });
     },
     Editar() {
       router.push({ name: "cadastro", params: { Id: this.id } });
+    },
+    setImagem(imagem) {
+      document.getElementById("imgProduto").src = imagem;
     },
   },
 };
 </script>
 
 <style>
+#imgProduto {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 60%;
+  min-height: 60%;
+
+  margin: 0 auto;
+  margin-top: 25 auto;
+  padding: 20px;
+  display: flex;
+}
+
 .slick-prev,
 .slick-next {
   color: black;
@@ -127,13 +157,17 @@ export default {
 
 <style scoped>
 #carrossel {
-  padding-right: 40px;
+  align-items: center;
+  
 }
 
 .imagem-carrossel {
   display: block;
   margin-left: auto;
   margin-right: auto;
+
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .principal {
@@ -146,6 +180,20 @@ export default {
   width: 65%;
   position: relative;
   margin-top: 60px;
+
+}
+
+.left-column img {
+  object-fit: cover;
+  margin-top: 5px;
+
+  align-content: center;
+
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  margin-left: 25%;
 }
 
 .right-column {

@@ -83,13 +83,26 @@
 
           <div class="row">
             <div class="col form-group uploadform">
-              <label>Insira as Imagem</label>
-              <input required type="file" @change="onFileSelect" />
-              <button
-                class="btn btn-primary btn-sm"
-                @click="startUpload"
-                name="Upload"
+              <label>Insira as Imagens</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple="multiple"
+                @change="previewMultiImage"
+                class="form-control-file"
+                id="my-file"
               />
+
+              <div v-if="preview_list.length" class="border p-2 mt-3">
+                <template>
+                  <div v-for="(item, index) in preview_list" :key="index">
+                    <img :src="item" class="img-fluid" style="width: 150px; height: 150px"/>
+                    <p class="mb-0">file name: {{ image_list[index].name }}</p>
+                    <p>tamanho: {{ image_list[index].size / 1024 }}KB</p>
+                    <button class="btn btn-primary" @click="reset(index)">remover imagem</button>
+                  </div>
+                </template>
+              </div>
             </div>
           </div>
 
@@ -108,15 +121,9 @@
           </button>
         </div>
       </div>
-      <div>
-          <b-button v-b-modal.modal-1>Launch demo modal</b-button>
-
-          <b-modal id="modal-1" title="BootstrapVue">
-            <p class="my-4">Hello from modal!</p>
-          </b-modal>
-        </div>
     </div>
   </div>
+
   <div class="container" v-else>
     <NavbarComponent />
     <div class="content">
@@ -189,8 +196,8 @@
                 aria-label=".form-select-sm example"
                 :value="produto.categoria"
               >
-                <option v-if="categoria == produto.categoria" selected>{{
-                  categoria.nome
+                <option v-if="categoriaSelecionado == produto.categoria.nome" selected>{{
+                  categoriaSelecionado
                 }}</option>
                 <option
                   v-for="categoria of categorias"
@@ -226,14 +233,26 @@
           </div>
           <div class="row">
             <div class="col form-group uploadform">
-              <label>Insira as Imagem</label>
-              <input required type="file" @change="onFileSelect" />
-              <button
-                type="submit"
-                class="btn btn-primary btn-sm"
-                @click="startUpload"
-                name="Upload"
+              <label>Insira as Imagens</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple="multiple"
+                @change="previewMultiImage"
+                class="form-control-file"
+                id="my-file"
               />
+
+              <div v-if="preview_list.length" class="border p-2 mt-3">
+                <template>
+                  <div v-for="(item, index) in preview_list" :key="index">
+                    <img :src="item" class="img-fluid" style="width: 150px; height: 150px"/>
+                    <p class="mb-0">file name: {{ image_list[index].name }}</p>
+                    <p>tamanho: {{ image_list[index].size / 1024 }}KB</p>
+                    <button class="btn btn-primary" @click="reset(index)">remover imagem</button>
+                  </div>
+                </template>
+              </div>
             </div>
           </div>
 
@@ -249,7 +268,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -271,12 +289,19 @@ export default {
       quantidade: null,
       marca: null,
       categoria: null,
+      categoriaSelecionado: null,
       produto: [],
       categorias: [],
       formData: null,
-
+      preview: null,
+      image: null,
+      preview_list: [],
+      image_list: [],
       selectedFile: null,
       id: this.$route.params.Id,
+      idAtual: null,
+      imagemPrincipalProduto: null,
+      imagensProduto: [],
     };
   },
 
@@ -290,6 +315,22 @@ export default {
   },
 
   methods: {
+    previewMultiImage: function(event) {
+      var input = event.target;
+      var count = input.files.length;
+      var index = 0;
+      if (input.files) {
+        while (count--) {
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            this.preview_list.push(e.target.result);
+          };
+          this.image_list.push(input.files[index]);
+          reader.readAsDataURL(input.files[index]);
+          index++;
+        }
+      }
+    },
     salvar() {
       this.produto.nome = this.nomeProduto;
       this.produto.marca = this.marca;
@@ -299,14 +340,37 @@ export default {
       this.produto.categoria = this.categoria;
       console.log(this.produto);
       //debugger;
-      axios.post("http://localhost:8080/produtos", {
-        nome: this.produto.nome,
-        marca: this.produto.marca,
-        descricao: this.produto.descricao,
-        preco: this.produto.preco,
-        quantidade: this.produto.quantidade,
-        categoriaId: this.produto.categoria,
-      });
+      axios
+        .post("http://localhost:8080/produtos", {
+          nome: this.produto.nome,
+          marca: this.produto.marca,
+          descricao: this.produto.descricao,
+          preco: this.produto.preco,
+          quantidade: this.produto.quantidade,
+          categoriaId: this.produto.categoria,
+        })
+        .then((res) => {
+          this.idAtual = res.data;
+
+          const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+          for (var i = 0; i < this.image_list.length; i++) {
+            const fd = new FormData();
+            fd.append("file", this.image_list[i]);
+            axios
+              .post(
+                "http://localhost:8080/produtos/uploadImages/" + this.idAtual,
+                fd
+              )
+              .then((response) => console.log(response))
+              .catch((errors) => {
+                alert(errors);
+              });
+          }
+        })
+        .catch((errors) => {
+          alert(errors);
+        });
     },
     ListaCategorias() {
       axios.get("http://localhost:8080/categorias").then((res) => {
@@ -322,7 +386,11 @@ export default {
       axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
         /*         alert(res.data);
          */ this.produto = res.data;
+         this.categoriaSelecionado = this.produto.categoria.nome
+                  alert(this.categoriaSelecionado);
+
         this.ListaCategorias();
+        this.loadImages();
       });
     },
     onFileSelect(event) {
@@ -331,7 +399,7 @@ export default {
 
     startUpload() {
       const fd = new FormData();
-      fd.append("files", this.selectedFile, this.selectedFile.name);
+      fd.append("file", this.selectedFile, this.selectedFile.name);
       axios
         .post("http://localhost:8080/produtos/uploadImages/1", fd)
         .then((res) => {
@@ -339,8 +407,7 @@ export default {
         });
     },
     Alterar() {
-      /*       alert(JSON.stringify(this.produto))
-       */ axios
+      axios
         .put("http://localhost:8080/produtos/" + this.id, {
           nome: this.produto.nome,
           marca: this.produto.marca,
@@ -355,12 +422,49 @@ export default {
           },
         })
         .then(() => {
-          alert("Produto alterado com sucesso!!");
+          const config = { headers: { "Content-Type": "multipart/form-data" } };
+          axios.delete("http://localhost:8080/produtos/resetImages/" + this.id);
+
+
+          for (var i = 0; i < this.image_list.length; i++) {
+                      alert(this.image_list[0]);
+            const fd = new FormData();
+            fd.append("file", this.image_list[i]);
+            axios
+              .post(
+                "http://localhost:8080/produtos/uploadImages/" + this.id,
+                fd
+              )
+              .then((response) => console.log(response))
+              .catch((errors) => {
+                alert(errors);
+              });
+          }
         })
         .catch(() => {
           alert("Não foi possível alterar este produto, tente novamente!!");
         });
     },
+    reset(index) {
+      this.image_list.splice(index, 1);
+      this.preview_list.splice(index, 1);
+    },
+
+    loadImages () {
+      this.imagemPrincipalProduto =
+          "http://localhost:8080/" + this.produto.imagemPrincipal;
+
+        this.image_list.push(this.imagemPrincipalProduto);
+        this.preview_list.push(this.imagemPrincipalProduto);
+        for (var i in this.produto.imagens) {
+          this.image_list.push(
+            "http://localhost:8080" + this.produto.imagens[i]
+          );
+          this.preview_list.push(
+            "http://localhost:8080" + this.produto.imagens[i]
+          );
+        }
+    }
   },
 };
 </script>
