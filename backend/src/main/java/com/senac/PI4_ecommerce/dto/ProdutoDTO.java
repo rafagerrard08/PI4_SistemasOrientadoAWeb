@@ -34,7 +34,6 @@ public class ProdutoDTO implements Serializable {
 	@NotNull(message = "CategoriaId nao pode estar vazio")
 	private Integer categoriaId;
 	
-	@NotNull(message = "Produto deve ter ao menos uma imagem")
 	private String imagemPrincipal;
 
 

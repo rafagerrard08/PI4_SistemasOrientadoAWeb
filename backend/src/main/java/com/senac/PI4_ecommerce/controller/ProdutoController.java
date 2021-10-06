@@ -1,12 +1,13 @@
 package com.senac.PI4_ecommerce.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
@@ -37,6 +37,12 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	@Value("${ecommerce.dir.raiz}")
+	String raiz = null;
+
+	@Value("${ecommerce.dir.diretorio-imagens}")
+	String dirImagens = null;
 	
     @RequestMapping(value = "/imagens/{nomeImagem}", method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
@@ -102,7 +108,7 @@ public class ProdutoController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
+	public ResponseEntity<?> postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
 
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
 		Produto produto = Converts.toProduto(produtoDTO);
@@ -110,10 +116,10 @@ public class ProdutoController {
 
 		produto = produtoService.postProduto(produto);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
-				.toUri();
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
+//				.toUri();
 
-		return "Produto Criado: " + uri.toString();
+		return ResponseEntity.ok().body(produto.getId().toString());
 	}
 
 	/***
@@ -140,17 +146,31 @@ public class ProdutoController {
 	}
 
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
-	public String submit(@RequestParam("files") MultipartFile[] files, @PathVariable Integer id) {
-
-		produtoService.saveImg(files, id);
+	public String submit(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
+		System.out.println(id);
+		
+		produtoService.saveImg(file, id);
 
 		return "fileUploadView";
 	}
+	
+	@RequestMapping(value = "/resetImages/{id}", method = RequestMethod.DELETE)
+	public void resetImages(@PathVariable Integer id) {
+		File folder = new File(this.raiz + this.dirImagens + id);
+		if (folder.isDirectory()) {
+			File[] sun = folder.listFiles();
+			for (File toDelete : sun) {
+				toDelete.delete();
+			}
+		}
+	}
+	
 
 	@RequestMapping(value = "/img/{id}/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
 			throws IOException {
 		ClassPathResource imgFile = null;
+		
 		
 		try {
 			imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);
