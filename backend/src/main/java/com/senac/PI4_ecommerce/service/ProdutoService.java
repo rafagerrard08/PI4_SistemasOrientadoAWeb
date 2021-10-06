@@ -1,8 +1,10 @@
 package com.senac.PI4_ecommerce.service;
 
+import java.io.File;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,6 +21,12 @@ public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Value("${ecommerce.dir.raiz}")
+	String raiz = null;
+
+	@Value("${ecommerce.dir.diretorio-imagens}")
+	String dirImagens = null;
 
 	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
 			String direcao, EstadoProduto estado) {
@@ -68,26 +76,21 @@ public class ProdutoService {
 		return produtoAtual;
 	}
 
-	public void saveImg(MultipartFile[] arquivos, Integer idProduto) {
+	public void saveImg(MultipartFile arquivo, Integer idProduto) {
 		Produto produto = this.getProduto(idProduto);
 		
 		SaveFile sf = new SaveFile();
-		Boolean principal = true;
-		Integer count = 1;
 
-		for (MultipartFile arquivo : arquivos) {
-			if(principal.equals(true)) {
-				sf.salvarImg(arquivo, idProduto, "principal.jpg");
-				produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
-				principal = false;
-			} else {
-				sf.salvarImg(arquivo, idProduto, "img" + count + ".jpg");
-				produto.getImagens().add("/produtos/img/" + idProduto + "/" + "img" + count + ".jpg");
-				count++;
-			}
+		File diretorio = new File(this.raiz + this.dirImagens + idProduto + "/principal.jpg");
+		
+		if(!diretorio.exists()) {
+			sf.salvarImg(arquivo, idProduto, "principal.jpg");
+			produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
+		} else {
+			sf.salvarImg(arquivo, idProduto, arquivo.getOriginalFilename());
+			produto.getImagens().add("/produtos/img/" + idProduto + arquivo.getOriginalFilename());
 		}
-		
-		
+
 		produtoRepository.save(produto);
 	}
 }
