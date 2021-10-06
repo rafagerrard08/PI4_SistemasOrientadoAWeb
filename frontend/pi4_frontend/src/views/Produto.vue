@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+<<<<<<< Updated upstream
     <router-link to="/home">Listagem</router-link>
   
     
@@ -17,6 +18,32 @@
         <div>
           <span>{{produto.categoria.nome}}</span>
           <button class="btn btn-primary" @click="Editar()">Editar</button>
+=======
+    <NavbarComponent />
+    <div class="principal">
+      <div class="left-column">
+        
+
+        <div id="carrossel">
+          <img
+          id="imgProduto"
+          data-image="red"
+          class="active"
+          :src="imagemPrincipalProduto"
+          alt=""
+        />
+          <VueSlickCarousel v-bind="settings">
+            <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
+              <div>
+                <img
+                  class="active imagem-carrossel"
+                  :src="imagem"
+                  @click="setImagem(imagem)"
+                />
+              </div>
+            </div>
+          </VueSlickCarousel>
+>>>>>>> Stashed changes
         </div>
         <h1>{{produto.nome}}</h1>
         <h3>Marca: {{produto.marca}}</h3>
@@ -51,16 +78,48 @@
 // import DownloadService from '@/services/downloadService';
 // import alertUtils from '@/utils/AlertUtils';
 import axios from "axios";
+<<<<<<< Updated upstream
 import router from '../router.js';
 
 export default {
   name: "Produto",
   components: {},
+=======
+import router from "../router.js";
+import VueSlickCarousel from "vue-slick-carousel";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
+import NavbarComponent from "../components/NavbarComponent.vue";
+
+export default {
+  name: "Produto",
+  components: { VueSlickCarousel, NavbarComponent },
+>>>>>>> Stashed changes
 
   data() {
     return {
       id: this.$route.params.Id,
+<<<<<<< Updated upstream
       produto: [],
+=======
+      produto: null,
+      settings: {
+        arrows: false,
+        dots: true,
+        focusOnSelect: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        touchThreshold: 5,
+        swipe: true,
+        
+      },
+      imagensCarrossel: [],
+      imagemPrincipalProduto: null,
+      imagensProduto: [],
+      imagem: null,
+>>>>>>> Stashed changes
     };
   },
 
@@ -72,6 +131,7 @@ export default {
     buscarDadosProduto() {
       // alert(this.id)
       axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
+<<<<<<< Updated upstream
 /*         alert(res.data);
  */        this.produto = res.data;
       });
@@ -79,12 +139,73 @@ export default {
     Editar(){
       router.push({ name: 'cadastro', params: { Id: this.id } })
     }
+=======
+        this.produto = res.data;
+
+        this.imagemPrincipalProduto =
+          "http://localhost:8080/" + this.produto.imagemPrincipal;
+
+        this.imagensCarrossel.push(this.imagemPrincipalProduto);
+        for (var i in this.produto.imagens) {
+          this.imagensCarrossel.push(
+            "http://localhost:8080" + this.produto.imagens[i]
+          );
+        }
+        alert(this.imagensCarrossel);
+      });
+    },
+    Editar() {
+      router.push({ name: "cadastro", params: { Id: this.id } });
+    },
+    setImagem(imagem) {
+      document.getElementById("imgProduto").src = imagem;
+    },
+>>>>>>> Stashed changes
   },
 };
 </script>
 
+<<<<<<< Updated upstream
 <style scoped>
 .container {
+=======
+<style>
+#imgProduto {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 60%;
+  min-height: 60%;
+
+  margin: 0 auto;
+  margin-top: 25 auto;
+  padding: 20px;
+  display: flex;
+}
+
+.slick-prev,
+.slick-next {
+  color: black;
+  background: black !important;
+}
+</style>
+
+<style scoped>
+#carrossel {
+  align-items: center;
+  
+}
+
+.imagem-carrossel {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.principal {
+>>>>>>> Stashed changes
   max-width: 1200px;
   margin: 0 auto;
   padding: 15px;
@@ -93,6 +214,24 @@ export default {
 .left-column {
   width: 65%;
   position: relative;
+<<<<<<< Updated upstream
+=======
+  margin-top: 60px;
+
+}
+
+.left-column img {
+  object-fit: cover;
+  margin-top: 5px;
+
+  align-content: center;
+
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  margin-left: 25%;
+>>>>>>> Stashed changes
 }
  
 .right-column {
