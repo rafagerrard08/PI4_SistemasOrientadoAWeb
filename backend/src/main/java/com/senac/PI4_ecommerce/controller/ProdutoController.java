@@ -102,7 +102,7 @@ public class ProdutoController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
+	public ResponseEntity<?> postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
 
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
 		Produto produto = Converts.toProduto(produtoDTO);
@@ -113,7 +113,7 @@ public class ProdutoController {
 //		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
 //				.toUri();
 
-		return produto.getId().toString();
+		return ResponseEntity.ok().body(produto.getId().toString());
 	}
 
 	/***
@@ -141,6 +141,8 @@ public class ProdutoController {
 
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
 	public String submit(@RequestParam("files") MultipartFile[] files, @PathVariable Integer id) {
+		System.out.println(id);
+
 		
 		produtoService.saveImg(files, id);
 
@@ -151,6 +153,7 @@ public class ProdutoController {
 	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
 			throws IOException {
 		ClassPathResource imgFile = null;
+		
 		
 		try {
 			imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);

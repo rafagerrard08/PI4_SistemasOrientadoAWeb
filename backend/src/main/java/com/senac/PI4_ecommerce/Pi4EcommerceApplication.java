@@ -26,6 +26,7 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		/*
 
 		Categoria cat1 = new Categoria(null, "Eletrodomésticos");
 		Categoria cat2 = new Categoria(null, "Celulares e Smartphones");
@@ -45,14 +46,14 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 				EstadoProduto.ATIVO, cat2, "/produtos/img/2/principal.jpg", 4.5);
 		Produto p3 = new Produto(null, "Smart TV LED PRO 32'' HD", "LG", 73, 1431.27,
 				"Experimente o melhor da tecnologia com a Smart PRO 32 polegadas HD da LG, oferece tela de LED e resolução HD de 1366x768 pixels obtendo uma incrível experiência de imagem, possui três entradas HDMI e duas USB, proporcionando mais possibilidades de conexão. Acompanha compatibilidade com o sistema de Inteligência Artificial ThinQ Al, conta com Bluetooth, sistema operacional webOS 4.5, Music Player, LG Content Store, Modo Hotel, painel de controle, galeria, conteúdos VR 360, miracast overlay, HDR e potência de som de 10W. Acesse aos aplicativos Netflix e Youtube, graças a conexão Smart, navegue na internet conectando-se diretamente a rede Wi-Fi. Além disso, seu design arrojado e diversos modos predefinidos de imagem fazem da Smart 32LM621CBSB.AWZ uma TV elegante e eficiente.",
-				EstadoProduto.ATIVO, cat3, "/produtos/img/4/principal.jpg", 3.5);
+				EstadoProduto.ATIVO, cat3, "/produtos/img/3/principal.jpg", 3.5);
 		Produto p4 = new Produto(null, "Lavadora Tecnologia Jet & Clean 13 Kg", "Electrolux", 7, 1456.27,
 				"Não precisa mais lavar suas roupas favoritas à mão para que elas não fiquem com fiapos. A máquina de lavar LAC13 possui um volume de filtragem seis vezes maior do que as outras lavadoras, o que evita que você passe o fim de semana tirando pelos das peças.A tecnologia Jet & Clean te livra de ter que ficar limpando o dispenser após cada ciclo e você ainda fica seguro com a garantia de dez anos do cesto de propileno da sua máquina de lavar Electrolux.",
-				EstadoProduto.ATIVO, cat1, "/produtos/img/3/principal.jpg", 5.0);
+				EstadoProduto.ATIVO, cat1, "/produtos/img/4/principal.jpg", 5.0);
 		
 		p1.getImagens().addAll(Arrays.asList("/produtos/img/1/img1.jpg","/produtos/img/1/img2.jpg","/produtos/img/1/img3.jpg"));
-		p2.getImagens().addAll(Arrays.asList("/produtos/img/3/img1.jpg","/produtos/img/3/img2.jpg","/produtos/img/3/img3.jpg"));
-		p3.getImagens().addAll(Arrays.asList("/produtos/img/2/img1.jpg","/produtos/img/2/img2.jpg","/produtos/img/2/img3.jpg"));
+		p2.getImagens().addAll(Arrays.asList("/produtos/img/2/img1.jpg","/produtos/img/2/img2.jpg","/produtos/img/2/img3.jpg"));
+		p3.getImagens().addAll(Arrays.asList("/produtos/img/3/img1.jpg","/produtos/img/3/img2.jpg","/produtos/img/3/img3.jpg"));
 		p4.getImagens().addAll(Arrays.asList("/produtos/img/4/img1.jpg","/produtos/img/4/img2.jpg","/produtos/img/4/img3.jpg"));
 
 
@@ -64,6 +65,7 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4));
+		*/
 
 	}
 
