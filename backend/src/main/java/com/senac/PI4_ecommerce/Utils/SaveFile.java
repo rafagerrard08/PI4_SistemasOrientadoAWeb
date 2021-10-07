@@ -12,10 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class SaveFile {
 
 //	@Value("${ecommerce.dir.raiz}")
-	private String raiz = "/Users/victor/git/PI4_SistemasOrientadoAWeb/backend";
+	private String raiz = "/Users/victor/git/PI4_SistemasOrientadoAWeb";
 	
 //	@Value("${ecommerce.dir.diretorio-imagens}")
-	private String diretorioFotos = "/src/main/resources/imagens/";
+	private String diretorioFotos = "/backend/src/main/resources/imagens/";
 	
 	public String salvarImg(MultipartFile foto, Integer idProduto, String nomeArquivo) {
 		String diretorio = this.diretorioFotos + idProduto;

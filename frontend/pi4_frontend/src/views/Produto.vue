@@ -114,7 +114,7 @@ export default {
         this.produto = res.data;
 
         this.imagemPrincipalProduto =
-          "http://localhost:8080/" + this.produto.imagemPrincipal;
+          "http://localhost:8080" + this.produto.imagemPrincipal;
 
         this.imagensCarrossel.push(this.imagemPrincipalProduto);
         for (var i in this.produto.imagens) {
@@ -122,7 +122,6 @@ export default {
             "http://localhost:8080" + this.produto.imagens[i]
           );
         }
-        alert(this.imagensCarrossel);
       });
     },
     Editar() {

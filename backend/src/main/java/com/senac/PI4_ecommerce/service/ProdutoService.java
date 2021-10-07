@@ -88,7 +88,7 @@ public class ProdutoService {
 			produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
 		} else {
 			sf.salvarImg(arquivo, idProduto, arquivo.getOriginalFilename());
-			produto.getImagens().add("/produtos/img/" + idProduto + arquivo.getOriginalFilename());
+			produto.getImagens().add("/produtos/img/" + idProduto + "/" + arquivo.getOriginalFilename());
 		}
 
 		produtoRepository.save(produto);

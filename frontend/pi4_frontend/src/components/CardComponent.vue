@@ -70,7 +70,7 @@ export default {
     },
 
     getImagemPrincipal(){
-     this.imagemPrincipalProduto = "http://localhost:8080/" + this.produto.imagemPrincipal;
+     this.imagemPrincipalProduto = "http://localhost:8080" + this.produto.imagemPrincipal;
     }
   },
 };

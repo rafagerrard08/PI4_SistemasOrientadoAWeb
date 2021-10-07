@@ -36,7 +36,7 @@ CREATE TABLE `demais_imagens` (
 
 LOCK TABLES `demais_imagens` WRITE;
 /*!40000 ALTER TABLE `demais_imagens` DISABLE KEYS */;
-INSERT INTO `demais_imagens` VALUES (1,'/produtos/img/1/img2.jpg'),(1,'/produtos/img/1/img3.jpg'),(1,'/produtos/img/1/img1.jpg'),(2,'/produtos/img/2/img3.jpg'),(2,'/produtos/img/2/img1.jpg'),(2,'/produtos/img/2/img2.jpg'),(3,'/produtos/img/3/img2.jpg'),(3,'/produtos/img/3/img1.jpg'),(3,'/produtos/img/3/img3.jpg'),(4,'/produtos/img/4/img1.jpg'),(4,'/produtos/img/4/img3.jpg'),(4,'/produtos/img/4/img2.jpg');
+INSERT INTO `demais_imagens` VALUES (1,'/produtos/img/1/img2.jpg'),(1,'/produtos/img/1/img3.jpg'),(1,'/produtos/img/1/img1.jpg'),(2,'/produtos/img/2/img3.jpg'),(2,'/produtos/img/2/img1.jpg'),(2,'/produtos/img/2/img2.jpg'),(3,'/produtos/img/3/img2.jpg'),(3,'/produtos/img/3/img1.jpg'),(3,'/produtos/img/3/img3.jpg'),(4,'/produtos/img/4/img1.jpg'),(4,'/produtos/img/4/img3.jpg'),(4,'/produtos/img/4/img2.jpg'),(5,'/produtos/img/5/img1.jpg'),(5,'/produtos/img/5/img2.jpg'),(6,'/produtos/img/6/img1.jpg'),(6,'/produtos/img/6/img2.jpg');
 /*!40000 ALTER TABLE `demais_imagens` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
