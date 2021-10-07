@@ -14,5 +14,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
 	@Query("SELECT DISTINCT p FROM Produto AS p WHERE p.nome LIKE %:nome% AND p.estado LIKE :estado")
 	public Page<Produto> search(@Param("nome") String nome, Pageable pageRequest, @Param("estado") Integer estado);
+	
+	@Query("SELECT DISTINCT p FROM Produto AS p WHERE p.nome LIKE %:nome%")
+	public Page<Produto> searchAll(@Param("nome") String nome, Pageable pageRequest);
 
 }

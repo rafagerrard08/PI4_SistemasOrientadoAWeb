@@ -29,14 +29,25 @@ public class ProdutoService {
 	String dirImagens = null;
 
 	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
-			String direcao, EstadoProduto estado) {
+			String direcao, String estado) {
+		System.out.println("Iniciou Service");
+
 		if (pagina < 0) {
 			// Implementar erro
 		}
+		
 		PageRequest pr = PageRequest.of(pagina, itensPorPagina, Direction.valueOf(direcao), ordenarPor);
-		System.out.println(estado.getId());
+		Page<Produto> produtos = null;
 
-		return produtoRepository.search(nome, pr, estado.getId());
+		if (estado.equals("ativo")) {
+			produtos = produtoRepository.search(nome, pr, EstadoProduto.ATIVO.getId());
+		} else if (estado.equals("inativo")) {
+			produtos = produtoRepository.search(nome, pr, EstadoProduto.INATIVO.getId());
+		} else {
+			produtos = produtoRepository.searchAll(nome, pr);
+		}
+		
+		return produtos;
 	}
 
 	public Produto getProduto(Integer id) {

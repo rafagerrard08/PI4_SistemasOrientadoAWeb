@@ -68,18 +68,12 @@ public class ProdutoController {
 			@RequestParam(value = "itensPorPagina", defaultValue = "9") Integer itensPorPagina,
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
 			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
-			@RequestParam(value = "estado", defaultValue = "ativo") String status) {
+			@RequestParam(value = "estado", defaultValue = "ativo") String estado) {
+		System.out.println("Iniciou Controller");
+
 
 		String nomeDecode = Util.decodeParam(nome);
-		EstadoProduto estado = null;
-		if (status.equals("ativo")) {
-			estado = EstadoProduto.ATIVO;
-		} else if (status.equals("inativo")) {
-			estado = EstadoProduto.INATIVO;
-			System.out.println("caiu no inativo");
-		}
-		System.out.println(estado.getId());
-
+		
 		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao,
 				estado);
 
