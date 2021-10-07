@@ -15,6 +15,7 @@ import com.senac.PI4_ecommerce.Utils.SaveFile;
 import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.repository.ProdutoRepository;
+import com.senac.PI4_ecommerce.service.exception.ObjectNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -35,7 +36,7 @@ public class ProdutoService {
 		if (pagina < 0) {
 			// Implementar erro
 		}
-		
+
 		PageRequest pr = PageRequest.of(pagina, itensPorPagina, Direction.valueOf(direcao), ordenarPor);
 		Page<Produto> produtos = null;
 
@@ -46,7 +47,7 @@ public class ProdutoService {
 		} else {
 			produtos = produtoRepository.searchAll(nome, pr);
 		}
-		
+
 		return produtos;
 	}
 
@@ -57,7 +58,7 @@ public class ProdutoService {
 			return produto.get();
 		}
 		// Implementar erro
-		return produto.get();
+		return produto.orElseThrow(() -> new ObjectNotFoundException("Produto não encontrado na base de dados! ID: " + id + " Tipo: " + Produto.class.getName()));
 	}
 
 	public Produto postProduto(Produto produto) {
@@ -89,12 +90,12 @@ public class ProdutoService {
 
 	public void saveImg(MultipartFile arquivo, Integer idProduto) {
 		Produto produto = this.getProduto(idProduto);
-		
+
 		SaveFile sf = new SaveFile();
 
 		File diretorio = new File(this.raiz + this.dirImagens + idProduto + "/principal.jpg");
-		
-		if(!diretorio.exists()) {
+
+		if (!diretorio.exists()) {
 			sf.salvarImg(arquivo, idProduto, "principal.jpg");
 			produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
 		} else {

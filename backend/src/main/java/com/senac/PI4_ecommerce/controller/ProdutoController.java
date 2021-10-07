@@ -55,10 +55,7 @@ public class ProdutoController {
     }
 
 	/***
-	 * Listar os produtos armazenados Por padrao em ordem decrescente de id (Produto
-	 * mais novo primeiro) Pode receber parametro com "DESC"(padrao) ou "ASC" na
-	 * requisicao para alterar a ordem e o estado de produto que, por padrao é
-	 * ativo, mas pode ser tambem inativo ou todos
+	 * Listar os produtos armazenados
 	 * 
 	 * @return
 	 */
