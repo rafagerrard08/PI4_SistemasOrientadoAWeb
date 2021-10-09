@@ -350,7 +350,7 @@ export default {
           categoriaId: this.produto.categoria,
         })
         .then((res) => {
-          this.idAtual = res.data;
+          this.produto = res.data;
 
           const config = { headers: { "Content-Type": "multipart/form-data" } };
 
@@ -359,7 +359,7 @@ export default {
             fd.append("file", this.image_list[i]);
             axios
               .post(
-                "http://localhost:8080/produtos/uploadImages/" + this.idAtual,
+                "http://localhost:8080/produtos/uploadImages/" + this.produto.id,
                 fd
               )
               .then((response) => console.log(response))

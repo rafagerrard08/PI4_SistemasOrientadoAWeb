@@ -25,7 +25,6 @@ import com.senac.PI4_ecommerce.Utils.Converts;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Produto;
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.service.CategoriaService;
 import com.senac.PI4_ecommerce.service.ProdutoService;
 
@@ -37,28 +36,13 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 	@Autowired
 	private CategoriaService categoriaService;
-	
+
 	@Value("${ecommerce.dir.raiz}")
 	String raiz = null;
 
 	@Value("${ecommerce.dir.diretorio-imagens}")
 	String dirImagens = null;
-	
-    @RequestMapping(value = "/imagens/{nomeImagem}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
-    public void getImage(@PathVariable("nomeImagem") String nomeImagem, HttpServletResponse response) throws IOException {
 
-        var imgFile = new ClassPathResource("images/"+nomeImagem);
-
-        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
-    }
-
-	/***
-	 * Listar os produtos armazenados
-	 * 
-	 * @return
-	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Page<Produto>> getProdutosPage(@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
@@ -66,23 +50,16 @@ public class ProdutoController {
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
 			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
 			@RequestParam(value = "estado", defaultValue = "ativo") String estado) {
-		System.out.println("Iniciou Controller");
-
 
 		String nomeDecode = Util.decodeParam(nome);
-		
+
 		Page<Produto> produtos = produtoService.searchProdutos(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao,
 				estado);
 
 		return ResponseEntity.ok().body(produtos);
 	}
 
-	/***
-	 * Consultar produto como detalhe
-	 * 
-	 * @param id
-	 * @return
-	 */
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> getProduto(@PathVariable Integer id) {
 		Produto produto = produtoService.getProduto(id);
@@ -92,25 +69,19 @@ public class ProdutoController {
 		return ResponseEntity.ok().body(produtoDTO);
 	}
 
-	/***
-	 * Incluir um produto e suas imagens
-	 * 
-	 * @param produtoDTO
-	 * @return
-	 */
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> postProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
+	public ResponseEntity<?> postProdutoData(@RequestBody @Valid ProdutoDTO produtoDTO) {
 
 		produtoDTO.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
+		
 		Produto produto = Converts.toProduto(produtoDTO);
+		
 		produto.setCategoria(categoriaService.getCategoria(produtoDTO.getCategoriaId()));
-
 		produto = produtoService.postProduto(produto);
 
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(produto.getId())
-//				.toUri();
 
-		return ResponseEntity.ok().body(produto.getId().toString());
+		return ResponseEntity.ok().body(produto);
 	}
 
 	/***
@@ -139,12 +110,12 @@ public class ProdutoController {
 	@RequestMapping(value = "/uploadImages/{id}", method = RequestMethod.POST)
 	public String submit(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
 		System.out.println(id);
-		
+
 		produtoService.saveImg(file, id);
 
 		return "fileUploadView";
 	}
-	
+
 	@RequestMapping(value = "/resetImages/{id}", method = RequestMethod.DELETE)
 	public void resetImages(@PathVariable Integer id) {
 		File folder = new File(this.raiz + this.dirImagens + id);
@@ -155,20 +126,27 @@ public class ProdutoController {
 			}
 		}
 	}
-	
 
 	@RequestMapping(value = "/img/{id}/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id, HttpServletResponse response)
-			throws IOException {
+	public void getImage(@PathVariable("nomeImagem") String nomeImagem, @PathVariable("id") String id,
+			HttpServletResponse response) throws IOException {
 		ClassPathResource imgFile = null;
-		
-		
+
 		try {
 			imgFile = new ClassPathResource("/imagens/" + id + "/" + nomeImagem);
 		} catch (Exception e) {
 			imgFile = new ClassPathResource("imagens/" + id + "/" + nomeImagem);
 		}
 
+		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/imagens/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public void getImage(@PathVariable("nomeImagem") String nomeImagem, HttpServletResponse response)
+			throws IOException {
+
+		var imgFile = new ClassPathResource("images/" + nomeImagem);
 
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
