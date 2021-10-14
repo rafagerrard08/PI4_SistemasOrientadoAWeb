@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
@@ -18,6 +19,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	@Email
 	private String email;
 	private String senha;
 	private Integer tipoUsuario; // Administrador ou Estoquista

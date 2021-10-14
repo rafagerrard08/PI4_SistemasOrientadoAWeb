@@ -2,6 +2,8 @@ package com.senac.PI4_ecommerce.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+
 import com.senac.PI4_ecommerce.model.Usuario;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
 
@@ -10,6 +12,7 @@ public class UsuarioDTO implements Serializable {
 
 	private Integer id;
 	private String nome;
+	@Email
 	private String email;
 	private Integer tipoUsuario; // Administrador ou Estoquista
 
