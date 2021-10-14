@@ -58,9 +58,12 @@ export default {
     validarLogin(){
       axios.get("http://localhost:8080/usuarios/validarLogin?email=" + this.email + "&senha=" + this.senha).then((res) => {
         this.valido = res.data;
-        alert(this.evalidorro)
+        this.$router.push('/Home') 
       })
-      .catch(this.valido = false);
+      .catch(() => {
+        this.valido = false;
+      });
+      alert(this.valido);
     },
   },
 };
