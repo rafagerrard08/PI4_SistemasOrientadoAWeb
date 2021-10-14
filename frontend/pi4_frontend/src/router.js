@@ -60,5 +60,14 @@ export default new Router({
                 descricao: "Tela de produto"
             }
         },
+        {
+            path: '/login',
+            name: 'login',
+            component: () =>
+                import ( /* webpackChunkName: "login" */ './views/Login'),
+            meta: {
+                descricao: "Tela de Login"
+            }
+        },
     ]
 })
