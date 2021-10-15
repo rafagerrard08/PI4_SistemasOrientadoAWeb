@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
 
@@ -21,6 +23,8 @@ public class Usuario implements Serializable {
 	private String nome;
 	@Email
 	private String email;
+	@CPF
+	private String cpf;
 	private String senha;
 	private Integer tipoUsuario; // Administrador ou Estoquista
 
@@ -28,17 +32,19 @@ public class Usuario implements Serializable {
 		this.id = usuario.getId();
 		this.nome = usuario.getNome();
 		this.email = usuario.getEmail();
+		this.cpf = usuario.getCpf();
 		this.tipoUsuario = usuario.getTipoUsuario().getId();
 	}
 
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String email, String senha, Integer tipoUsuario) {
+	public Usuario(Integer id, String nome, String email, String cpf, String senha, Integer tipoUsuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.cpf = cpf;
 		this.senha = senha;
 		this.tipoUsuario = tipoUsuario;
 	}
@@ -65,6 +71,14 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 	
 	public String getSenha() {
