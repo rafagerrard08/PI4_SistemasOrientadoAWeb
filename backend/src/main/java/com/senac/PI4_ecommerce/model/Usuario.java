@@ -11,6 +11,7 @@ import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
+import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
 
 @Entity
@@ -27,6 +28,7 @@ public class Usuario implements Serializable {
 	private String cpf;
 	private String senha;
 	private Integer tipoUsuario; // Administrador ou Estoquista
+	private Integer estadoUsuario;
 
 	public Usuario(UsuarioDTO usuario) {
 		this.id = usuario.getId();
@@ -34,12 +36,13 @@ public class Usuario implements Serializable {
 		this.email = usuario.getEmail();
 		this.cpf = usuario.getCpf();
 		this.tipoUsuario = usuario.getTipoUsuario().getId();
+		this.estadoUsuario = usuario.getEstadoUsuario().getId();
 	}
 
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String email, String cpf, String senha, Integer tipoUsuario) {
+	public Usuario(Integer id, String nome, String email, String cpf, String senha, Integer tipoUsuario, Integer estadoUsuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -47,6 +50,7 @@ public class Usuario implements Serializable {
 		this.cpf = cpf;
 		this.senha = senha;
 		this.tipoUsuario = tipoUsuario;
+		this.estadoUsuario = estadoUsuario;
 	}
 
 	public Integer getId() {
@@ -95,6 +99,14 @@ public class Usuario implements Serializable {
 
 	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario.getId();
+	}
+	
+	public EstadoUsuario getEstadoUsuario() {
+		return EstadoUsuario.toEnum(estadoUsuario);
+	}
+
+	public void setEstadoUsuario(EstadoUsuario estadoUsuario) {
+		this.estadoUsuario = estadoUsuario.getId();
 	}
 
 }
