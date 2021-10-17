@@ -28,6 +28,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -87,6 +90,19 @@ public class UsuarioController {
 		EstadoUsuario novoEstado = EstadoUsuario.valueOf(map.get("estado"));
 		usuario.setEstadoUsuario(novoEstado);
 		return ResponseEntity.ok(usuarioService.update(usuario));
+	}
+	
+	@PutMapping("/{id}/estado")
+	public ResponseEntity<Usuario> updateEstado(@PathVariable("id") Integer id, @RequestBody Map<String, String> map) {
+		
+		
+		Usuario usuario = usuarioRepository.findById(id)
+						.orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+		
+		
+		EstadoUsuario novoEstado = EstadoUsuario.valueOf(map.get("estado"));
+		usuario.setEstadoUsuario(novoEstado);
+		return ResponseEntity.ok(usuarioService.save(usuario));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/validarLogin")
