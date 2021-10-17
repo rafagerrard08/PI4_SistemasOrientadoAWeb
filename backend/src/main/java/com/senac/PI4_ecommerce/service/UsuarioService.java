@@ -15,6 +15,8 @@ import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.Usuario;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
+import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
+import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
 
 @Service
 public class UsuarioService {
@@ -45,8 +47,36 @@ public class UsuarioService {
 	}
 
 	public Usuario save(Usuario usuario) {
-		Usuario usuarioSalvo = usuarioRepository.save(usuario);
-		return usuarioSalvo;
+		Optional<Usuario> verificaExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+		if ((verificaExistente.isEmpty())) {
+			Usuario usuarioSalvo = usuarioRepository.save(usuario);
+			return usuarioSalvo;
+		} else {
+			throw new ObjectAlreadyExistsException(
+					"Ja existe uma conta com e-mail [ " + usuario.getEmail() + " ] cadastrado!");
+		}
+	}
+
+	public Usuario update(Usuario usuario) {
+		Optional<Usuario> usuarioAtual = usuarioRepository.findById(usuario.getId());
+
+		System.out.println(usuarioAtual.get().getEmail());
+		System.out.println(usuario.getEmail());
+
+		if (usuarioAtual.get().getEmail().equals(usuario.getEmail())) {
+
+			if (!usuarioAtual.isEmpty()) {
+				
+				Usuario usuarioSalvo = usuarioRepository.save(usuario);
+				return usuarioSalvo;
+				
+			} else
+				throw new ObjectAlreadyExistsException(
+						"Ja existe uma conta com e-mail [ " + usuario.getEmail() + " ] cadastrado!");
+		} else
+			throw new InvalidDataException("O e-mail informado nao pode ser diferente do email cadastrado.");
+
 	}
 
 	public ResponseEntity<Boolean> validarLogin(String email, String senha) {
@@ -57,10 +87,9 @@ public class UsuarioService {
 		}
 
 		boolean valido = encoder.matches(senha, usuario.get().getSenha());
-		
-		HttpStatus status = (valido) ? HttpStatus.OK :HttpStatus.UNAUTHORIZED;
+
+		HttpStatus status = (valido) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 
 		return ResponseEntity.status(status).body(valido);
 	}
-
 }

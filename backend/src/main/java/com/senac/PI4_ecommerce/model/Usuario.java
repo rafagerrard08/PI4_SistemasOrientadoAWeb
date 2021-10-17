@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
@@ -24,7 +22,7 @@ public class Usuario implements Serializable {
 	private String nome;
 	@Email
 	private String email;
-	@CPF
+	//@CPF
 	private String cpf;
 	private String senha;
 	private Integer tipoUsuario; // Administrador ou Estoquista
