@@ -69,5 +69,24 @@ export default new Router({
                 descricao: "Tela de Login"
             }
         },
+
+        {
+            path: '/usuarios',
+            name: 'usuarios',
+            component: () =>
+                import ( /* webpackChunkName: "usuarios" */ './views/Usuarios'),
+            meta: {
+                descricao: "Tela de Usuarios"
+            }
+        },
+        {
+            path: '/backoffice',
+            name: 'backoffice',
+            component: () =>
+                import ( /* webpackChunkName: "backoffice" */ './views/Backoffice'),
+            meta: {
+                descricao: "Tela de backoffice"
+            }
+        },
     ]
 })

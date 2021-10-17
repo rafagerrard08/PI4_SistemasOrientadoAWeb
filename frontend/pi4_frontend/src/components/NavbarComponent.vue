@@ -45,3 +45,9 @@ export default {
     name: "NavbarComponent"
 }
 </script>
+
+<style scoped>
+nav {
+  display: flex;
+}
+</style>

@@ -40,6 +40,7 @@
 
 <script>
 import axios from "axios";
+import alertUtils from "@/utils/alertUtils";
 
 export default {
   name: "LoginComponent",
@@ -56,14 +57,14 @@ export default {
 
   methods: {
     validarLogin(){
-      axios.get("http://localhost:8080/usuarios/validarLogin?email=" + this.email + "&senha=" + this.senha).then((res) => {
-        this.valido = res.data;
-        this.$router.push('/Home') 
+      axios.get("http://localhost:8080/usuarios/validarLogin?email=" + this.email + "&senha=" + this.senha)
+      .then((res) => {
+        this.$router.push('/backoffice') 
       })
       .catch(() => {
-        this.valido = false;
+        alertUtils.alertFinalTop("Dados inválidos", "error");
+
       });
-      alert(this.valido);
     },
   },
 };
