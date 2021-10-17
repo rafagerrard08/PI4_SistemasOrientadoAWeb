@@ -24,7 +24,7 @@ public class Usuario implements Serializable {
 	private String nome;
 	@Email
 	private String email;
-	@CPF
+	//@CPF
 	private String cpf;
 	private String senha;
 	private Integer tipoUsuario; // Administrador ou Estoquista
