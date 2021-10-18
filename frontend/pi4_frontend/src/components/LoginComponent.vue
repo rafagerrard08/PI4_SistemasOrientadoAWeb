@@ -50,6 +50,7 @@ export default {
       email: null,
       senha: null, 
       valido: true,
+      usuarioLogado: null,
     };
   },
 
@@ -59,11 +60,13 @@ export default {
     validarLogin(){
       axios.get("http://localhost:8080/usuarios/validarLogin?email=" + this.email + "&senha=" + this.senha)
       .then((res) => {
+        axios.get("http://localhost:8080/usuarios/" + this.email )
+        .then((res) =>{
+        })
         this.$router.push('/backoffice') 
       })
       .catch(() => {
         alertUtils.alertFinalTop("Dados inválidos", "error");
-
       });
     },
   },

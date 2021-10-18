@@ -14,8 +14,16 @@
 </template>
 
 <script>
+
 export default {
   name: "Backoffice",
+
+  data() {
+    return {
+      
+    };
+  },
+
 };
 </script>
 

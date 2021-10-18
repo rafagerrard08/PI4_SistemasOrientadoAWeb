@@ -13,11 +13,11 @@ Vue.component('datepicker2', Datepicker2);
 Vue.config.productionTip = false
 
 var vm = new Vue({
-  router,
-  data: {
-    loading: false,
-  },
-  render: h => h(App)
+    router,
+    data: {
+        loading: false,
+    },
+    render: h => h(App)
 }).$mount('#app');
 
 global.vm = vm;
