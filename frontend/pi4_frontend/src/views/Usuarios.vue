@@ -1,9 +1,21 @@
 <template>
   <div class="container">
+    <NavbarComponent />
     <div class="content">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Usuarios</h4>
+          <router-link id="linkCadastrar" to="cadastroUsuario"
+            ><img src="https://img.icons8.com/ios-filled/50/000000/plus.png"
+          /></router-link>
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Busque por um usuario"
+            v-model="campoBuscar"
+            @keyup="ListaUsuarios"
+            aria-label="Buscar"
+          />
           <!-- <div>
             <b-table
               striped
@@ -23,22 +35,44 @@
                   <th scope="col">ID</th>
                   <th scope="col">Nome</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Cpf</th>
-                  <th scope="col">Tipo</th>
+                  <th scope="col">Grupo</th>
                   <th scope="col">Estado</th>
                   <th scope="col"></th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for=" usuario in usuarios" :key=usuario.id>
+                <tr v-for="usuario in usuarios" :key="usuario.id">
                   <th scope="row">{{ usuario.id }}</th>
                   <td>{{ usuario.nome }}</td>
                   <td>{{ usuario.email }}</td>
-                  <td>{{ usuario.cpf }}</td>
                   <td>{{ usuario.tipoUsuario }}</td>
                   <td>{{ usuario.estadoUsuario }}</td>
-                  <td><button class="editarBtn">Editar</button></td>
+                  <td v-if="isAtivo(usuario.estadoUsuario)">
+                    <button
+                      class="btnDesativar"
+                      @click="atualizaEstado(usuario.id, 'INATIVO')"
+                    >
+                      Desativar
+                    </button>
+                  </td>
+                  <td v-else>
+                    <button
+                      class="btnAtivar"
+                      @click="atualizaEstado(usuario.id, 'ATIVO')"
+                    >
+                      Ativar
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="editarBtn"
+                      @click="direcionarAtualizacao(usuario.id)"
+                    >
+                      Editar
+                    </button>
+                  </td>
+
                   <td></td>
                 </tr>
               </tbody>
@@ -52,15 +86,21 @@
 
 <script>
 import axios from "axios";
+import NavbarComponent from "../components/NavbarComponent.vue";
+import router from "../router";
 import UsuariosService from "@/services/usuarios.js";
 import alertUtils from "@/utils/alertUtils";
 
 export default {
   name: "Usuarios",
+  components: { NavbarComponent },
 
   data() {
     return {
       usuarios: [],
+      campoBuscar: null,
+      idUsuario: "",
+      uriBase: "",
     };
   },
 
@@ -70,11 +110,49 @@ export default {
 
   methods: {
     ListaUsuarios() {
-      axios.get("http://localhost:8080/usuarios").then((res) => {
-        this.usuarios = res.data.content;
-      });
+      if(this.campoBuscar === null){
+        this.uriBase = "http://localhost:8080/usuarios";
+      } else{
+        this.uriBase = "http://localhost:8080/usuarios?nome=" + this.campoBuscar;
+      }
+
+      axios
+        .get(this.uriBase)
+        .then((res) => {
+          this.usuarios = res.data.content;
+        });
     },
 
+    pesquisarUsuaio() {
+      this.ListaUsuarios();
+    },
+
+    isAtivo(estadoUsuario) {
+      if (estadoUsuario == "ATIVO") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    direcionarAtualizacao(idUsuario) {
+      router.push({ name: "atualizarUsuario", params: { Id: idUsuario } });
+    },
+
+    atualizaEstado(idUsuario, estado) {
+      axios
+        .put(
+          "http://localhost:8080/usuarios/updateEstado/" +
+            idUsuario +
+            "/" +
+            estado
+        )
+        .then((res) => {
+          location.reload();
+        });
+    },
+
+    /*
     async onRowSelected(usuario) {
       let statusAtual = "ativar";
       if (usuario[0].estadoUsuario == "ATIVO") {
@@ -97,9 +175,13 @@ export default {
           }
         );
       }
-    },
+    },*/
   },
 };
 </script>
 
-<style></style>
+<style>
+.content {
+  padding-top: 50px;
+}
+</style>
