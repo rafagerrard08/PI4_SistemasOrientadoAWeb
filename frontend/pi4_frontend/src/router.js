@@ -88,5 +88,25 @@ export default new Router({
                 descricao: "Tela de backoffice"
             }
         },
+
+        {
+            path: '/cadastroUsuario/',
+            name: 'cadastroUsuario',
+            component: () =>
+                import ( /* webpackChunkName: "cadastroUsuario" */ './views/CadastroUsuario'),
+            meta: {
+                descricao: "Tela de Cadastro Usuario"
+            }
+        },
+
+        {
+            path: '/atualizarUsuario/:idUsuario',
+            name: 'atualizarUsuario',
+            component: () =>
+                import ( /* webpackChunkName: "cadastroUsuario" */ './views/CadastroUsuario'),
+            meta: {
+                descricao: "Tela de Atualizacao de Usuario"
+            }
+        },
     ]
 })
