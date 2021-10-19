@@ -6,7 +6,9 @@
           <h4 class="card-title">Backoffice</h4>
           <router-link to="/home">Lista de Produtos</router-link>
           <br />
-          <router-link to="/usuarios">Lista de Usuarios</router-link>
+          <router-link to="/usuarios">Lista de Usuarios</router-link> <br/>
+          <router-link to="/cadastroUsuario/0">Cadastro de Usuarios</router-link>
+
         </div>
       </div>
     </div>
