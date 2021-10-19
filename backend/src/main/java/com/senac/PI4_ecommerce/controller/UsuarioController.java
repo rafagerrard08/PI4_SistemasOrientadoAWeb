@@ -1,13 +1,10 @@
 package com.senac.PI4_ecommerce.controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +18,7 @@ import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
 import com.senac.PI4_ecommerce.service.UsuarioService;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
+import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -28,9 +26,6 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -53,6 +48,14 @@ public class UsuarioController {
 				tipo);
 
 		return ResponseEntity.ok().body(usuarios);
+	}
+	
+	@RequestMapping(value = "/{email}", method = RequestMethod.GET)
+	public ResponseEntity<?> getUsuario(@PathVariable String email) {
+		
+		UsuarioDTO usuario = usuarioService.getUsuario(email);
+		
+		return ResponseEntity.ok().body(usuario);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -80,29 +83,31 @@ public class UsuarioController {
 			throw new InvalidDataException("CPF Invalido: [ " + usuario.getCpf() + " ]");
 		}
 	}
-
-	@PutMapping("/{id}/estado")
-	public ResponseEntity<Usuario> updateEstado(@PathVariable("id") Integer id, @RequestBody Map<String, String> map) {
-
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "updateEstado/{id}/{novoEstado}")
+	public ResponseEntity<UsuarioDTO> updateEstado(@PathVariable("id") Integer id, @PathVariable("novoEstado") String novoEstado) {
+		
 		Usuario usuario = usuarioRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
-
-		EstadoUsuario novoEstado = EstadoUsuario.valueOf(map.get("estado"));
-		usuario.setEstadoUsuario(novoEstado);
-		return ResponseEntity.ok(usuarioService.update(usuario));
-	}
-	
-	@PutMapping("/{id}/estado")
-	public ResponseEntity<Usuario> updateEstado(@PathVariable("id") Integer id, @RequestBody Map<String, String> map) {
 		
+		System.out.println(novoEstado);
 		
-		Usuario usuario = usuarioRepository.findById(id)
-						.orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+		EstadoUsuario estado = null;
+		if(novoEstado.equals("ATIVO")) {
+			estado = EstadoUsuario.ATIVO;
+		} else if (novoEstado.equals("INATIVO")) {
+			estado = EstadoUsuario.INATIVO;
+		}else {
+			throw new InvalidDataException("Estado Invalido: [ " + novoEstado + " ]");
+		}
 		
+		if(estado.equals(usuario.getEstadoUsuario())) {
+			throw new ObjectAlreadyExistsException("O usuario ja tem o status [ " + novoEstado + " ].");
+		}
 		
-		EstadoUsuario novoEstado = EstadoUsuario.valueOf(map.get("estado"));
-		usuario.setEstadoUsuario(novoEstado);
-		return ResponseEntity.ok(usuarioService.save(usuario));
+		usuario.setEstadoUsuario(estado);
+		
+		return ResponseEntity.ok(new UsuarioDTO(usuarioService.update(usuario)));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/validarLogin")

@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-6">
         <form>
-          <p class="h4 text-center mb-4">ENTRE COM USUARIO E SENHA</p>
+          <p class="h4 text-center mb-4">ENTRE COM USUARIO E SENHA <br>(Essa pagina é para login dos usuarios de Backoffice)</p>
           <label for="defaultFormLoginEmailEx" class="grey-text"
             >Seu E-Mail</label
           >

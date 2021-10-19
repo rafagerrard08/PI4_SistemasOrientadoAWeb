@@ -214,6 +214,14 @@ export default {
       }
     },
 
+    getUsuario(){
+      axios.get("http://localhost:8080/usuarios/" + this.id).then((res) => {
+        this.usuario = res.data;
+         this.grupoSelecionado = this.usuario.tipoUsuario
+
+         alert(this.usuario.nome)
+      });
+    },
 
     cadastrarUsuario(){
       if((this.nome === ""

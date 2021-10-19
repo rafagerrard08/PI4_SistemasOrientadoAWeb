@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.Usuario;
 import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
+import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
 import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
+import com.senac.PI4_ecommerce.service.exception.ObjectNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -87,9 +89,24 @@ public class UsuarioService {
 		}
 
 		boolean valido = encoder.matches(senha, usuario.get().getSenha());
+		
+		if(usuario.get().getEstadoUsuario().equals(EstadoUsuario.INATIVO)) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		}
 
 		HttpStatus status = (valido) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 
 		return ResponseEntity.status(status).body(valido);
+	}
+
+	public UsuarioDTO getUsuario(String email) {
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+		
+		if(usuario.isPresent()) {
+			return new UsuarioDTO(usuario.get());
+		} else
+			throw new ObjectNotFoundException("Nenhum usuario cadastrado com o email [ " + email + " ]");
+		
+		
 	}
 }

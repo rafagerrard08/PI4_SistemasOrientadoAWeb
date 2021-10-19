@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SaveFile {
 
 //	@Value("${ecommerce.dir.raiz}")
-	private String raiz = "/Users/victor/git/PI4_SistemasOrientadoAWeb";
+	private String raiz = "/Users/victor/Downloads/PI4_SistemasOrientadoAWeb-Marcus-frontEnd-2";
 	
 //	@Value("${ecommerce.dir.diretorio-imagens}")
 	private String diretorioFotos = "/backend/src/main/resources/imagens/";
