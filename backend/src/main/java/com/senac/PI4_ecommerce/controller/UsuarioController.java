@@ -1,5 +1,12 @@
 package com.senac.PI4_ecommerce.controller;
 
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -40,16 +47,30 @@ public class UsuarioController {
 			@RequestParam(value = "itensPorPagina", defaultValue = "9") Integer itensPorPagina,
 			@RequestParam(value = "ordenarPor", defaultValue = "id") String ordenarPor,
 			@RequestParam(value = "direcao", defaultValue = "DESC") String direcao,
-			@RequestParam(value = "tipo", defaultValue = "ativo") String tipo) {
+			@RequestParam(value = "tipo", required = false) String tipo,
+			HttpServletRequest req) {
+		
+		Usuario userSessao = getTipoUsuarioDaSessao(req);
 
 		String nomeDecode = Util.decodeParam(nome);
-
+		
 		Page<UsuarioDTO> usuarios = usuarioService.search(nomeDecode, pagina, itensPorPagina, ordenarPor, direcao,
-				tipo);
-
+				tipo, userSessao);
+	
 		return ResponseEntity.ok().body(usuarios);
 	}
 	
+	private Usuario getTipoUsuarioDaSessao(HttpServletRequest req) {
+		
+		ServletContext session = req.getServletContext();
+		Object userSessao = session.getAttribute("usuario");
+		if(Objects.isNull(userSessao)) {
+			throw new IllegalStateException("Usuario não setado na sessão, se logue novamente carinha");
+		}
+		
+		return (Usuario) userSessao;
+	}
+
 	@RequestMapping(value = "/{email}", method = RequestMethod.GET)
 	public ResponseEntity<?> getUsuario(@PathVariable String email) {
 		
@@ -85,7 +106,13 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "updateEstado/{id}/{novoEstado}")
-	public ResponseEntity<UsuarioDTO> updateEstado(@PathVariable("id") Integer id, @PathVariable("novoEstado") String novoEstado) {
+	public ResponseEntity<UsuarioDTO> updateEstado(@PathVariable("id") Integer id, @PathVariable("novoEstado") String novoEstado, HttpServletRequest req) {
+		
+		Usuario userSessao = getTipoUsuarioDaSessao(req);
+		
+		if(!"Administrador".equalsIgnoreCase(userSessao.getTipoUsuario().getDescricao())) {
+			throw new RuntimeException("Apenas ADMs podem mudar os estados dos usuario");
+		}
 		
 		Usuario usuario = usuarioRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
@@ -111,10 +138,10 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/validarLogin")
-	public ResponseEntity<Boolean> validarLogin(@RequestParam String email, @RequestParam String senha) {
-		ResponseEntity<Boolean> valido = usuarioService.validarLogin(email, senha);
+	public ResponseEntity<Usuario> validarLogin(@RequestParam String email, @RequestParam String senha, HttpServletRequest req) {
+		ResponseEntity<Usuario> resp = usuarioService.validarLogin(email, senha, req);
 
-		return valido;
+		return resp;
 	}
 
 }

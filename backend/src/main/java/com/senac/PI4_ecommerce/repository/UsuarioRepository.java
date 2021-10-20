@@ -21,5 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	@Query("SELECT DISTINCT u FROM Usuario AS u WHERE u.nome LIKE %:nome%")
 	public Page<UsuarioDTO> searchAll(@Param("nome") String nome, Pageable pageRequest);
 	
+	@Query("SELECT DISTINCT u FROM Usuario AS u WHERE u.id = :id")
+	public Page<UsuarioDTO> searchById(@Param("id") Integer id, Pageable pageRequest);
+	
 	public Optional<Usuario> findByEmail(String email);
 }
