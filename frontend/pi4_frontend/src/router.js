@@ -103,9 +103,19 @@ export default new Router({
             path: '/atualizarUsuario/:idUsuario',
             name: 'atualizarUsuario',
             component: () =>
-                import ( /* webpackChunkName: "cadastroUsuario" */ './views/CadastroUsuario'),
+                import ( /* webpackChunkName: "atualizarUsuario" */ './views/CadastroUsuario'),
             meta: {
                 descricao: "Tela de Atualizacao de Usuario"
+            }
+        },
+
+        {
+            path: '/logout',
+            name: 'logout',
+            component: () =>
+                import ( /* webpackChunkName: "logout" */ './views/Logout'),
+            meta: {
+                descricao: "Logout"
             }
         },
     ]

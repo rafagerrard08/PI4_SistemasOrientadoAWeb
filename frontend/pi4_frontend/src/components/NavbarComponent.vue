@@ -29,9 +29,9 @@
             >
           </li>
           <li>
-            <a href=""
-              ><span class="glyphicon glyphicon-log-out"> Sair</span></a
-            >
+            <router-link to="/logout">
+              <span class="glyphicon glyphicon-log-out"> Sair</span>
+            </router-link>  
           </li>
         </ul>
       </div>

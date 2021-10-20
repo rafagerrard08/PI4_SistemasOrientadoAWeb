@@ -58,11 +58,13 @@ export default {
 
   methods: {
     validarLogin(){
+      sessionStorage.clear();
       axios.get("http://localhost:8080/usuarios/validarLogin?email=" + this.email + "&senha=" + this.senha)
       .then((res) => {
-        axios.get("http://localhost:8080/usuarios/" + this.email )
-        .then((res) =>{
-        })
+        
+        const tipoUser = res.data.tipoUsuario;
+        sessionStorage.setItem("tipoUsuario", tipoUser);
+
         this.$router.push('/backoffice') 
       })
       .catch(() => {
