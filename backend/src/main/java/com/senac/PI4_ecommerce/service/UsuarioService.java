@@ -2,6 +2,10 @@ package com.senac.PI4_ecommerce.service;
 
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,16 +34,21 @@ public class UsuarioService {
 	private PasswordEncoder encoder;
 
 	public Page<UsuarioDTO> search(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
-			String direcao, String tipo) {
+			String direcao, String tipo, Usuario userSessao) {
+		
 		if (pagina < 0) {
 			// Implementar erro
 		}
 		PageRequest pr = PageRequest.of(pagina, itensPorPagina, Direction.valueOf(direcao), ordenarPor);
 		Page<UsuarioDTO> usuarios = null;
+		
+		if(!"Administrador".equalsIgnoreCase(userSessao.getTipoUsuario().getDescricao())) {
+			return usuarioRepository.searchById(userSessao.getId(), pr);
+		}
 
-		if (tipo.equals("administrador")) {
+		if ("ativo".equalsIgnoreCase(tipo)) {
 			usuarios = usuarioRepository.search(nome, pr, EstadoProduto.ATIVO.getId());
-		} else if (tipo.equals("estoquista")) {
+		} else if ("inativo".equalsIgnoreCase(tipo)) {
 			usuarios = usuarioRepository.search(nome, pr, EstadoProduto.INATIVO.getId());
 		} else {
 			usuarios = usuarioRepository.searchAll(nome, pr);
@@ -81,22 +90,27 @@ public class UsuarioService {
 
 	}
 
-	public ResponseEntity<Boolean> validarLogin(String email, String senha) {
+	public ResponseEntity<Usuario> validarLogin(String email, String senha, HttpServletRequest req) {
 		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
 		if (usuario.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 
 		boolean valido = encoder.matches(senha, usuario.get().getSenha());
 		
 		if(usuario.get().getEstadoUsuario().equals(EstadoUsuario.INATIVO)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
+		
+		if(!valido) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+		ServletContext session = req.getServletContext();
+		session.setAttribute("usuario", usuario.get());
 
-		HttpStatus status = (valido) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-
-		return ResponseEntity.status(status).body(valido);
+		return ResponseEntity.status(HttpStatus.OK).body(usuario.get());
 	}
 
 	public UsuarioDTO getUsuario(String email) {

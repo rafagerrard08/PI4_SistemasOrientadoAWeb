@@ -14,7 +14,7 @@ import com.senac.PI4_ecommerce.service.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
-public class CatregoriaController {
+public class CategoriaController {
 
 	@Autowired
 	private CategoriaService categoriaService;
