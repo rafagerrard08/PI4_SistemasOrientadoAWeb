@@ -106,7 +106,14 @@ public class UsuarioService {
 			return new UsuarioDTO(usuario.get());
 		} else
 			throw new ObjectNotFoundException("Nenhum usuario cadastrado com o email [ " + email + " ]");
+	}
+	
+	public UsuarioDTO getUsuarioById(Integer id) {
+		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		
-		
+		if(usuario.isPresent()) {
+			return new UsuarioDTO(usuario.get());
+		} else
+			throw new ObjectNotFoundException("Nenhum usuario cadastrado com o id [ " + id + " ]");
 	}
 }

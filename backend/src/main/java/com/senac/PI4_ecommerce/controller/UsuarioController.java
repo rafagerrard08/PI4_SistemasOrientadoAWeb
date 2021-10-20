@@ -51,9 +51,17 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/{email}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUsuario(@PathVariable String email) {
+	public ResponseEntity<?> getUsuarioByEmail(@PathVariable String email) {
 		
 		UsuarioDTO usuario = usuarioService.getUsuario(email);
+		
+		return ResponseEntity.ok().body(usuario);
+	}
+	
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getUsuarioId(@PathVariable Integer id) {
+		
+		UsuarioDTO usuario = usuarioService.getUsuarioById(id);
 		
 		return ResponseEntity.ok().body(usuario);
 	}
