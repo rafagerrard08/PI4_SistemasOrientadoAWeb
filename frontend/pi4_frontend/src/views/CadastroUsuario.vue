@@ -150,10 +150,7 @@
           <p class="erro" v-if="!valido">As senhas nao sao iguais!</p>
           <div class="form-group">
             <label for="Grupo">Informe o Grupo</label>
-            <select class="form-control" id="grupo" v-model="usuario.tipoUsuario" required>
-                <option v-if="grupo == usuario.tipoUsuario" selected>{{
-                  grupo
-                }}</option>
+            <select class="form-control" id="grupo" v-model="grupo" required>
                 <option
                   v-for="tipo of tiposUsuario"
                   :key="tipo"
