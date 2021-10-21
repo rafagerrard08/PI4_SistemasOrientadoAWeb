@@ -21,3 +21,7 @@ var vm = new Vue({
 }).$mount('#app');
 
 global.vm = vm;
+
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);

@@ -53,7 +53,7 @@
             />
           </div>
           <p class="erro" v-if="!valido">As senhas nao sao iguais!</p>
-         <div class="form-group">
+          <div class="form-group">
             <label for="Grupo">Informe o Grupo</label>
             <select
               class="form-control"
@@ -66,9 +66,7 @@
               }}</option>
             </select>
           </div>
-          <button
-            @click="atualizarUsuario"
-          >
+          <button @click="atualizarUsuario">
             Atualizar
           </button>
 
@@ -165,6 +163,8 @@
 <script>
 import NavbarComponent from "../components/NavbarComponent.vue";
 import axios from "axios";
+import router from "../router";
+
 
 export default {
   components: { NavbarComponent },
@@ -233,46 +233,47 @@ export default {
           .catch((errors) => {
             alert(errors);
           });
+          alert("Cadastro Realizado");
+          router.push({ name: "usuarios"});
       }
     },
-    testeAt(){
+    testeAt() {
       alert("teste");
     },
 
     atualizarUsuario() {
-      alert(JSON.stringify(this.usuario));
-
-      if (
-        (this.usuario.nome === "" ||
+      this.$confirm(
+        "Realmente quer alterar o usuario" + this.usuario.nome + "?"
+      ).then(() => {
+        if (
+          this.usuario.nome === "" ||
           this.usuario.cpf === "" ||
           this.usuario.senha === "" ||
-          this.usuario.tipoUsuario === "")
-      ) {
-        this.msgObrigatorio = true;
-      } else {
-        axios
-          .put("http://localhost:8080/usuarios/" + this.id, {
-            nome: this.usuario.nome,
-            cpf: this.usuario.cpf,
-            email: this.usuario.email,
-            senha: this.usuario.senha,
-            tipoUsuario: this.usuario.tipoUsuario, 
-            estadoUsuario: this.usuario.estadoUsuario
-          })
-          .then((res) => {
-            this.usuario = res.data;
-            alert(res.data);
-          })
-          .catch((errors) => {
-            alert(errors);
-          });
-      }
+          this.usuario.tipoUsuario === ""
+        ) {
+          this.msgObrigatorio = true;
+        } else {
+          axios
+            .put("http://localhost:8080/usuarios/" + this.id, {
+              nome: this.usuario.nome,
+              cpf: this.usuario.cpf,
+              email: this.usuario.email,
+              senha: this.usuario.senha,
+              tipoUsuario: this.usuario.tipoUsuario,
+              estadoUsuario: this.usuario.estadoUsuario,
+            })
+            .then((res) => {
+              this.usuario = res.data;
+              alert("Usuario Alterado");
+              router.push({ name: "usuarios"});
+            })
+            .catch((errors) => {
+              alert(errors);
+            });
+        }
+      });
     },
   },
-
-  
-
-    
 };
 </script>
 

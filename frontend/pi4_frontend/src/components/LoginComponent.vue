@@ -63,7 +63,9 @@ export default {
       .then((res) => {
         
         const tipoUser = res.data.tipoUsuario;
-        sessionStorage.setItem("tipoUsuario", tipoUser);
+        sessionStorage.setItem("tipoUsuario", res.data.tipoUsuario);
+        sessionStorage.setItem("idUsuario", res.data.id);
+
 
         this.$router.push('/backoffice') 
       })

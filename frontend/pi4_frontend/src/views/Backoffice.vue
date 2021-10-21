@@ -7,7 +7,6 @@
           <router-link to="/home">Lista de Produtos</router-link>
           <br />
           <router-link to="/usuarios">Lista de Usuarios</router-link> <br/>
-          <router-link to="/cadastroUsuario/0">Cadastro de Usuarios</router-link>
 
         </div>
       </div>
@@ -19,6 +18,13 @@
 
 export default {
   name: "Backoffice",
+
+  beforeCreate: function () {
+    if (!this.$session.exists()) {
+      this.$router.Push('/')
+      alert();
+    }
+  },
 
   data() {
     return {

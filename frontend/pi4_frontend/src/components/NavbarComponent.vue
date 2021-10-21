@@ -24,9 +24,9 @@
             >
           </li>
           <li>
-            <a href=""
-              ><span class="glyphicon glyphicon-user"> Configuracoes</span></a
-            >
+            <router-link to="/login">
+              <span class="glyphicon glyphicon-user"> Configuracoes</span>
+            </router-link>  
           </li>
           <li>
             <router-link to="/logout">
