@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -120,6 +119,8 @@ public class UsuarioService {
 			return new UsuarioDTO(usuario.get());
 		} else
 			throw new ObjectNotFoundException("Nenhum usuario cadastrado com o email [ " + email + " ]");
+		
+		
 	}
 	
 	public UsuarioDTO getUsuarioById(Integer id) {
@@ -129,5 +130,7 @@ public class UsuarioService {
 			return new UsuarioDTO(usuario.get());
 		} else
 			throw new ObjectNotFoundException("Nenhum usuario cadastrado com o id [ " + id + " ]");
+		
+		
 	}
 }

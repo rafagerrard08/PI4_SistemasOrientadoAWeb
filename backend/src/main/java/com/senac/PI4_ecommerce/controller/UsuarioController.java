@@ -1,11 +1,9 @@
 package com.senac.PI4_ecommerce.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,7 +70,7 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(value = "/{email}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUsuarioByEmail(@PathVariable String email) {
+	public ResponseEntity<?> getUsuario(@PathVariable String email) {
 		
 		UsuarioDTO usuario = usuarioService.getUsuario(email);
 		
@@ -80,7 +78,7 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUsuarioId(@PathVariable Integer id) {
+	public ResponseEntity<?> getUsuarioById(@PathVariable Integer id) {
 		
 		UsuarioDTO usuario = usuarioService.getUsuarioById(id);
 		
