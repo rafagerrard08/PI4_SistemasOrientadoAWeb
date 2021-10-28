@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar custom navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
         <button
@@ -12,7 +12,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="index.html" class="navbar-brand">eLoja</a>
+        <a href="index.html" class="navbar-brand"><img class="img img-logo" src="../assets/imagens/logo.png"/></a>
       </div>
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="nav navbar-nav navbar-right">
@@ -49,5 +49,16 @@ export default {
 <style scoped>
 nav {
   display: flex;
+  padding-bottom: 15px;
+}
+
+.img-logo{
+  max-height: 100px;
+  max-width: 100px;
+}
+
+.navbar.custom {
+  height: 10%;  
+  margin: 0 auto;
 }
 </style>

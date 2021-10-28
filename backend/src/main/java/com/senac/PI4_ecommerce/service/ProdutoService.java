@@ -92,15 +92,15 @@ public class ProdutoService {
 		Produto produto = this.getProduto(idProduto);
 
 		SaveFile sf = new SaveFile();
-
+		
 		File diretorio = new File(this.raiz + this.dirImagens + idProduto + "/principal.jpg");
 
 		if (!diretorio.exists()) {
 			sf.salvarImg(arquivo, idProduto, "principal.jpg");
-			produto.setImagemPrincipal("/produtos/img/" + idProduto + "/principal.jpg");
+			produto.setImagemPrincipal("/produtos/imagem/" + idProduto + "/principal.jpg");
 		} else {
 			sf.salvarImg(arquivo, idProduto, arquivo.getOriginalFilename());
-			produto.getImagens().add("/produtos/img/" + idProduto + "/" + arquivo.getOriginalFilename());
+			produto.getImagens().add("/produtos/imagem/" + idProduto + "/" + arquivo.getOriginalFilename());
 		}
 
 		produtoRepository.save(produto);

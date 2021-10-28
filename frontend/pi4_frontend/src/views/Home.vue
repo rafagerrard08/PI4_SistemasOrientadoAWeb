@@ -123,6 +123,6 @@ nav {
 }
 
 #first {
-  padding: 75px;
+  padding: 100px;
 }
 </style>

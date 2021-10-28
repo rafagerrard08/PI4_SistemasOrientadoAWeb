@@ -5,20 +5,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class SaveFile {
 
-//	@Value("${ecommerce.dir.raiz}")
-	private String raiz = "/Users/victor/Downloads/PI4_SistemasOrientadoAWeb-Marcus-frontEnd-2";
-	
-//	@Value("${ecommerce.dir.diretorio-imagens}")
-	private String diretorioFotos = "/backend/src/main/resources/imagens/";
+	@Value("${ecommerce.dir.raiz}")
+	String raiz = "/Users/victor/git/PI4_SistemasOrientadoAWeb";
+
+	@Value("${ecommerce.dir.diretorio-imagens}")
+	String dirImagens = "/imagens/";
 	
 	public String salvarImg(MultipartFile foto, Integer idProduto, String nomeArquivo) {
-		String diretorio = this.diretorioFotos + idProduto;
+		String diretorio = this.dirImagens + idProduto;
 		String path = this.salvar(diretorio, foto, nomeArquivo);
 		System.out.println( "Foto salva no diretorio " + diretorio );
 		return path;

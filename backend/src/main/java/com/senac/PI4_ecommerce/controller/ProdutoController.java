@@ -2,12 +2,15 @@ package com.senac.PI4_ecommerce.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -151,4 +154,30 @@ public class ProdutoController {
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
 	}
+	
+	
+	@RequestMapping(value = "/imagem/{id}/{nomeImagem}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<?> downloadImage(@PathVariable("id") String id, @PathVariable("nomeImagem") String nomeDoArquivo, HttpServletResponse response) {
+        // Sanitizar... (biblioteca, nomeDoArquivo.startsWith, regex)
+        var filename = String.format(raiz + dirImagens + id + "/" + nomeDoArquivo);
+
+        try {
+            var file = new File(filename);
+            var path = Paths.get(file.getAbsolutePath());
+            var resource = new ByteArrayResource(Files.readAllBytes(path));
+            
+    		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+    		StreamUtils.copy(resource.getInputStream(), response.getOutputStream());
+
+
+            
+            return ResponseEntity
+                    .ok()
+                    .contentLength(file.length())
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
