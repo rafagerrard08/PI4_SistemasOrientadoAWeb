@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
 @Entity
 public class Produto implements Serializable {
@@ -53,7 +53,7 @@ public class Produto implements Serializable {
 	}
 
 	public Produto(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Categoria categoria, String imagemPrincipal, Double avaliacao) {
+			EstadoCadastro estado, Categoria categoria, String imagemPrincipal, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -117,11 +117,11 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public EstadoProduto getEstado() {
-		return EstadoProduto.toEnum(estado);
+	public EstadoCadastro getEstado() {
+		return EstadoCadastro.toEnum(estado);
 	}
 
-	public void setEstado(EstadoProduto estado) {
+	public void setEstado(EstadoCadastro estado) {
 		this.estado = estado.getId();
 	}
 

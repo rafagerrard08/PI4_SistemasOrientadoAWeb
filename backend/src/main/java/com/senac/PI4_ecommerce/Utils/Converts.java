@@ -2,7 +2,7 @@ package com.senac.PI4_ecommerce.Utils;
 
 import com.senac.PI4_ecommerce.dto.ProdutoDTO;
 import com.senac.PI4_ecommerce.model.Produto;
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
 public class Converts {
 
@@ -35,7 +35,7 @@ public class Converts {
 		produto.setPreco(produtoDTO.getPreco());
 		produto.setDescricao(produtoDTO.getDescricao());
 		if (produtoDTO.getEstado() == null) {
-			produto.setEstado(EstadoProduto.ATIVO);
+			produto.setEstado(EstadoCadastro.ATIVO);
 		} else {
 			produto.setEstado(produtoDTO.getEstado());
 		}

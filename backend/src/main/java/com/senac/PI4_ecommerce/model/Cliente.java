@@ -1,19 +1,21 @@
 package com.senac.PI4_ecommerce.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 
-import com.senac.PI4_ecommerce.dto.UsuarioDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
-import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
 
 @Entity
-public class Usuario implements Serializable {
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -22,33 +24,29 @@ public class Usuario implements Serializable {
 	private String nome;
 	@Email
 	private String email;
-	//@CPF
+	// @CPF
 	private String cpf;
 	private String senha;
-	private Integer tipoUsuario; // Administrador ou Estoquista
-	private Integer estadoUsuario;
+	private String enderecoFaturamento;
+	
+	private Integer estado;
 
-	public Usuario(UsuarioDTO usuario) {
-		this.id = usuario.getId();
-		this.nome = usuario.getNome();
-		this.email = usuario.getEmail();
-		this.cpf = usuario.getCpf();
-		this.tipoUsuario = usuario.getTipoUsuario().getId();
-		this.estadoUsuario = usuario.getEstadoUsuario().getId();
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cliente")
+	private List<Endereco> enderecosEntrega = new ArrayList<>();
+	
+	public Cliente() {
 	}
 
-	public Usuario() {
-	}
-
-	public Usuario(Integer id, String nome, String email, String cpf, String senha, Integer tipoUsuario, Integer estadoUsuario) {
+	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, String enderecoFaturamento, EstadoCadastro estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.senha = senha;
-		this.tipoUsuario = tipoUsuario;
-		this.estadoUsuario = estadoUsuario;
+		this.enderecoFaturamento = enderecoFaturamento;
+		this.estado = estado.getId();
 	}
 
 	public Integer getId() {
@@ -74,7 +72,7 @@ public class Usuario implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getCpf() {
 		return cpf;
 	}
@@ -82,7 +80,7 @@ public class Usuario implements Serializable {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}
@@ -91,20 +89,34 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public TipoUsuario getTipoUsuario() {
-		return TipoUsuario.toEnum(tipoUsuario);
+	public String getEnderecoFaturamento() {
+		return enderecoFaturamento;
 	}
 
-	public void setTipoUsuario(TipoUsuario tipoUsuario) {
-		this.tipoUsuario = tipoUsuario.getId();
+	public void setEnderecoFaturamento(String enderecoFaturamento) {
+		this.enderecoFaturamento = enderecoFaturamento;
+	}
+
+	public List<Endereco> getEnderecosEntrega() {
+		return enderecosEntrega;
+	}
+
+	public void setEnderecosEntrega(List<Endereco> enderecosEntrega) {
+		this.enderecosEntrega = enderecosEntrega;
+	}
+
+	public EstadoCadastro getEstado() {
+		return EstadoCadastro.toEnum(estado);
+	}
+
+	public void setEstado(EstadoCadastro estado) {
+		this.estado = estado.getId();
 	}
 	
-	public EstadoCadastro getEstadoUsuario() {
-		return EstadoCadastro.toEnum(estadoUsuario);
-	}
-
-	public void setEstadoUsuario(EstadoCadastro estadoUsuario) {
-		this.estadoUsuario = estadoUsuario.getId();
-	}
+	
+	
+	
+	
+	
 
 }

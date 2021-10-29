@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.Usuario;
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
-import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
 import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
@@ -46,9 +45,9 @@ public class UsuarioService {
 		}
 
 		if ("ativo".equalsIgnoreCase(tipo)) {
-			usuarios = usuarioRepository.search(nome, pr, EstadoProduto.ATIVO.getId());
+			usuarios = usuarioRepository.search(nome, pr, EstadoCadastro.ATIVO.getId());
 		} else if ("inativo".equalsIgnoreCase(tipo)) {
-			usuarios = usuarioRepository.search(nome, pr, EstadoProduto.INATIVO.getId());
+			usuarios = usuarioRepository.search(nome, pr, EstadoCadastro.INATIVO.getId());
 		} else {
 			usuarios = usuarioRepository.searchAll(nome, pr);
 		}
@@ -98,7 +97,7 @@ public class UsuarioService {
 
 		boolean valido = encoder.matches(senha, usuario.get().getSenha());
 		
-		if(usuario.get().getEstadoUsuario().equals(EstadoUsuario.INATIVO)) {
+		if(usuario.get().getEstadoUsuario().equals(EstadoCadastro.INATIVO)) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		

@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.senac.PI4_ecommerce.model.Usuario;
-import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.model.enums.TipoUsuario;
 
 public class UsuarioDTO implements Serializable {
@@ -85,11 +85,11 @@ public class UsuarioDTO implements Serializable {
 		this.tipoUsuario = tipoUsuario.getId();
 	}
 	
-	public EstadoUsuario getEstadoUsuario() {
-		return EstadoUsuario.toEnum(estadoUsuario);
+	public EstadoCadastro getEstadoUsuario() {
+		return EstadoCadastro.toEnum(estadoUsuario);
 	}
 
-	public void setEstadoUsuario(EstadoUsuario estadoUsuario) {
+	public void setEstadoUsuario(EstadoCadastro estadoUsuario) {
 		this.estadoUsuario = estadoUsuario.getId();
 	}
 

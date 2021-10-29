@@ -1,13 +1,13 @@
 package com.senac.PI4_ecommerce.model.enums;
 
-public enum EstadoProduto {
+public enum EstadoCadastro {
 	ATIVO(1, "Ativo"),
 	INATIVO(2, "Inativo");
 
 	private Integer id;
 	private String descricao;
 	
-	private EstadoProduto(Integer id, String descricao) {
+	private EstadoCadastro(Integer id, String descricao) {
 		this.id = id;
 		this.descricao = descricao;
 	}
@@ -21,12 +21,12 @@ public enum EstadoProduto {
 	}
 	
 	
-	public static EstadoProduto toEnum(Integer id) {
+	public static EstadoCadastro toEnum(Integer id) {
 		if(id == null) {
 			return null;
 		}
 		
-		for(EstadoProduto estado : EstadoProduto.values()) {
+		for(EstadoCadastro estado : EstadoCadastro.values()) {
 			if(id.equals(estado.getId())) {
 				return estado;
 			}

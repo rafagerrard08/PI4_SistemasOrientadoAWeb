@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.Usuario;
-import com.senac.PI4_ecommerce.model.enums.EstadoUsuario;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
 import com.senac.PI4_ecommerce.service.UsuarioService;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
@@ -89,7 +89,7 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> save(@RequestBody Usuario usuario) {
 		if (Util.isCPF(usuario.getCpf())) {
 			usuario.setId(null);
-			usuario.setEstadoUsuario(EstadoUsuario.ATIVO);
+			usuario.setEstadoUsuario(EstadoCadastro.ATIVO);
 			usuario.setSenha(encoder.encode(usuario.getSenha()));
 			UsuarioDTO usuarioSalvo = new UsuarioDTO(usuarioService.save(usuario));
 			return ResponseEntity.ok(usuarioSalvo);
@@ -125,11 +125,11 @@ public class UsuarioController {
 		
 		System.out.println(novoEstado);
 		
-		EstadoUsuario estado = null;
+		EstadoCadastro estado = null;
 		if(novoEstado.equals("ATIVO")) {
-			estado = EstadoUsuario.ATIVO;
+			estado = EstadoCadastro.ATIVO;
 		} else if (novoEstado.equals("INATIVO")) {
-			estado = EstadoUsuario.INATIVO;
+			estado = EstadoCadastro.INATIVO;
 		}else {
 			throw new InvalidDataException("Estado Invalido: [ " + novoEstado + " ]");
 		}

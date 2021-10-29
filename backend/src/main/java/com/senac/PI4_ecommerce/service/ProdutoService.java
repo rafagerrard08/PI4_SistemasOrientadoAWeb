@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.senac.PI4_ecommerce.Utils.SaveFile;
 import com.senac.PI4_ecommerce.model.Produto;
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.ProdutoRepository;
 import com.senac.PI4_ecommerce.service.exception.ObjectNotFoundException;
 
@@ -41,9 +41,9 @@ public class ProdutoService {
 		Page<Produto> produtos = null;
 
 		if (estado.equals("ativo")) {
-			produtos = produtoRepository.search(nome, pr, EstadoProduto.ATIVO.getId());
+			produtos = produtoRepository.search(nome, pr, EstadoCadastro.ATIVO.getId());
 		} else if (estado.equals("inativo")) {
-			produtos = produtoRepository.search(nome, pr, EstadoProduto.INATIVO.getId());
+			produtos = produtoRepository.search(nome, pr, EstadoCadastro.INATIVO.getId());
 		} else {
 			produtos = produtoRepository.searchAll(nome, pr);
 		}
@@ -63,7 +63,7 @@ public class ProdutoService {
 
 	public Produto postProduto(Produto produto) {
 		produto.setId(null);
-		produto.setEstado(EstadoProduto.ATIVO);
+		produto.setEstado(EstadoCadastro.ATIVO);
 
 		return produtoRepository.save(produto);
 	}

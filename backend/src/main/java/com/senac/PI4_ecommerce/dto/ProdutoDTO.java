@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.senac.PI4_ecommerce.model.Categoria;
-import com.senac.PI4_ecommerce.model.enums.EstadoProduto;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
 public class ProdutoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,23 +27,17 @@ public class ProdutoDTO implements Serializable {
 	private BigDecimal preco;
 	@NotBlank(message = "Descricao nao pode estar vazio")
 	private String descricao;
-	private EstadoProduto estado;
+	
+	private Integer estado;
+	
 	private Double avaliacao;
 
 	private Categoria categoria;
+	
 	@NotNull(message = "CategoriaId nao pode estar vazio")
 	private Integer categoriaId;
 	
 	private String imagemPrincipal;
-
-
-	public String getImagemPrincipal() {
-		return imagemPrincipal;
-	}
-
-	public void setImagemPrincipal(String imagemPrincipal) {
-		this.imagemPrincipal = imagemPrincipal;
-	}
 
 	private Set<String> imagens = new HashSet<>();
 
@@ -52,7 +46,7 @@ public class ProdutoDTO implements Serializable {
 	}
 
 	public ProdutoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoProduto estado, Integer categoriaId,  String imagemPrincipal, Double avaliacao) {
+			EstadoCadastro estado, Integer categoriaId,  String imagemPrincipal, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -60,7 +54,7 @@ public class ProdutoDTO implements Serializable {
 		this.quantidade = quantidade;
 		this.preco = BigDecimal.valueOf(preco);
 		this.descricao = descricao;
-		this.estado = estado;
+		this.estado = estado.getId();
 		this.categoriaId = categoriaId;
 		this.avaliacao = avaliacao;
 	}
@@ -114,12 +108,12 @@ public class ProdutoDTO implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public EstadoProduto getEstado() {
-		return estado;
+	public EstadoCadastro getEstado() {
+		return EstadoCadastro.toEnum(estado);
 	}
 
-	public void setEstado(EstadoProduto estado) {
-		this.estado = estado;
+	public void setEstado(EstadoCadastro estado) {
+		this.estado = estado.getId();
 	}
 
 	public Set<String> getImagens() {
@@ -152,6 +146,14 @@ public class ProdutoDTO implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+	
+	public String getImagemPrincipal() {
+		return imagemPrincipal;
+	}
+
+	public void setImagemPrincipal(String imagemPrincipal) {
+		this.imagemPrincipal = imagemPrincipal;
 	}
 
 }
