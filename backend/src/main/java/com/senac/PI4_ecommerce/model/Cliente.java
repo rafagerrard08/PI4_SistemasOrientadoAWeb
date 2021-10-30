@@ -8,13 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
@@ -33,6 +29,8 @@ public class Cliente implements Serializable {
 	private String senha;
 	
 	private Integer estado;
+	private String genero;
+
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
@@ -41,7 +39,7 @@ public class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, EstadoCadastro estado) {
+	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, EstadoCadastro estado, String genero) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -49,6 +47,7 @@ public class Cliente implements Serializable {
 		this.cpf = cpf;
 		this.senha = senha;
 		this.estado = estado.getId();
+		this.genero = genero;
 	}
 
 	public Integer getId() {
@@ -113,6 +112,14 @@ public class Cliente implements Serializable {
 
 	public void setEstado(EstadoCadastro estado) {
 		this.estado = estado.getId();
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 
 //	@Override

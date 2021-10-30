@@ -85,7 +85,7 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		
 
 		Cliente cli1 = new Cliente(1, "Victor", "victor@eloja.com", "00000000000",
-				"$2a$10$bcRmD4S44LY3bgR6Piia4Oe6W0OE8edW0wCtAd9znb540iEB8j3Wq", EstadoCadastro.ATIVO);
+				"$2a$10$bcRmD4S44LY3bgR6Piia4Oe6W0OE8edW0wCtAd9znb540iEB8j3Wq", EstadoCadastro.ATIVO, "Masculno");
 		
 		// (Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade
 		
