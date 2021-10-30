@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.senac.PI4_ecommerce.model.enums.TipoEndereco;
 
 @Entity
 public class Endereco implements Serializable {
@@ -19,6 +20,7 @@ public class Endereco implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private Integer tipo;
 	private String logradouro;
 	private String numero;
 	private String complemento;
@@ -38,17 +40,17 @@ public class Endereco implements Serializable {
 		super();
 	}
 
-	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-			Cliente cliente, Cidade cidade) {
+	public Endereco(Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente) {
 		super();
 		this.id = id;
+		this.tipo=tipo.getId();
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
-		this.cliente = cliente;
 		this.setCidade(cidade);
+		this.cliente = cliente;
 	}
 
 	public Integer getId() {
@@ -117,6 +119,14 @@ public class Endereco implements Serializable {
 
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
+	}
+
+	public TipoEndereco getTipo() {
+		return TipoEndereco.toEnum(tipo);
+	}
+
+	public void setTipo(TipoEndereco tipo) {
+		this.tipo = tipo.getId();
 	}
 
 	@Override

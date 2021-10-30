@@ -8,9 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
@@ -27,25 +31,23 @@ public class Cliente implements Serializable {
 	// @CPF
 	private String cpf;
 	private String senha;
-	private String enderecoFaturamento;
 	
 	private Integer estado;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
-	private List<Endereco> enderecosEntrega = new ArrayList<>();
+	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, String enderecoFaturamento, EstadoCadastro estado) {
+	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, EstadoCadastro estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.senha = senha;
-		this.enderecoFaturamento = enderecoFaturamento;
 		this.estado = estado.getId();
 	}
 
@@ -89,20 +91,20 @@ public class Cliente implements Serializable {
 		this.senha = senha;
 	}
 
-	public String getEnderecoFaturamento() {
-		return enderecoFaturamento;
+//	public EnderecoCobranca getEnderecoCobranca() {
+//		return enderecoCobranca;
+//	}
+//
+//	public void setEnderecoCobranca(EnderecoCobranca enderecoCobranca) {
+//		this.enderecoCobranca = enderecoCobranca;
+//	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setEnderecoFaturamento(String enderecoFaturamento) {
-		this.enderecoFaturamento = enderecoFaturamento;
-	}
-
-	public List<Endereco> getEnderecosEntrega() {
-		return enderecosEntrega;
-	}
-
-	public void setEnderecosEntrega(List<Endereco> enderecosEntrega) {
-		this.enderecosEntrega = enderecosEntrega;
+	public void setEnderecos(List<Endereco> enderecosEntrega) {
+		this.enderecos = enderecosEntrega;
 	}
 
 	public EstadoCadastro getEstado() {
@@ -112,6 +114,13 @@ public class Cliente implements Serializable {
 	public void setEstado(EstadoCadastro estado) {
 		this.estado = estado.getId();
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", cpf=" + cpf + ", senha=" + senha
+//				+ ", estado=" + estado + ", enderecoCobranca=" + enderecoCobranca + ", enderecosEntrega="
+//				+ enderecosEntrega + "]";
+//	}
 	
 	
 	

@@ -26,25 +26,21 @@ public class ClienteDTO implements Serializable {
 	// @CPF
 	private String cpf;
 	private String senha;
-	private String enderecoFaturamento;
 	
 	private Integer estado;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "cliente")
-	private List<Endereco> enderecosEntrega = new ArrayList<>();
+	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public ClienteDTO() {
 	}
 
-	public ClienteDTO(Integer id, String nome, @Email String email, String cpf, String senha, String enderecoFaturamento, EstadoCadastro estado) {
+	public ClienteDTO(Integer id, String nome, @Email String email, String cpf, String senha, Endereco enderecoCobranca, EstadoCadastro estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.senha = senha;
-		this.enderecoFaturamento = enderecoFaturamento;
 		this.estado = estado.getId();
 	}
 
@@ -87,14 +83,6 @@ public class ClienteDTO implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	public String getEnderecoFaturamento() {
-		return enderecoFaturamento;
-	}
-
-	public void setEnderecoFaturamento(String enderecoFaturamento) {
-		this.enderecoFaturamento = enderecoFaturamento;
-	}
 	
 	public EstadoCadastro getEstado() {
 		return EstadoCadastro.toEnum(estado);
@@ -102,6 +90,14 @@ public class ClienteDTO implements Serializable {
 
 	public void setEstado(EstadoCadastro estado) {
 		this.estado = estado.getId();
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 }
 
