@@ -129,12 +129,32 @@ public class ClienteService {
 			novoCliente.setDataNascimento(cliente.getDataNascimento());
 			novoCliente.setGenero(cliente.getGenero());
 
-//			
 			clienteRepository.save(novoCliente);
 			return novoCliente;
 
 		} else {
 			throw new ObjectNotFoundException("Nao foi encontrado um cliente com este ID.");
 		}
+	}
+
+	public void updateSenha(Integer id, String senhaAtual, String senhaNova) {
+		if (senhaAtual == null || senhaNova == null)
+			throw new InvalidDataException("As senhas informadas nao podem estar nulas!");
+
+		Optional<Cliente> clienteAtual = clienteRepository.findById(id);
+		if (!clienteAtual.isEmpty()) {
+
+			boolean valido = encoder.matches(senhaAtual, clienteAtual.get().getSenha());
+			if (valido) {
+				Cliente clienteNovo = clienteAtual.get();
+				clienteNovo.setSenha(encoder.encode(senhaNova));
+				clienteRepository.save(clienteNovo);
+
+			} else
+				throw new InvalidDataException("A senha atual informada nao corresponde a senha cadastrada!");
+
+		} else
+			throw new ObjectNotFoundException("Nao foi encontrado cliente com id [ " + id + " ]");
+
 	}
 }

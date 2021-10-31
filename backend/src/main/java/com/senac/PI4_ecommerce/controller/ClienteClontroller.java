@@ -58,5 +58,13 @@ public class ClienteClontroller {
 		return ResponseEntity.ok(clienteAtualizado);
 
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "updateSenha/{id}")
+	public ResponseEntity<String> updateSenha(@PathVariable("id") Integer id, @RequestParam String senhaAtual, @RequestParam String senhaNova) {
+		clienteService.updateSenha(id, senhaAtual, senhaNova);
+
+		return ResponseEntity.ok().body("Senha Atualizada com sucesso!");
+
+	}
 
 }
