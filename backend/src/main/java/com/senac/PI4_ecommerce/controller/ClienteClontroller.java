@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.ClienteDTO;
+import com.senac.PI4_ecommerce.dto.EnderecoDTO;
 import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
 import com.senac.PI4_ecommerce.model.Cliente;
-import com.senac.PI4_ecommerce.model.Endereco;
 import com.senac.PI4_ecommerce.service.ClienteService;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
 
@@ -71,7 +71,7 @@ public class ClienteClontroller {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getEnderecos/{id}")
-	public ResponseEntity<List<Endereco>> getEnderecos(@PathVariable("id") Integer id) {
+	public ResponseEntity<List<EnderecoDTO>> getEnderecos(@PathVariable("id") Integer id) {
 		return  ResponseEntity.ok().body(clienteService.getEnderecos(id));
 	}
 }

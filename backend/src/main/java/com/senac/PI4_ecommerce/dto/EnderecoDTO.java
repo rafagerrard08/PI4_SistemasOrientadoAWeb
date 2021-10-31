@@ -2,6 +2,7 @@ package com.senac.PI4_ecommerce.dto;
 
 import java.io.Serializable;
 
+import com.senac.PI4_ecommerce.model.Endereco;
 import com.senac.PI4_ecommerce.model.enums.TipoEndereco;
 
 public class EnderecoDTO implements Serializable {
@@ -20,6 +21,19 @@ public class EnderecoDTO implements Serializable {
 	
 	public EnderecoDTO() {
 	}
+	
+	public EnderecoDTO(Endereco endereco) {
+		this.id = endereco.getId();
+		this.tipo = endereco.getTipo();
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
+		this.complemento = endereco.getComplemento();
+		this.bairro = endereco.getBairro();
+		this.cep = endereco.getCep();
+		this.cidade = endereco.getCidade().getNome();
+		this.uf = endereco.getCidade().getUf().getNome();
+		this.padrao = endereco.getPadrao();
+		}
 
 	public TipoEndereco getTipo() {
 		return tipo;

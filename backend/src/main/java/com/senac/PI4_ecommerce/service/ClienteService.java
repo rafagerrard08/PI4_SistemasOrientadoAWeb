@@ -158,17 +158,25 @@ public class ClienteService {
 
 	}
 
-	public List<Endereco> getEnderecos(Integer id) {
+	public List<EnderecoDTO> getEnderecos(Integer id) {
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		
 		if (!cliente.isEmpty()) {
-			List<Endereco> enderecos =  enderecoRepository.getEnderecos(cliente.get());
-			return enderecos;
+			List<Endereco> enderecos = enderecoRepository.getEnderecos(cliente.get());
+			List<EnderecoDTO> enderecosDTO = new ArrayList<EnderecoDTO>();
+
+			if (!enderecos.isEmpty()) {
+				for (Endereco endereco : enderecos) {
+					EnderecoDTO endDTO = new EnderecoDTO(endereco);
+					enderecosDTO.add(endDTO);
+				}
+				return enderecosDTO;
+			}else {
+				throw new InvalidDataException("Nao foi encontrado nenhum endereco para o ID [ " + id + " ]");
+			}
 		} else {
-			throw new InvalidDataException("Nao foi encontrado nenhum endereco para o ID [ " + id + " ]");
+			throw new InvalidDataException("Nao foi encontrado nenhum cliente com o ID [ " + id + " ]");
 		}
-		
-		 
-		
+
 	}
 }
