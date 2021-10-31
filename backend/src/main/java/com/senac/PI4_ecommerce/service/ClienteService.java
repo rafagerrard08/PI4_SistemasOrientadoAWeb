@@ -18,11 +18,13 @@ import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
 import com.senac.PI4_ecommerce.model.Cidade;
 import com.senac.PI4_ecommerce.model.Cliente;
 import com.senac.PI4_ecommerce.model.Endereco;
+import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.UF;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.ClienteRepository;
 import com.senac.PI4_ecommerce.repository.EnderecoRepository;
 import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
+import com.senac.PI4_ecommerce.service.exception.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
@@ -46,17 +48,17 @@ public class ClienteService {
 		Optional<Cliente> cliente = clienteRepository.findByEmail(email);
 
 		if (cliente.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
 		}
 
 		boolean valido = encoder.matches(senha, cliente.get().getSenha());
 
 		if (cliente.get().getEstado().equals(EstadoCadastro.INATIVO)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
 		}
 
 		if (!valido) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
 		}
 
 		ServletContext session = req.getServletContext();
