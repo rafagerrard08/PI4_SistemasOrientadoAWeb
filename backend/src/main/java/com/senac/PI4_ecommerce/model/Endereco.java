@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.senac.PI4_ecommerce.dto.EnderecoDTO;
 import com.senac.PI4_ecommerce.model.enums.TipoEndereco;
 
 @Entity
@@ -26,6 +27,7 @@ public class Endereco implements Serializable {
 	private String complemento;
 	private String bairro;
 	private String cep;
+	private Boolean padrao;
 
 	@JsonBackReference
 	@ManyToOne
@@ -40,7 +42,7 @@ public class Endereco implements Serializable {
 		super();
 	}
 
-	public Endereco(Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente) {
+	public Endereco(Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente, Boolean padrao) {
 		super();
 		this.id = id;
 		this.tipo=tipo.getId();
@@ -51,6 +53,20 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 		this.setCidade(cidade);
 		this.cliente = cliente;
+		this.setPadrao(padrao);
+	}
+	
+	public Endereco(EnderecoDTO enderecoDTO, Cidade cidade, Cliente cliente) {
+		this.id = enderecoDTO.getId();
+		this.tipo=enderecoDTO.getTipo().getId();
+		this.logradouro = enderecoDTO.getLogradouro();
+		this.numero = enderecoDTO.getNumero();
+		this.complemento = enderecoDTO.getComplemento();
+		this.bairro = enderecoDTO.getBairro();
+		this.cep = enderecoDTO.getCep();
+		this.setCidade(cidade);
+		this.cliente = cliente;
+		this.padrao=enderecoDTO.getPadrao();
 	}
 
 	public Integer getId() {
@@ -127,6 +143,14 @@ public class Endereco implements Serializable {
 
 	public void setTipo(TipoEndereco tipo) {
 		this.tipo = tipo.getId();
+	}
+
+	public Boolean getPadrao() {
+		return padrao;
+	}
+
+	public void setPadrao(Boolean padrao) {
+		this.padrao = padrao;
 	}
 
 	@Override

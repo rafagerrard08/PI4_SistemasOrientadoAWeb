@@ -15,11 +15,13 @@ import com.senac.PI4_ecommerce.model.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 	
-	@Query("SELECT DISTINCT c FROM Cliente AS c WHERE c.nome LIKE %:nome%")
-	public Page<ClienteDTO> searchAll(@Param("nome") String nome, Pageable pageRequest);
+	@Query("SELECT DISTINCT c FROM Cliente AS c WHERE c.nomeCompleto LIKE %:nomeCompleto%")
+	public Page<ClienteDTO> searchAll(@Param("nome") String nomeCompleto, Pageable pageRequest);
 	
 	@Query("SELECT DISTINCT c FROM Cliente AS c WHERE c.id = :id")
 	public Page<ClienteDTO> searchById(@Param("id") Integer id, Pageable pageRequest);
 	
 	public Optional<Cliente> findByEmail(String email);
+	
+	public Optional<Cliente> findByCpf(String cpf);
 }

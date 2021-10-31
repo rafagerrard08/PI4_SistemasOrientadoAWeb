@@ -2,19 +2,16 @@ package com.senac.PI4_ecommerce.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
@@ -25,7 +22,7 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String nome;
+	private String nomeCompleto;
 	@Email
 	private String email;
 	// @CPF
@@ -33,6 +30,9 @@ public class Cliente implements Serializable {
 	private String senha;
 	
 	private Integer estado;
+	private String genero;
+	private Date dataNascimento;
+
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
@@ -41,14 +41,16 @@ public class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, @Email String email, String cpf, String senha, EstadoCadastro estado) {
+	public Cliente(Integer id, String nomeCompleto, @Email String email, String cpf, String senha, EstadoCadastro estado, String genero, Date dataNascimento) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nomeCompleto = nomeCompleto;
 		this.email = email;
 		this.cpf = cpf;
 		this.senha = senha;
 		this.estado = estado.getId();
+		this.genero = genero;
+		this.dataNascimento = dataNascimento;
 	}
 
 	public Integer getId() {
@@ -59,12 +61,12 @@ public class Cliente implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
 	public String getEmail() {
@@ -115,9 +117,25 @@ public class Cliente implements Serializable {
 		this.estado = estado.getId();
 	}
 
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
 //	@Override
 //	public String toString() {
-//		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", cpf=" + cpf + ", senha=" + senha
+//		return "Cliente [id=" + id + ", nomeCompleto=" + nomeCompleto + ", email=" + email + ", cpf=" + cpf + ", senha=" + senha
 //				+ ", estado=" + estado + ", enderecoCobranca=" + enderecoCobranca + ", enderecosEntrega="
 //				+ enderecosEntrega + "]";
 //	}

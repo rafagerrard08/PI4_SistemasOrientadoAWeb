@@ -23,18 +23,18 @@ public class Cidade implements Serializable {
 
 	@JsonManagedReference
 	@ManyToOne
-	@JoinColumn(name = "estado_id")
-	private Estado estado;
+	@JoinColumn(name = "uf_id")
+	private UF uf;
 
 	public Cidade() {
 		super();
 	}
 
-	public Cidade(Integer id, String nome, Estado estado) {
+	public Cidade(Integer id, String nome, UF uf) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.estado = estado;
+		this.uf = uf;
 	}
 
 	public Integer getId() {
@@ -53,12 +53,12 @@ public class Cidade implements Serializable {
 		this.nome = nome;
 	}
 
-	public Estado getEstado() {
-		return estado;
+	public UF getUf() {
+		return uf;
 	}
 
-	public void setEstado(Estado estado) {
-		this.estado = estado;
+	public void setUf(UF uf) {
+		this.uf = uf;
 	}
 
 	@Override

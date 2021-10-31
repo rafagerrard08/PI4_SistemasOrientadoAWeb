@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Estado implements Serializable {
+public class UF implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,14 +23,14 @@ public class Estado implements Serializable {
 	private String nome;
 
 	@JsonBackReference
-	@OneToMany(mappedBy = "estado") // Indica que o mapeamento ja foi feito na associacao estado
+	@OneToMany(mappedBy = "uf") // Indica que o mapeamento ja foi feito na associacao estado
 	private List<Cidade> cidades = new ArrayList<>();
 
-	public Estado() {
+	public UF() {
 		super();
 	}
 
-	public Estado(Integer id, String nome) {
+	public UF(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -73,7 +73,7 @@ public class Estado implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estado other = (Estado) obj;
+		UF other = (UF) obj;
 		return Objects.equals(id, other.id);
 	}
 

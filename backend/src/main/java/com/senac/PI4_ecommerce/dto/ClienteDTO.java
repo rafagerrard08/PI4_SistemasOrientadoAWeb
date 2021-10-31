@@ -2,6 +2,7 @@ package com.senac.PI4_ecommerce.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.senac.PI4_ecommerce.model.Endereco;
@@ -17,88 +21,58 @@ import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String nome;
-	@Email
-	private String email;
-	// @CPF
-	private String cpf;
-	private String senha;
-	
-	private Integer estado;
+	@NotEmpty(message = "O preencimento do campo 'nomeCompleto' é obrigatorio.")
+	@Length(min = 5, max = 80, message = "Este campo 'nomeCompleto' ter entre 5 e 80 caracteres")
+	private String nomeCompleto;
+	@NotEmpty(message = "O preencimento do campo 'dataNascimento' é obrigatorio.")
+	private Date dataNascimento;
+	@NotEmpty(message = "O preencimento do campo 'dataNascimento' é obrigatorio.")
+	private String genero;
 
-	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public ClienteDTO() {
+		super();
 	}
 
-	public ClienteDTO(Integer id, String nome, @Email String email, String cpf, String senha, Endereco enderecoCobranca, EstadoCadastro estado) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.cpf = cpf;
-		this.senha = senha;
-		this.estado = estado.getId();
-	}
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
-	public String getEmail() {
-		return email;
+
+	public Date getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
-	public String getCpf() {
-		return cpf;
+
+	public String getGenero() {
+		return genero;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
-	public EstadoCadastro getEstado() {
-		return EstadoCadastro.toEnum(estado);
-	}
-
-	public void setEstado(EstadoCadastro estado) {
-		this.estado = estado.getId();
-	}
-
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
 }
-
-	
