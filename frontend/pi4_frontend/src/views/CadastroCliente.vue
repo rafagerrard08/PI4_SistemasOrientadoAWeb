@@ -4,7 +4,7 @@
     <div class="content">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Cadastro de Cliente</h4>
+          <h2 class="card-title">Cadastro de Cliente</h2>
 
           <div class="row">
             <div class="col form-group">
@@ -51,7 +51,11 @@
           <div class="row">
             <div class="col form-group">
               <label>Genero</label>
-              <select name="genero" v-model="genero">
+              <select
+                name="genero"
+                v-model="genero"
+                class="form-control form-control-sm"
+              >
                 <option value="masculino">Masculino</option>
                 <option value="feminino">Feminino</option>
               </select>
@@ -59,7 +63,7 @@
           </div>
 
           <div class="row">
-            <div class="col form-group">
+            <div class="">
               <label>CEP (Faturamento)</label>
               <input
                 v-model="cepFaturamento"
@@ -67,14 +71,14 @@
                 class="form-control form-control-sm"
               />
             </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              @click.prevent="pesquisarCepFaturamento()"
+            >
+              <i class="fa fa-search fa-fw"></i>Pesquisar CEP
+            </button>
           </div>
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            @click.prevent="pesquisarCepFaturamento()"
-          >
-            <i class="fa fa-search fa-fw"></i>Pesquisar CEP
-          </button>
 
           <div class="row" v-if="enderecosFaturamento.length > 0">
             <table class="table">
@@ -82,6 +86,7 @@
                 <tr>
                   <th scope="col">CEP</th>
                   <th scope="col">Logradouro</th>
+                  <th scope="col">Número</th>
                   <th scope="col">Bairro</th>
                   <th scope="col">Cidade</th>
                   <th scope="col">UF</th>
@@ -96,11 +101,11 @@
                 >
                   <td>{{ endereco.cep }}</td>
                   <td>{{ endereco.logradouro }}</td>
+                  <td>{{ endereco.numero }}</td>
                   <td>{{ endereco.bairro }}</td>
-                  <td>{{ endereco.localidade }}</td>
+                  <td>{{ endereco.cidade }}</td>
                   <td>{{ endereco.uf }}</td>
-                  <td>Faturamento</td>
-                  <td>Não</td>
+                  <td>{{ endereco.tipo }}</td>
                   <td>
                     <button @click="removerEnderecoFaturamento()">
                       Remover
@@ -112,7 +117,7 @@
           </div>
 
           <div class="row" style="margin-top: 30px">
-            <div class="col form-group">
+            <div class="">
               <label>CEPs (Entregas)</label>
               <input
                 v-model="cepEntrega"
@@ -120,14 +125,14 @@
                 class="form-control form-control-sm"
               />
             </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              @click.prevent="pesquisarCepEntrega()"
+            >
+              <i class="fa fa-search fa-fw"></i>Pesquisar CEP
+            </button>
           </div>
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            @click.prevent="pesquisarCepEntrega()"
-          >
-            <i class="fa fa-search fa-fw"></i>Pesquisar CEP
-          </button>
 
           <div class="row" v-if="enderecosEntregas.length > 0">
             <table class="table">
@@ -135,6 +140,7 @@
                 <tr>
                   <th scope="col">CEP</th>
                   <th scope="col">Logradouro</th>
+                  <th scope="col">Número</th>
                   <th scope="col">Bairro</th>
                   <th scope="col">Cidade</th>
                   <th scope="col">UF</th>
@@ -146,12 +152,18 @@
                 <tr v-for="endereco in enderecosEntregas" :key="endereco.cep">
                   <td>{{ endereco.cep }}</td>
                   <td>{{ endereco.logradouro }}</td>
+                  <td>{{ endereco.numero }}</td>
                   <td>{{ endereco.bairro }}</td>
-                  <td>{{ endereco.localidade }}</td>
+                  <td>{{ endereco.cidade }}</td>
                   <td>{{ endereco.uf }}</td>
-                  <td>Faturamento</td>
+                  <td>{{ endereco.tipo }}</td>
                   <td>
-                    <input type="radio" name="endereco_padrao" :checked="endereco.padrao"/>
+                    <input
+                      type="radio"
+                      name="endereco_padrao"
+                      :checked="endereco.padrao"
+                      @change="mudarEnderecoPadrao(endereco.cep)"
+                    />
                   </td>
                   <td>
                     <button @click="removerEnderecoEntrega(endereco.cep)">
@@ -213,7 +225,40 @@ export default {
   },
 
   methods: {
-    salvar() {},
+    salvar() {
+      if (this.enderecosEntregas.length > 1) {
+        const lista = this.enderecosEntregas.filter((e) => e.padrao);
+
+        if (lista == null || lista == undefined || lista.length == 0) {
+          alertUtils.alertFinalTop(
+            "Selecione um endereço de entrega padrão",
+            "warning"
+          );
+          return;
+        }
+      }
+
+      const cliente = {};
+      (cliente.nomeCompleto = this.nomeCliente), (cliente.senha = this.senha);
+      cliente.email = this.email;
+      cliente.cpf = this.cpf;
+      cliente.dataNascimento = this.data;
+      cliente.genero = this.genero;
+
+      const enderecos = [
+        ...this.enderecosFaturamento,
+        ...this.enderecosEntregas,
+      ];
+
+      cliente.enderecos = enderecos;
+
+      axios
+        .post("http://localhost:8080/clientes", cliente)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => alertUtils.alertFinalTop(err, "error"));
+    },
 
     async pesquisarCepFaturamento() {
       if (this.enderecosFaturamento.length > 0) {
@@ -237,7 +282,6 @@ export default {
         return;
       }
 
-      console.log(this.enderecosEntregas)
       await this.buscarEndereco(this.cepEntrega, "entrega");
     },
 
@@ -250,10 +294,71 @@ export default {
             return;
           }
 
-          if (lista === "entrega") this.enderecosEntregas.push(res.data);
-          else this.enderecosFaturamento.push(res.data);
+          const endereco = {};
+          endereco.cep = res.data.cep;
+          endereco.logradouro = res.data.logradouro;
+          endereco.bairro = res.data.bairro;
+          endereco.cidade = res.data.localidade;
+          endereco.uf = res.data.uf;
+          endereco.padrao = false;
+
+          this.solicitarNumeroLogradouro(endereco, lista);
         })
         .catch(() => alert("ERRO ao buscar o CEP"));
+    },
+
+    async solicitarNumeroLogradouro(endereco, lista) {
+      await swal
+        .fire({
+          title: "Número do Logradouro",
+          html: `<input type="text" id="numero" class="swal2-input" placeholder="Digite o numero do logradouro">`,
+          confirmButtonText: "OK",
+          focusConfirm: false,
+          preConfirm: () => {
+            const numero = swal.getPopup().querySelector("#numero").value;
+            if (!numero) {
+              swal.showValidationMessage(`Número inválido`);
+            }
+            return numero;
+          },
+        })
+        .then((result) => {
+          endereco.numero = result.value;
+          this.addNaLista(endereco, lista);
+        });
+    },
+
+    async addNaLista(endereco, lista) {
+      if (lista === "entrega") {
+        if (
+          this.enderecosEntregas == null ||
+          this.enderecosEntregas == undefined ||
+          this.enderecosEntregas.length == 0
+        ) {
+          endereco.padrao = true;
+        }
+        endereco.tipo = "ENTREGA";
+        this.enderecosEntregas.push(endereco);
+      } else {
+        endereco.tipo = "FATURAMENTO";
+        this.enderecosFaturamento.push(endereco);
+
+        const mesmoEndereco = await alertUtils.alertConfirmacaoTop(
+          "Deseja usar o mesmo endereço para entregas?"
+        );
+        if (mesmoEndereco) {
+          const entrgEnder = { ...endereco };
+          entrgEnder.tipo = "ENTREGA";
+          if (
+            this.enderecosEntregas == null ||
+            this.enderecosEntregas == undefined ||
+            this.enderecosEntregas.length == 0
+          ) {
+            entrgEnder.padrao = true;
+          }
+          this.enderecosEntregas.push(entrgEnder);
+        }
+      }
     },
 
     removerEnderecoFaturamento() {
@@ -266,21 +371,14 @@ export default {
       );
     },
 
-    async alertNumero(endereco) {
-      const { value: numero } = await swal.fire({
-        title: "Input email address",
-        input: "numero",
-        inputLabel: "Your email address",
-        inputPlaceholder: "Enter your email address",
-      });
-
-      if (numero === null || numero === "") {
-        swal.fire("Numero inválido");
+    mudarEnderecoPadrao(cep) {
+      for (const end of this.enderecosEntregas) {
+        end.padrao = false;
       }
 
-      endereco.logradouro = endereco.logradouro + ", " + numero;
+      const endEncont = this.enderecosEntregas.find((e) => e.cep === cep);
 
-      console.log(endereco);
+      endEncont.padrao = true;
     },
   },
 };

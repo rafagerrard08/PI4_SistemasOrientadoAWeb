@@ -128,5 +128,14 @@ export default new Router({
                 descricao: "CadastroCliente"
             }
         },
+        {
+            path: '/loginCliente',
+            name: 'loginCliente',
+            component: () =>
+                import ( /* webpackChunkName: "loginCliente" */ './views/LoginCliente'),
+            meta: {
+                descricao: "Tela de loginCliente"
+            }
+        },
     ]
 })
