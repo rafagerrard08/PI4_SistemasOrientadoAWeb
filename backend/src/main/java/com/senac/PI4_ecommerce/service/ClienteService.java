@@ -13,16 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.senac.PI4_ecommerce.dto.ClienteDTO;
 import com.senac.PI4_ecommerce.dto.EnderecoDTO;
 import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
 import com.senac.PI4_ecommerce.model.Cidade;
 import com.senac.PI4_ecommerce.model.Cliente;
 import com.senac.PI4_ecommerce.model.Endereco;
-import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.UF;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.ClienteRepository;
 import com.senac.PI4_ecommerce.repository.EnderecoRepository;
+import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
 import com.senac.PI4_ecommerce.service.exception.ObjectAlreadyExistsException;
 import com.senac.PI4_ecommerce.service.exception.ObjectNotFoundException;
 
@@ -48,17 +49,17 @@ public class ClienteService {
 		Optional<Cliente> cliente = clienteRepository.findByEmail(email);
 
 		if (cliente.isEmpty()) {
-			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
+			throw new InvalidDataException("Usuario ou Senha Invlaido!");
 		}
 
 		boolean valido = encoder.matches(senha, cliente.get().getSenha());
 
 		if (cliente.get().getEstado().equals(EstadoCadastro.INATIVO)) {
-			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
+			throw new InvalidDataException("Usuario ou Senha Invlaido!");
 		}
 
 		if (!valido) {
-			throw new ObjectNotFoundException("Usuario ou Senha Invlaido!");
+			throw new InvalidDataException("Usuario ou Senha Invlaido!");
 		}
 
 		ServletContext session = req.getServletContext();
@@ -118,4 +119,22 @@ public class ClienteService {
 		}
 	}
 
+	public Cliente update(ClienteDTO cliente) {
+		Optional<Cliente> clienteAtual = clienteRepository.findById(cliente.getId());
+
+		if (!clienteAtual.isEmpty()) {
+
+			Cliente novoCliente = clienteAtual.get();
+			novoCliente.setNomeCompleto(cliente.getNomeCompleto());
+			novoCliente.setDataNascimento(cliente.getDataNascimento());
+			novoCliente.setGenero(cliente.getGenero());
+
+//			
+			clienteRepository.save(novoCliente);
+			return novoCliente;
+
+		} else {
+			throw new ObjectNotFoundException("Nao foi encontrado um cliente com este ID.");
+		}
+	}
 }
