@@ -40,7 +40,7 @@ public class ClienteService {
 
 	@Autowired
 	private CidadeService cidadeService;
-	
+
 	@Autowired
 	private EnderecoRepository ufRepository;
 
@@ -68,45 +68,53 @@ public class ClienteService {
 	}
 
 	public Cliente save(NovoClienteDTO clienteDTO) {
-		Optional<Cliente> verificaExistente = clienteRepository.findByEmail(clienteDTO.getEmail());
-		if (verificaExistente.isEmpty()) {
-						
-			Cliente cliente = new Cliente(null, clienteDTO.getNomeCompleto(), clienteDTO.getEmail(), clienteDTO.getCpf(),
-					clienteDTO.getSenha(), EstadoCadastro.ATIVO, clienteDTO.getGenero(), clienteDTO.getDataNascimento());
-			
-			List<Endereco> enderecos = new ArrayList<>();
-			
-			for(EnderecoDTO enderecoDTO:  clienteDTO.getEnderecos()) {
-				UF estado = null;
-				Optional<UF> verificaEstado = ufService.getEstado(enderecoDTO.getUf());
-				if (verificaEstado.isEmpty()) {
-					estado = ufService.save(enderecoDTO.getUf());
-				} else {
-					estado = verificaEstado.get();
-				}
-				
-				Cidade cidade = null;
-				Optional<Cidade> verificaCidade = cidadeService.getCidade(enderecoDTO.getCidade(), estado);
-				if (verificaCidade.isEmpty()) {
-					cidade = cidadeService.save(enderecoDTO.getCidade(), estado);
-				} else {
-					cidade = verificaCidade.get();
-				}
-				
-				Endereco end =  new Endereco(enderecoDTO, cidade, cliente);
-				enderecos.add(end);
-			}
-			
-			cliente.setEnderecos(enderecos);
-			
-			Cliente clienteSalvo = clienteRepository.save(cliente);
-			
-			ufRepository.saveAll(enderecos);
+		Optional<Cliente> verificaEmailExistente = clienteRepository.findByEmail(clienteDTO.getEmail());
+		Optional<Cliente> verificaCpfExistente = clienteRepository.findByCpf(clienteDTO.getCpf());
 
-			return clienteSalvo;
+		if (verificaEmailExistente.isEmpty()) {
+			if (verificaCpfExistente.isEmpty()) {
+
+				Cliente cliente = new Cliente(null, clienteDTO.getNomeCompleto(), clienteDTO.getEmail(),
+						clienteDTO.getCpf(), clienteDTO.getSenha(), EstadoCadastro.ATIVO, clienteDTO.getGenero(),
+						clienteDTO.getDataNascimento());
+
+				List<Endereco> enderecos = new ArrayList<>();
+
+				for (EnderecoDTO enderecoDTO : clienteDTO.getEnderecos()) {
+					UF estado = null;
+					Optional<UF> verificaEstado = ufService.getEstado(enderecoDTO.getUf());
+					if (verificaEstado.isEmpty()) {
+						estado = ufService.save(enderecoDTO.getUf());
+					} else {
+						estado = verificaEstado.get();
+					}
+
+					Cidade cidade = null;
+					Optional<Cidade> verificaCidade = cidadeService.getCidade(enderecoDTO.getCidade(), estado);
+					if (verificaCidade.isEmpty()) {
+						cidade = cidadeService.save(enderecoDTO.getCidade(), estado);
+					} else {
+						cidade = verificaCidade.get();
+					}
+
+					Endereco end = new Endereco(enderecoDTO, cidade, cliente);
+					enderecos.add(end);
+				}
+
+				cliente.setEnderecos(enderecos);
+
+				Cliente clienteSalvo = clienteRepository.save(cliente);
+
+				ufRepository.saveAll(enderecos);
+
+				return clienteSalvo;
+			} else {
+				throw new ObjectAlreadyExistsException(
+						"Ja existe uma conta com o cpf [ " + clienteDTO.getCpf() + " ] cadastrado!");
+			}
 		} else {
 			throw new ObjectAlreadyExistsException(
-					"Ja existe uma conta com e-mail [ " + clienteDTO.getEmail() + " ] cadastrado!");
+					"Ja existe uma conta com o e-mail [ " + clienteDTO.getEmail() + " ] cadastrado!");
 		}
 	}
 

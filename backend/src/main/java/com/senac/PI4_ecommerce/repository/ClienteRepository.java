@@ -22,4 +22,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 	public Page<ClienteDTO> searchById(@Param("id") Integer id, Pageable pageRequest);
 	
 	public Optional<Cliente> findByEmail(String email);
+	
+	public Optional<Cliente> findByCpf(String cpf);
 }
