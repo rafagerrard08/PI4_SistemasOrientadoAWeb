@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senac.PI4_ecommerce.controller.utils.Util;
-import com.senac.PI4_ecommerce.dto.ClienteDTO;
 import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
 import com.senac.PI4_ecommerce.model.Cliente;
-import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.service.ClienteService;
 import com.senac.PI4_ecommerce.service.exception.InvalidDataException;
 

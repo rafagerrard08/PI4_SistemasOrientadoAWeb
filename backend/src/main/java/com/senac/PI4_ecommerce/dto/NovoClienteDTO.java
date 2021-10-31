@@ -1,6 +1,9 @@
 package com.senac.PI4_ecommerce.dto;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -10,9 +13,10 @@ import org.hibernate.validator.constraints.Length;
 public class NovoClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message = "O preencimento do campo 'nome' é obrigatorio.")
-	@Length(min = 5, max = 80, message = "Este campo 'nome' ter entre 5 e 80 caracteres")
-	private String nome;
+	private Integer id;
+	@NotEmpty(message = "O preencimento do campo 'nomeCompleto' é obrigatorio.")
+	@Length(min = 5, max = 80, message = "Este campo 'nomeCompleto' ter entre 5 e 80 caracteres")
+	private String nomeCompleto;
 	private String genero;
 	@NotEmpty(message = "O preencimento do campo 'email' é obrigatorio.")
 	@Email(message = "O email é invalido")
@@ -23,29 +27,20 @@ public class NovoClienteDTO implements Serializable {
 	@Length(min = 5, max = 80, message = "Este campo 'nome' ter entre 5 e 80 caracteres")
 	private String senha;	
 	
-	@NotEmpty(message = "O preencimento do campo 'logradouro' é obrigatorio.")
-	private String logradouro;
-	@NotEmpty(message = "O preencimento do campo 'numero' é obrigatorio.")
-	private String numero;
-	private String complemento;
-	private String bairro;
-	@NotEmpty(message = "O preencimento do campo 'cep' é obrigatorio.")
-	private String cep;
-	@NotEmpty(message = "O preencimento do campo 'cidade' é obrigatorio.")
-	private String cidade;
-	@NotEmpty(message = "O preencimento do campo 'estado' é obrigatorio.")
-	private String Estado;
+	private Date dataNascimento;
+	
+	private Set<EnderecoDTO> enderecos = new HashSet<>();
 
 	public NovoClienteDTO() {
 		super();
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 	
 	public String getGenero() {
@@ -80,60 +75,28 @@ public class NovoClienteDTO implements Serializable {
 		this.senha = senha;
 	}
 
-	public String getLogradouro() {
-		return logradouro;
+	public Date getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
-	public String getNumero() {
-		return numero;
+	public Set<EnderecoDTO> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setNumero(String numero) {
-		this.numero = numero;
+	public void setEnderecos(Set<EnderecoDTO> enderecos) {
+		this.enderecos = enderecos;
 	}
 
-	public String getComplemento() {
-		return complemento;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getEstado() {
-		return Estado;
-	}
-
-	public void setEstado(String estado) {
-		Estado = estado;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 

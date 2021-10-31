@@ -1,7 +1,7 @@
 package com.senac.PI4_ecommerce.model.enums;
 
 public enum TipoEndereco {
-	COBRANCA(1, "Cobrança"),
+	FATURAMENTO(1, "Faturamento"),
 	ENTREGA(2, "Entrega");
 
 	private Integer id;
