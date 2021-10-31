@@ -179,4 +179,41 @@ public class ClienteService {
 		}
 
 	}
+	
+	public void setEnderecos(Integer id, List<EnderecoDTO> enderecoDTO) {
+		if (!enderecoDTO.isEmpty()) {
+			Optional<Cliente> cliente = clienteRepository.findById(id);
+			List<Endereco> enderecos = new ArrayList<>();
+
+			if (!cliente.isEmpty()) {
+				for (EnderecoDTO endDTO : enderecoDTO) {
+					UF estado = null;
+					Optional<UF> verificaEstado = ufService.getEstado(endDTO.getUf());
+					if (verificaEstado.isEmpty()) {
+						estado = ufService.save(endDTO.getUf());
+					} else {
+						estado = verificaEstado.get();
+					}
+					
+					Cidade cidade = null;
+					Optional<Cidade> verificaCidade = cidadeService.getCidade(endDTO.getCidade(), estado);
+					if (verificaCidade.isEmpty()) {
+						cidade = cidadeService.save(endDTO.getCidade(), estado);
+					} else {
+						cidade = verificaCidade.get();
+					}
+					
+					Endereco end = new Endereco(endDTO, cidade, cliente.get());
+					enderecos.add(end);
+				}
+				
+				enderecoRepository.saveAll(enderecos);
+			} else {
+				throw new InvalidDataException("Nao foi encontrado nenhum cliente com o ID [ " + id + " ]");
+			}
+		} else {
+			throw new InvalidDataException("A lista de enderecos enviada esta vazia!");
+		}
+		
+	}
 }

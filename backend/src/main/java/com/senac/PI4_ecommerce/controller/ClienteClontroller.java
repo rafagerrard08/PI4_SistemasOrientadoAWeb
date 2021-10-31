@@ -74,4 +74,12 @@ public class ClienteClontroller {
 	public ResponseEntity<List<EnderecoDTO>> getEnderecos(@PathVariable("id") Integer id) {
 		return  ResponseEntity.ok().body(clienteService.getEnderecos(id));
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/setEnderecos/{id}")
+	public ResponseEntity<String> setEnderecos(@PathVariable("id") Integer id, @RequestBody List<EnderecoDTO> enderecosDTO) {
+		
+		clienteService.setEnderecos(id, enderecosDTO);
+		
+		return  ResponseEntity.ok().body("Enderecos alterados com sucesso");
+	}
 }
