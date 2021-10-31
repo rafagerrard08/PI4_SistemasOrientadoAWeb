@@ -43,7 +43,7 @@ public class ClienteService {
 	private CidadeService cidadeService;
 
 	@Autowired
-	private EnderecoRepository ufRepository;
+	private EnderecoRepository enderecoRepository;
 
 	public ResponseEntity<Cliente> validarLogin(String email, String senha, HttpServletRequest req) {
 		Optional<Cliente> cliente = clienteRepository.findByEmail(email);
@@ -106,7 +106,7 @@ public class ClienteService {
 
 				Cliente clienteSalvo = clienteRepository.save(cliente);
 
-				ufRepository.saveAll(enderecos);
+				enderecoRepository.saveAll(enderecos);
 
 				return clienteSalvo;
 			} else {
@@ -156,5 +156,19 @@ public class ClienteService {
 		} else
 			throw new ObjectNotFoundException("Nao foi encontrado cliente com id [ " + id + " ]");
 
+	}
+
+	public List<Endereco> getEnderecos(Integer id) {
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		
+		if (!cliente.isEmpty()) {
+			List<Endereco> enderecos =  enderecoRepository.getEnderecos(cliente.get());
+			return enderecos;
+		} else {
+			throw new InvalidDataException("Nao foi encontrado nenhum endereco para o ID [ " + id + " ]");
+		}
+		
+		 
+		
 	}
 }
