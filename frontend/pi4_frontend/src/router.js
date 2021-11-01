@@ -120,7 +120,7 @@ export default new Router({
         },
 
         {
-            path: '/clientes',
+            path: '/clientes/:id',
             name: 'clientes',
             component: () =>
                 import ( /* webpackChunkName: "clientes" */ './views/CadastroCliente'),

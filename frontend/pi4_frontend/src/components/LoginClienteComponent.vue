@@ -70,6 +70,7 @@ export default {
         this.$router.push('/home') 
       })
       .catch((err) => {
+        console.log(err)
         alertUtils.alertFinalTop("Dados inválidos", "error");
       });
     },

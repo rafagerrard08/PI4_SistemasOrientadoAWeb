@@ -13,6 +13,18 @@
                 v-model="email"
                 type="email"
                 class="form-control form-control-sm"
+                :readonly="atualizacao"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <label>CPF</label>
+              <input
+                v-model="cpf"
+                type="number"
+                class="form-control form-control-sm"
+                :readonly="atualizacao"
               />
             </div>
           </div>
@@ -27,16 +39,7 @@
               />
             </div>
           </div>
-          <div class="row">
-            <div class="col form-group">
-              <label>CPF</label>
-              <input
-                v-model="cpf"
-                type="number"
-                class="form-control form-control-sm"
-              />
-            </div>
-          </div>
+
           <div class="row">
             <div class="col form-group">
               <label>Data de Nascimento</label>
@@ -190,7 +193,8 @@
             class="btn btn-primary btn-sm"
             @click.prevent="salvar()"
           >
-            <i class="fa fa-search fa-fw"></i>Incluir
+            <i class="fa fa-search fa-fw"></i
+            >{{ atualizacao ? "Atualizar" : "Incluir" }}
           </button>
         </div>
       </div>
@@ -221,10 +225,64 @@ export default {
       genero: null,
       enderecosFaturamento: [],
       enderecosEntregas: [],
+      atualizacao: false,
+      id: null
     };
   },
 
+  created() {
+    if (this.$route.params.id != null) {
+      this.atualizacao = true;
+      this.id = this.$route.params.id;
+      this.getUsuarioSessao();
+    } else {
+      this.atualizacao = false;
+    }
+  },
+
   methods: {
+    getUsuarioSessao() {
+      axios
+        .get("http://localhost:8080/clientes/"+this.id)
+        .then((res) => {
+          const retorno = res.data;
+          console.log(retorno);
+          this.email = retorno.email;
+          this.cpf = retorno.cpf;
+          this.nomeCliente = retorno.nomeCompleto;
+          this.data = retorno.dataNascimento.split("T")[0];
+          this.genero = retorno.genero;
+
+          const endFatur = retorno.enderecos.find(
+            (e) => e.tipo === "FATURAMENTO"
+          );
+
+          const cidade = endFatur.cidade.nome;
+          const uf = endFatur.cidade.uf.nome;
+
+          endFatur.cidade = cidade;
+          endFatur.uf = uf;
+
+          this.enderecosFaturamento.push(endFatur);
+
+          const endsEntregs = retorno.enderecos.filter(
+            (e) => e.tipo === "ENTREGA"
+          );
+
+          debugger
+          for (const e of endsEntregs) {
+            const cidade = e.cidade.nome;
+            const uf = e.cidade.uf.nome;
+
+            e.cidade = cidade;
+            e.uf = uf;
+          }
+
+          this.enderecosEntregas.push(...endsEntregs);
+        })
+        .catch((err) => alertUtils.alertFinalTop(err, "error"));
+    },
+
     salvar() {
       if (this.enderecosEntregas.length > 1) {
         const lista = this.enderecosEntregas.filter((e) => e.padrao);
@@ -252,12 +310,23 @@ export default {
 
       cliente.enderecos = enderecos;
 
-      axios
-        .post("http://localhost:8080/clientes", cliente)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => alertUtils.alertFinalTop(err, "error"));
+      if (this.atualizacao) {
+        axios
+          .put("http://localhost:8080/clientes/"+this.id, cliente)
+          .then((res) => {
+            console.log(res);
+            this.$router.push("/home");
+          })
+          .catch((err) => alertUtils.alertFinalTop(err, "error"));
+      } else {
+        axios
+          .post("http://localhost:8080/clientes", cliente)
+          .then((res) => {
+            console.log(res);
+            this.$router.push("/home");
+          })
+          .catch((err) => alertUtils.alertFinalTop(err, "error"));
+      }
     },
 
     async pesquisarCepFaturamento() {
