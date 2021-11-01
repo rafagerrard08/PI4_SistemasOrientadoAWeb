@@ -23,8 +23,7 @@ public class NovoClienteDTO implements Serializable {
 	private String email;
 	@NotEmpty(message = "O preencimento do campo 'cpf' é obrigatorio.")
 	private String cpf;	
-	@NotEmpty(message = "O preencimento do campo 'senha' é obrigatorio.")
-	@Length(min = 5, max = 80, message = "Este campo 'nome' ter entre 5 e 80 caracteres")
+	// deixar sem validacao aqui, no atualizar da tela a senha é opcional
 	private String senha;	
 	
 	private Date dataNascimento;

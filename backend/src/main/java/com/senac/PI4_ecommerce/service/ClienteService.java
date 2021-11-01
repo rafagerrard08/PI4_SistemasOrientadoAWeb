@@ -1,18 +1,22 @@
 package com.senac.PI4_ecommerce.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.fasterxml.jackson.databind.ser.std.ArraySerializerBase;
 import com.senac.PI4_ecommerce.dto.ClienteDTO;
 import com.senac.PI4_ecommerce.dto.EnderecoDTO;
 import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
@@ -119,43 +123,43 @@ public class ClienteService {
 		}
 	}
 
-	public Cliente update(ClienteDTO cliente) {
-		Optional<Cliente> clienteAtual = clienteRepository.findById(cliente.getId());
+	public Cliente update(@Valid NovoClienteDTO dadosParaAtualizar) {
+		Optional<Cliente> optClienteAtual = clienteRepository.findById(dadosParaAtualizar.getId());
 
-		if (!clienteAtual.isEmpty()) {
+		if (optClienteAtual.isPresent()) {
 
-			Cliente novoCliente = clienteAtual.get();
-			novoCliente.setNomeCompleto(cliente.getNomeCompleto());
-			novoCliente.setDataNascimento(cliente.getDataNascimento());
-			novoCliente.setGenero(cliente.getGenero());
-
-			clienteRepository.save(novoCliente);
-			return novoCliente;
+			Cliente clienteAtual = optClienteAtual.get();
+			clienteAtual.setNomeCompleto(dadosParaAtualizar.getNomeCompleto());
+			clienteAtual.setDataNascimento(dadosParaAtualizar.getDataNascimento());
+			clienteAtual.setGenero(dadosParaAtualizar.getGenero());
+			
+			clienteAtual.setEmail(dadosParaAtualizar.getEmail());
+			clienteAtual.setCpf(dadosParaAtualizar.getCpf());
+				
+			clienteAtual.setEnderecos(null);
+			clienteRepository.save(clienteAtual);
+			return clienteAtual;
 
 		} else {
 			throw new ObjectNotFoundException("Nao foi encontrado um cliente com este ID.");
 		}
 	}
 
-	public void updateSenha(Integer id, String senhaAtual, String senhaNova) {
-		if (senhaAtual == null || senhaNova == null)
+	public void updateSenha(Integer id, String senha) {
+		if (senha == null)
 			throw new InvalidDataException("As senhas informadas nao podem estar nulas!");
 
 		Optional<Cliente> clienteAtual = clienteRepository.findById(id);
-		if (!clienteAtual.isEmpty()) {
+		if (clienteAtual.isPresent()) {
 
-			boolean valido = encoder.matches(senhaAtual, clienteAtual.get().getSenha());
-			if (valido) {
-				Cliente clienteNovo = clienteAtual.get();
-				clienteNovo.setSenha(encoder.encode(senhaNova));
-				clienteRepository.save(clienteNovo);
+			Cliente clienteNovo = clienteAtual.get();
+			clienteNovo.setSenha(encoder.encode(senha));
+			clienteRepository.save(clienteNovo);
 
-			} else
-				throw new InvalidDataException("A senha atual informada nao corresponde a senha cadastrada!");
-
-		} else
+		} else {
 			throw new ObjectNotFoundException("Nao foi encontrado cliente com id [ " + id + " ]");
-
+		}
+		
 	}
 
 	public List<EnderecoDTO> getEnderecos(Integer id) {
@@ -180,8 +184,41 @@ public class ClienteService {
 
 	}
 	
+	public void setEnderecos(Cliente novoCliente, List<EnderecoDTO> enderecoDTO) {
+		if (!CollectionUtils.isEmpty(enderecoDTO)) {
+			List<Endereco> enderecos = new ArrayList<>();
+
+			for (EnderecoDTO endDTO : enderecoDTO) {
+				UF estado = null;
+				Optional<UF> verificaEstado = ufService.getEstado(endDTO.getUf());
+				if (verificaEstado.isEmpty()) {
+					estado = ufService.save(endDTO.getUf());
+				} else {
+					estado = verificaEstado.get();
+				}
+				
+				Cidade cidade = null;
+				Optional<Cidade> verificaCidade = cidadeService.getCidade(endDTO.getCidade(), estado);
+				if (verificaCidade.isEmpty()) {
+					cidade = cidadeService.save(endDTO.getCidade(), estado);
+				} else {
+					cidade = verificaCidade.get();
+				}
+				
+				Endereco end = new Endereco(endDTO, cidade, novoCliente);
+				enderecos.add(end);
+			}
+			
+			enderecoRepository.saveAll(enderecos);
+			
+		} else {
+			throw new InvalidDataException("A lista de enderecos enviada esta vazia!");
+		}
+		
+	}
+	
 	public void setEnderecos(Integer id, List<EnderecoDTO> enderecoDTO) {
-		if (!enderecoDTO.isEmpty()) {
+		if (!CollectionUtils.isEmpty(enderecoDTO)) {
 			Optional<Cliente> cliente = clienteRepository.findById(id);
 			List<Endereco> enderecos = new ArrayList<>();
 
@@ -216,4 +253,5 @@ public class ClienteService {
 		}
 		
 	}
+
 }

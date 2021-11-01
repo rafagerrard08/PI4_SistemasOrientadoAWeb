@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senac.PI4_ecommerce.Utils.SessaoUtils;
 import com.senac.PI4_ecommerce.controller.utils.Util;
 import com.senac.PI4_ecommerce.dto.UsuarioDTO;
 import com.senac.PI4_ecommerce.model.Usuario;
@@ -48,7 +49,7 @@ public class UsuarioController {
 			@RequestParam(value = "tipo", required = false) String tipo,
 			HttpServletRequest req) {
 		
-		Usuario userSessao = getTipoUsuarioDaSessao(req);
+		Usuario userSessao = SessaoUtils.getUsuarioDaSessao(req);
 
 		String nomeDecode = Util.decodeParam(nome);
 		
@@ -56,17 +57,6 @@ public class UsuarioController {
 				tipo, userSessao);
 	
 		return ResponseEntity.ok().body(usuarios);
-	}
-	
-	private Usuario getTipoUsuarioDaSessao(HttpServletRequest req) {
-		
-		ServletContext session = req.getServletContext();
-		Object userSessao = session.getAttribute("usuario");
-		if(Objects.isNull(userSessao)) {
-			throw new IllegalStateException("Usuario não setado na sessão, se logue novamente carinha");
-		}
-		
-		return (Usuario) userSessao;
 	}
 
 	@RequestMapping(value = "/{email}", method = RequestMethod.GET)
@@ -114,7 +104,7 @@ public class UsuarioController {
 	@RequestMapping(method = RequestMethod.PUT, value = "updateEstado/{id}/{novoEstado}")
 	public ResponseEntity<UsuarioDTO> updateEstado(@PathVariable("id") Integer id, @PathVariable("novoEstado") String novoEstado, HttpServletRequest req) {
 		
-		Usuario userSessao = getTipoUsuarioDaSessao(req);
+		Usuario userSessao = SessaoUtils.getUsuarioDaSessao(req);
 		
 		if(!"Administrador".equalsIgnoreCase(userSessao.getTipoUsuario().getDescricao())) {
 			throw new RuntimeException("Apenas ADMs podem mudar os estados dos usuario");
