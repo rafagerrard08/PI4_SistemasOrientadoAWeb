@@ -226,7 +226,7 @@ export default {
       enderecosFaturamento: [],
       enderecosEntregas: [],
       atualizacao: false,
-      id: null
+      id: null,
     };
   },
 
@@ -234,16 +234,16 @@ export default {
     if (this.$route.params.id != null) {
       this.atualizacao = true;
       this.id = this.$route.params.id;
-      this.getUsuarioSessao();
+      this.getUsuarioById();
     } else {
       this.atualizacao = false;
     }
   },
 
   methods: {
-    getUsuarioSessao() {
+    getUsuarioById() {
       axios
-        .get("http://localhost:8080/clientes/"+this.id)
+        .get("http://localhost:8080/clientes/" + this.id)
         .then((res) => {
           const retorno = res.data;
           console.log(retorno);
@@ -269,7 +269,6 @@ export default {
             (e) => e.tipo === "ENTREGA"
           );
 
-          debugger
           for (const e of endsEntregs) {
             const cidade = e.cidade.nome;
             const uf = e.cidade.uf.nome;
@@ -284,6 +283,17 @@ export default {
     },
 
     salvar() {
+      if (
+        this.enderecosFaturamento == null ||
+        this.enderecosFaturamento.length == 0
+      ) {
+        alertUtils.alertFinalTop(
+          "Endereço faturamento é obrigatorio",
+          "warning"
+        );
+        return;
+      }
+
       if (this.enderecosEntregas.length > 1) {
         const lista = this.enderecosEntregas.filter((e) => e.padrao);
 
@@ -297,7 +307,8 @@ export default {
       }
 
       const cliente = {};
-      (cliente.nomeCompleto = this.nomeCliente), (cliente.senha = this.senha);
+      cliente.nomeCompleto = this.nomeCliente;
+      cliente.senha = this.senha;
       cliente.email = this.email;
       cliente.cpf = this.cpf;
       cliente.dataNascimento = this.data;
@@ -312,7 +323,7 @@ export default {
 
       if (this.atualizacao) {
         axios
-          .put("http://localhost:8080/clientes/"+this.id, cliente)
+          .put("http://localhost:8080/clientes/" + this.id, cliente)
           .then((res) => {
             console.log(res);
             this.$router.push("/home");
@@ -323,7 +334,7 @@ export default {
           .post("http://localhost:8080/clientes", cliente)
           .then((res) => {
             console.log(res);
-            this.$router.push("/home");
+            this.$router.push("/loginCliente");
           })
           .catch((err) => alertUtils.alertFinalTop(err, "error"));
       }

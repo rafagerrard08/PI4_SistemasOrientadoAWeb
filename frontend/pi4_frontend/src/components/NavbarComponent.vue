@@ -23,9 +23,15 @@
               ></a
             >
           </li>
-          <li>
-            <router-link to="/login">
+
+          <li v-if="sessao == 'ADMINISTRADOR' || sessao == 'ESTOQUISTA'">
+            <router-link to="/backoffice">
               <span class="glyphicon glyphicon-user"> Configuracoes</span>
+            </router-link>  
+          </li>
+          <li v-if="sessao == 'CLIENTE'">
+            <router-link :to="telaClientes">
+              <span class="glyphicon glyphicon-user"> Atualizar-dados</span>
             </router-link>  
           </li>
           <li>
@@ -42,7 +48,20 @@
 <script>
 
 export default {
-    name: "NavbarComponent"
+    name: "NavbarComponent",
+
+    created() {
+    },
+
+    computed: {
+        sessao() {
+            return sessionStorage.getItem("tipoUsuario");
+        },
+
+        telaClientes() {
+          return "/clientes/"+sessionStorage.getItem("idUsuario");
+        }
+    },
 }
 </script>
 

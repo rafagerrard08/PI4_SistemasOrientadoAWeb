@@ -4,7 +4,10 @@
     <div class="row">
       <div class="col-md-6">
         <form>
-          <p class="h4 text-center mb-4">ENTRE COM USUARIO E SENHA <br>(Essa pagina é para login dos CLIENTES)</p>
+          <p class="h4 text-center mb-4">
+            ENTRE COM USUARIO E SENHA <br />(Essa pagina é para login dos
+            CLIENTES)
+          </p>
           <label for="defaultFormLoginEmailEx" class="grey-text"
             >Seu E-Mail</label
           >
@@ -28,7 +31,20 @@
           />
           <p class="erro" v-if="!valido">Usuario ou senha invalido</p>
           <div class="text-center mt-4">
-            <button class="btn btn-indigo" type="submit" @click="validarLogin()">Entrar</button>
+            <button
+              class="btn btn-indigo"
+              type="submit"
+              @click="validarLogin()"
+            >
+              Entrar
+            </button>
+          </div>
+          <div class="text-center mt-4">
+            <router-link to = "/clientes">
+            <button class="btn btn-indigo" type="submit">
+              Criar Conta
+            </button>
+             </router-link>  
           </div>
         </form>
       </div>
@@ -48,7 +64,7 @@ export default {
   data() {
     return {
       email: null,
-      senha: null, 
+      senha: null,
       valido: true,
       usuarioLogado: null,
     };
@@ -57,33 +73,39 @@ export default {
   components: {},
 
   methods: {
-    validarLogin(){
+   
+
+    validarLogin() {
       sessionStorage.clear();
-      axios.get("http://localhost:8080/clientes/validarLogin?email=" + this.email + "&senha=" + this.senha)
-      .then((res) => {
-        
-        const tipoUser = res.data.tipoUsuario;
-        sessionStorage.setItem("tipoUsuario", "CLIENTE");
-        sessionStorage.setItem("idUsuario", res.data.id);
+      axios
+        .get(
+          "http://localhost:8080/clientes/validarLogin?email=" +
+            this.email +
+            "&senha=" +
+            this.senha
+        )
+        .then((res) => {
+          const tipoUser = res.data.tipoUsuario;
+          sessionStorage.setItem("tipoUsuario", "CLIENTE");
+          sessionStorage.setItem("idUsuario", res.data.id);
 
-
-        this.$router.push('/home') 
-      })
-      .catch((err) => {
-        console.log(err)
-        alertUtils.alertFinalTop("Dados inválidos", "error");
-      });
+          this.$router.push("/home");
+        })
+        .catch((err) => {
+          console.log(err);
+          alertUtils.alertFinalTop("Dados inválidos", "error");
+        });
     },
   },
 };
 </script>
 
 <style>
-  .btn{
-    margin-top: 15px;
-  }
+.btn {
+  margin-top: 15px;
+}
 
-  .erro{
-    color: red;
-  }
+.erro {
+  color: red;
+}
 </style>

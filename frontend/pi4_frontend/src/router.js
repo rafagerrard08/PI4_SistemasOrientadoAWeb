@@ -118,6 +118,15 @@ export default new Router({
                 descricao: "Logout"
             }
         },
+        {
+            path: '/clientes',
+            name: 'clientes',
+            component: () =>
+                import ( /* webpackChunkName: "clientes" */ './views/CadastroCliente'),
+            meta: {
+                descricao: "CadastroCliente"
+            }
+        },
 
         {
             path: '/clientes/:id',
