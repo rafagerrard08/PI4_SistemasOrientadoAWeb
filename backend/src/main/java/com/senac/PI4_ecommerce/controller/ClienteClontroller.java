@@ -57,7 +57,7 @@ public class ClienteClontroller {
 	public ResponseEntity<Cliente> inserir(@Valid @RequestBody NovoClienteDTO novoCliente) {
 		if (Util.isCPF(novoCliente.getCpf())) {
 			String senha = novoCliente.getSenha();
-			if(Objects.isNull(senha) || Integer.valueOf(senha) < 5 || Integer.valueOf(senha) > 80) {
+			if(Objects.isNull(senha) || senha.length() < 5 || senha.length() > 80) {
 				throw new InvalidDataException("Este campo 'senha' é obrigatorio e deve ter entre 5 e 80 caracteres");
 			}
 			
@@ -70,20 +70,24 @@ public class ClienteClontroller {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-	public ResponseEntity<Cliente> update(@Valid @RequestBody NovoClienteDTO cliente, @PathVariable("id") Integer id, HttpServletRequest req) {
+	public ResponseEntity<?> update(@Valid @RequestBody NovoClienteDTO cliente, @PathVariable("id") Integer id, HttpServletRequest req) {
 		// se nao tiver sessao já sera lançado exception
 		SessaoUtils.getClienteDaSessao(req);
 		
 		cliente.setId(id);
 		
+		// se tiver valor na senha é para atualizar, se nao mantem a mesma
 		if(cliente.getSenha() != null) {
 			clienteService.updateSenha(id, cliente.getSenha());
 		}
+		
+		// atualiza dados comuns, menos os endereços
 		Cliente clienteAtualizado = clienteService.update(cliente);
 		
-		clienteService.setEnderecos(clienteAtualizado.getId(), new ArrayList<>(cliente.getEnderecos()));
+		// remove todos endereços atuais e atualiza com os enviados
+		clienteService.updateEnderecos(clienteAtualizado.getId(), new ArrayList<>(cliente.getEnderecos()));
 
-		return ResponseEntity.ok(clienteAtualizado);
+		return ResponseEntity.ok().build();
 
 	}
 	

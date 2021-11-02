@@ -136,7 +136,6 @@ public class ClienteService {
 			clienteAtual.setEmail(dadosParaAtualizar.getEmail());
 			clienteAtual.setCpf(dadosParaAtualizar.getCpf());
 				
-			clienteAtual.setEnderecos(null);
 			clienteRepository.save(clienteAtual);
 			return clienteAtual;
 
@@ -217,12 +216,15 @@ public class ClienteService {
 		
 	}
 	
-	public void setEnderecos(Integer id, List<EnderecoDTO> enderecoDTO) {
+	public void updateEnderecos(Integer id, List<EnderecoDTO> enderecoDTO) {
 		if (!CollectionUtils.isEmpty(enderecoDTO)) {
 			Optional<Cliente> cliente = clienteRepository.findById(id);
 			List<Endereco> enderecos = new ArrayList<>();
 
 			if (!cliente.isEmpty()) {
+				
+				enderecoRepository.deleteAll(cliente.get().getEnderecos());
+				
 				for (EnderecoDTO endDTO : enderecoDTO) {
 					UF estado = null;
 					Optional<UF> verificaEstado = ufService.getEstado(endDTO.getUf());
