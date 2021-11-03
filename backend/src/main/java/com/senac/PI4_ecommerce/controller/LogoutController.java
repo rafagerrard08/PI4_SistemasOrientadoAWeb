@@ -17,6 +17,7 @@ public class LogoutController {
 
 		ServletContext session = req.getServletContext();
 		session.setAttribute("usuario", null);
+		session.setAttribute("cliente", null);
 				
 		return ResponseEntity.ok().build();
 	}
