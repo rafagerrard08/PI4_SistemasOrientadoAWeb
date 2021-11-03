@@ -34,6 +34,11 @@
               <span class="glyphicon glyphicon-user"> Atualizar-dados</span>
             </router-link>  
           </li>
+          <li v-else>
+            <router-link to="/loginCliente">
+              <span class="glyphicon glyphicon-user"> Login</span>
+            </router-link>  
+          </li>
           <li>
             <router-link to="/logout">
               <span class="glyphicon glyphicon-log-out"> Sair</span>

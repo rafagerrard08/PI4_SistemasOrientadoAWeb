@@ -6,196 +6,255 @@
         <div class="card-body">
           <h2 class="card-title">Cadastro de Cliente</h2>
 
-          <div class="row">
-            <div class="col form-group">
-              <label>Email</label>
-              <input
-                v-model="email"
-                type="email"
-                class="form-control form-control-sm"
-                :readonly="atualizacao"
-              />
+          <form @submit.prevent="salvar()" action="">
+            <div class="row">
+              <div class="col form-group">
+                <label>Email</label>
+                <input
+                  v-model="email"
+                  type="email"
+                  class="form-control form-control-sm"
+                  :readonly="atualizacao"
+                  required
+                />
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col form-group">
-              <label>CPF</label>
-              <input
-                v-model="cpf"
-                type="number"
-                class="form-control form-control-sm"
-                :readonly="atualizacao"
-              />
+            <div class="row">
+              <div class="col form-group">
+                <label>CPF</label>
+                <input
+                  v-model="cpf"
+                  type="number"
+                  class="form-control form-control-sm"
+                  :readonly="atualizacao"
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col form-group">
-              <label>Nome do Completo</label>
-              <input
-                v-model="nomeCliente"
-                type="text"
-                class="form-control form-control-sm"
-              />
+            <div class="row">
+              <div class="col form-group">
+                <label>Nome do Completo</label>
+                <input
+                  v-model="nomeCliente"
+                  type="text"
+                  class="form-control form-control-sm"
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col form-group">
-              <label>Data de Nascimento</label>
-              <input
-                v-model="data"
-                type="date"
-                class="form-control form-control-sm"
-              />
+            <div class="row">
+              <div class="col form-group">
+                <label>Data de Nascimento</label>
+                <input
+                  v-model="data"
+                  type="date"
+                  class="form-control form-control-sm"
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col form-group">
-              <label>Genero</label>
-              <select
-                name="genero"
-                v-model="genero"
-                class="form-control form-control-sm"
-              >
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="">
-              <label>CEP (Faturamento)</label>
-              <input
-                v-model="cepFaturamento"
-                type="number"
-                class="form-control form-control-sm"
-              />
-            </div>
-            <button
-              type="submit"
-              class="btn btn-primary btn-sm"
-              @click.prevent="pesquisarCepFaturamento()"
-            >
-              <i class="fa fa-search fa-fw"></i>Pesquisar CEP
-            </button>
-          </div>
-
-          <div class="row" v-if="enderecosFaturamento.length > 0">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">CEP</th>
-                  <th scope="col">Logradouro</th>
-                  <th scope="col">Número</th>
-                  <th scope="col">Bairro</th>
-                  <th scope="col">Cidade</th>
-                  <th scope="col">UF</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Padrão</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="endereco in enderecosFaturamento"
-                  :key="endereco.cep"
+            <div class="row">
+              <div class="col form-group">
+                <label>Genero</label>
+                <select
+                  name="genero"
+                  v-model="genero"
+                  class="form-control form-control-sm"
+                  required
                 >
-                  <td>{{ endereco.cep }}</td>
-                  <td>{{ endereco.logradouro }}</td>
-                  <td>{{ endereco.numero }}</td>
-                  <td>{{ endereco.bairro }}</td>
-                  <td>{{ endereco.cidade }}</td>
-                  <td>{{ endereco.uf }}</td>
-                  <td>{{ endereco.tipo }}</td>
-                  <td>
-                    <button @click="removerEnderecoFaturamento()">
-                      Remover
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="row" style="margin-top: 30px">
-            <div class="">
-              <label>CEPs (Entregas)</label>
-              <input
-                v-model="cepEntrega"
-                type="number"
-                class="form-control form-control-sm"
-              />
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
+              </div>
             </div>
+
+            <div class="row">
+              <div class="">
+                <label>CEP (Faturamento)</label>
+                <input
+                  v-model="cepFaturamento"
+                  type="number"
+                  class="form-control form-control-sm"
+                />
+              </div>
+              <button
+                class="btn btn-primary btn-sm"
+                @click.prevent="pesquisarCepFaturamento()"
+              >
+                <i class="fa fa-search fa-fw"></i>Pesquisar CEP
+              </button>
+            </div>
+
+            <div class="row" v-if="enderecosFaturamento.length > 0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">CEP</th>
+                    <th scope="col">Logradouro</th>
+                    <th scope="col">Número</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col">UF</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Padrão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="endereco in enderecosFaturamento"
+                    :key="endereco.cep"
+                  >
+                    <td>{{ endereco.cep }}</td>
+                    <td>{{ endereco.logradouro }}</td>
+                    <td>{{ endereco.numero }}</td>
+                    <td>{{ endereco.bairro }}</td>
+                    <td>{{ endereco.cidade }}</td>
+                    <td>{{ endereco.uf }}</td>
+                    <td>{{ endereco.tipo }}</td>
+                    <td>
+                      <button @click="removerEnderecoFaturamento()">
+                        Remover
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row" style="margin-top: 30px">
+              <div class="">
+                <label>CEPs (Entregas)</label>
+                <input
+                  v-model="cepEntrega"
+                  type="number"
+                  class="form-control form-control-sm"
+                />
+              </div>
+              <button
+                class="btn btn-primary btn-sm"
+                @click.prevent="pesquisarCepEntrega()"
+              >
+                <i class="fa fa-search fa-fw"></i>Pesquisar CEP
+              </button>
+            </div>
+
+            <div class="row" v-if="enderecosEntregas.length > 0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">CEP</th>
+                    <th scope="col">Logradouro</th>
+                    <th scope="col">Número</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col">UF</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Padrão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="endereco in enderecosEntregas" :key="endereco.cep">
+                    <td>{{ endereco.cep }}</td>
+                    <td>{{ endereco.logradouro }}</td>
+                    <td>{{ endereco.numero }}</td>
+                    <td>{{ endereco.bairro }}</td>
+                    <td>{{ endereco.cidade }}</td>
+                    <td>{{ endereco.uf }}</td>
+                    <td>{{ endereco.tipo }}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        name="endereco_padrao"
+                        :checked="endereco.padrao"
+                        @change="mudarEnderecoPadrao(endereco.cep)"
+                      />
+                    </td>
+                    <td>
+                      <button @click="removerEnderecoEntrega(endereco.cep)">
+                        Remover
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="senhas" v-if="atualizacao == false">
+              <div class="row" style="margin-top: 30px">
+                <div class="col form-group">
+                  <label>Senha</label>
+                  <input
+                    v-model="senha"
+                    type="password"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row" style="margin-top: 30px">
+                <div class="col form-group">
+                  <label>Confirmacao da Senha</label>
+                  <input
+                    @keyup="testarSenhasIguais"
+                    v-model="confirmacaoSenha"
+                    type="password"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </div>
+              </div>
+              <p class="erro" v-if="!senhaValida">As senhas nao sao iguais!</p>
+            </div>
+
+            <div class="senhas" v-if="atualizacao == true">
+              <button
+                type="submit"
+                class="btn btn-primary btn-sm"
+                @click.prevent="pressAlterarSenha()"
+              >
+                <i class="fa fa-search fa-fw"></i>Alterar Senha
+              </button>
+              <div v-if="alterarSenha == true">
+                <div class="row" style="margin-top: 30px">
+                  <div class="col form-group">
+                    <label>Nova Senha</label>
+                    <input
+                      v-model="senha"
+                      type="password"
+                      class="form-control form-control-sm"
+                    />
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top: 30px">
+                  <div class="col form-group">
+                    <label>Confirmacao da nova Senha</label>
+                    <input
+                      @keyup="testarSenhasIguais"
+                      v-model="confirmacaoSenha"
+                      type="password"
+                      class="form-control form-control-sm"
+                    />
+                  </div>
+                </div>
+                <p class="erro" v-if="!senhaValida">
+                  As senhas nao sao iguais!
+                </p>
+              </div>
+            </div>
+
             <button
               type="submit"
               class="btn btn-primary btn-sm"
-              @click.prevent="pesquisarCepEntrega()"
             >
-              <i class="fa fa-search fa-fw"></i>Pesquisar CEP
+              <i class="fa fa-search fa-fw"></i
+              >{{ atualizacao ? "Atualizar" : "Incluir" }}
             </button>
-          </div>
-
-          <div class="row" v-if="enderecosEntregas.length > 0">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">CEP</th>
-                  <th scope="col">Logradouro</th>
-                  <th scope="col">Número</th>
-                  <th scope="col">Bairro</th>
-                  <th scope="col">Cidade</th>
-                  <th scope="col">UF</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Padrão</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="endereco in enderecosEntregas" :key="endereco.cep">
-                  <td>{{ endereco.cep }}</td>
-                  <td>{{ endereco.logradouro }}</td>
-                  <td>{{ endereco.numero }}</td>
-                  <td>{{ endereco.bairro }}</td>
-                  <td>{{ endereco.cidade }}</td>
-                  <td>{{ endereco.uf }}</td>
-                  <td>{{ endereco.tipo }}</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="endereco_padrao"
-                      :checked="endereco.padrao"
-                      @change="mudarEnderecoPadrao(endereco.cep)"
-                    />
-                  </td>
-                  <td>
-                    <button @click="removerEnderecoEntrega(endereco.cep)">
-                      Remover
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="row" style="margin-top: 30px">
-            <div class="col form-group">
-              <label>Senha</label>
-              <input
-                v-model="senha"
-                type="password"
-                class="form-control form-control-sm"
-              />
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            @click.prevent="salvar()"
-          >
-            <i class="fa fa-search fa-fw"></i
-            >{{ atualizacao ? "Atualizar" : "Incluir" }}
-          </button>
+          </form>
         </div>
       </div>
     </div>
@@ -216,7 +275,9 @@ export default {
   data() {
     return {
       nomeCliente: null,
+      nomeValido: null,
       senha: null,
+      confirmacaoSenha: null,
       email: null,
       cpf: null,
       data: null,
@@ -227,6 +288,9 @@ export default {
       enderecosEntregas: [],
       atualizacao: false,
       id: null,
+      senhaValida: true,
+      alterarSenha: false,
+      msgErro: null,
     };
   },
 
@@ -282,6 +346,34 @@ export default {
         .catch((err) => alertUtils.alertFinalTop(err, "error"));
     },
 
+    testarSenhasIguais() {
+      this.senhaValida = false;
+      if (this.senha === this.confirmacaoSenha) {
+        this.senhaValida = true;
+      }
+    },
+
+    pressAlterarSenha() {
+      if (!this.alterarSenha) {
+        this.alterarSenha = true;
+      } else {
+        this.alterarSenha = false;
+      }
+    },
+
+    validaNome(){
+      this.nomeValido = true;
+      for(var i = 0; i < this.nomeCliente.length; i++){
+        if (this.nomeCliente[i] === " " && i < 3){
+          this.nomeValido = false;
+          break;
+        }
+      }
+      if (this.nomeCliente.length < 7) {
+        this.nomeValido = false;
+      }
+    },
+
     salvar() {
       if (
         this.enderecosFaturamento == null ||
@@ -306,37 +398,63 @@ export default {
         }
       }
 
-      const cliente = {};
-      cliente.nomeCompleto = this.nomeCliente;
-      cliente.senha = this.senha;
-      cliente.email = this.email;
-      cliente.cpf = this.cpf;
-      cliente.dataNascimento = this.data;
-      cliente.genero = this.genero;
-
-      const enderecos = [
-        ...this.enderecosFaturamento,
-        ...this.enderecosEntregas,
-      ];
-
-      cliente.enderecos = enderecos;
-
-      if (this.atualizacao) {
-        axios
-          .put("http://localhost:8080/clientes/" + this.id, cliente)
-          .then((res) => {
-            console.log(res);
-            this.$router.push("/home");
-          })
-          .catch((err) => alertUtils.alertFinalTop(err, "error"));
+      if (this.senhaValida == false) {
+        alertUtils.alertFinalTop(
+          "As senhas informadas nao sao iguais.",
+          "warning"
+        );
+        return;
       } else {
-        axios
-          .post("http://localhost:8080/clientes", cliente)
-          .then((res) => {
-            console.log(res);
-            this.$router.push("/loginCliente");
-          })
-          .catch((err) => alertUtils.alertFinalTop(err, "error"));
+
+
+        this.validaNome()
+        if (!this.nomeValido){
+           alertUtils.alertFinalTop(
+          "O nome informado nao é valido",
+          "warning"
+        );
+          return;
+        }
+
+        const cliente = {};
+        cliente.nomeCompleto = this.nomeCliente;
+        cliente.senha = this.senha;
+        cliente.email = this.email;
+        cliente.cpf = this.cpf;
+        cliente.dataNascimento = this.data;
+        cliente.genero = this.genero;
+
+        const enderecos = [
+          ...this.enderecosFaturamento,
+          ...this.enderecosEntregas,
+        ];
+
+        cliente.enderecos = enderecos;
+
+        if (this.atualizacao) {
+          axios
+            .put("http://localhost:8080/clientes/" + this.id, cliente)
+            .then((res) => {
+              console.log(res);
+              this.$router.push("/home");
+            })
+            .catch((err) => alertUtils.alertFinalTop(err.data, "error"));
+        } else {
+          axios
+            .post("http://localhost:8080/clientes", cliente)
+            .then((res) => {
+              console.log(res);
+              this.$router.push("/loginCliente");
+            })
+            .catch((err) => {
+              this.msgErro = err.response.data.erro;
+              alert(this.msgErro);
+              if (this.msgErro == undefined) {
+                alert(err.response.data.errors.defaultMessage);
+              }
+              alertUtils.alertFinalTop(this.msgErro, "error");
+            });
+        }
       }
     },
 
