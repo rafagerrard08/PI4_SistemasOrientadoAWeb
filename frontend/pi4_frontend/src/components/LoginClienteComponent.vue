@@ -34,7 +34,7 @@
             <button
               class="btn btn-indigo"
               type="submit"
-              @click="validarLogin()"
+              @click.prevent="validarLogin()"
             >
               Entrar
             </button>
