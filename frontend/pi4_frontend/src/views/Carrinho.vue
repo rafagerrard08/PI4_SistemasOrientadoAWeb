@@ -14,7 +14,7 @@
 
 <script>
 import NavbarComponent from "../components/NavbarComponent.vue";
-import CarrinhoComponent from "../components/CarrinhoComponent.vue"
+import CarrinhoComponent from "../components/CarrinhoComponent.vue";
 
 export default {
   components: { NavbarComponent , CarrinhoComponent},

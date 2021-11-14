@@ -146,5 +146,14 @@ export default new Router({
                 descricao: "Tela de loginCliente"
             }
         },
+        {
+            path: '/carrinho',
+            name: 'carrinho',
+            component: () =>
+                import ( /* webpackChunkName: "carrinho" */ './views/Carrinho'),
+            meta: {
+                descricao: "Carrinho de Compras"
+            }
+        },
     ]
 })
