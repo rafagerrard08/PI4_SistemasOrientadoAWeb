@@ -44,6 +44,7 @@ import {
   mdbView,
 } from "mdbvue";
 
+import carrinhoUtils from "@/utils/carrinhoUtils";
 import router from "../router";
 
 export default {
@@ -85,21 +86,8 @@ export default {
     },
 
     adicionaAoCarrinho() {
-      alert(vm.cart.length)
-      for(var i = 0; i < vm.cart.length; i++){
-        if(vm.cart[i].produto.id == this.produto.id){
-          vm.cart[i].quantidade += 1
-          return
-        }
-      }
-
-      this.item.produto = this.produto;
-      this.item.quantidade = 1;
-      vm.cart.push(this.item);
-      
+      carrinhoUtils.adicionaAoCarrinho(this.produto);      
     },
-
-
 
   },
 };

@@ -3,16 +3,14 @@
     <NavbarComponent />
     <div class="principal">
       <div class="left-column">
-        
-
         <div id="carrossel">
           <img
-          id="imgProduto"
-          data-image="red"
-          class="active"
-          :src="imagemPrincipalProduto"
-          alt=""
-        />
+            id="imgProduto"
+            data-image="red"
+            class="active"
+            :src="imagemPrincipalProduto"
+            alt=""
+          />
           <VueSlickCarousel v-bind="settings">
             <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
               <div>
@@ -59,7 +57,7 @@
         <!-- Product Pricing -->
         <div class="product-price">
           <span>R${{ produto.preco }}</span>
-          <a href="#" class="cart-btn">Comprar</a>
+          <button class="cart-btn" @click.prevent="comprar()">Comprar</button>
         </div>
       </div>
     </div>
@@ -75,6 +73,8 @@ import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import NavbarComponent from "../components/NavbarComponent.vue";
+import alertUtils from "@/utils/alertUtils";
+import carrinhoUtils from "@/utils/carrinhoUtils";
 
 export default {
   name: "Produto",
@@ -94,12 +94,15 @@ export default {
         slidesToScroll: 1,
         touchThreshold: 5,
         swipe: true,
-        
       },
       imagensCarrossel: [],
       imagemPrincipalProduto: null,
       imagensProduto: [],
       imagem: null,
+      item: {
+        produto: null,
+        quantidade: null,
+      },
     };
   },
 
@@ -130,6 +133,19 @@ export default {
     setImagem(imagem) {
       document.getElementById("imgProduto").src = imagem;
     },
+
+    async comprar() {
+      carrinhoUtils.adicionaAoCarrinho(this.produto);
+
+      const continuarComprando = await alertUtils.alertConfirmacaoTop(
+        "Deseja continuar comprando?"
+      );
+      if(continuarComprando == true){
+         router.push({ name: "home" });
+      } else {
+         router.push({ name: "carrinho" });
+      }
+    },
   },
 };
 </script>
@@ -157,7 +173,6 @@ export default {
 <style scoped>
 #carrossel {
   align-items: center;
-  
 }
 
 .imagem-carrossel {
@@ -179,7 +194,6 @@ export default {
   width: 65%;
   position: relative;
   margin-top: 60px;
-
 }
 
 .left-column img {

@@ -2,12 +2,7 @@
   <div class="container">
     <NavbarComponent />
     <div class="row principal">
-      <div class="col-md-1"></div>
-      <div class="col-md-5">
-        <CarrinhoComponent />
-      </div>
-      <div class="col-md-3"></div>
-      <div class="col-md-3"></div>
+      <CarrinhoComponent />
     </div>
   </div>
 </template>
@@ -17,7 +12,7 @@ import NavbarComponent from "../components/NavbarComponent.vue";
 import CarrinhoComponent from "../components/CarrinhoComponent.vue";
 
 export default {
-  components: { NavbarComponent , CarrinhoComponent},
+  components: { NavbarComponent, CarrinhoComponent },
 };
 </script>
 
@@ -26,7 +21,7 @@ export default {
   padding-top: 100px;
 }
 
-#titulo{
+#titulo {
   padding-bottom: 5px;
 }
 </style>
