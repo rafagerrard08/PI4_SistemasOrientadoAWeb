@@ -40,11 +40,9 @@
             </button>
           </div>
           <div class="text-center mt-4">
-            <router-link to = "/clientes">
-            <button class="btn btn-indigo" type="submit">
-              Criar Conta
-            </button>
-             </router-link>  
+            <router-link to="/clientes">
+              <button class="btn btn-indigo" type="submit">Criar Conta</button>
+            </router-link>
           </div>
         </form>
       </div>
@@ -73,8 +71,6 @@ export default {
   components: {},
 
   methods: {
-   
-
     validarLogin() {
       sessionStorage.clear();
       axios
@@ -88,8 +84,12 @@ export default {
           const tipoUser = res.data.tipoUsuario;
           sessionStorage.setItem("tipoUsuario", "CLIENTE");
           sessionStorage.setItem("idUsuario", res.data.id);
-
-          this.$router.push("/home");
+          
+          if (vm.cart.length > 0) {
+            this.$router.push("/checkout");
+          }else{
+            this.$router.push("/home");
+          }
         })
         .catch((err) => {
           console.log(err);

@@ -24,7 +24,7 @@
           <li>
             <router-link to="/carrinho">
             <span class="glyphicon glyphicon-shopping-cart">
-                Carrinho</span>
+               {{ qtdItens }} Carrinho</span>
             </router-link>
 
           </li>
@@ -73,6 +73,10 @@ export default {
     telaClientes() {
       return "/clientes/" + sessionStorage.getItem("idUsuario");
     },
+
+    qtdItens() {
+      return vm.cartTotal;
+    }
   },
 };
 </script>

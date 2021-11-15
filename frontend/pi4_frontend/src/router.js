@@ -155,5 +155,25 @@ export default new Router({
                 descricao: "Carrinho de Compras"
             }
         },
+
+        {
+            path: '/checkout',
+            name: 'checkout',
+            component: () =>
+                import ( /* webpackChunkName: "checkout" */ './views/Checkout'),
+            meta: {
+                descricao: "Tela de Chekout"
+            }
+        },
+
+        {
+            path: '/resumo',
+            name: 'resumo',
+            component: () =>
+                import ( /* webpackChunkName: "resumo" */ './views/Resumo'),
+            meta: {
+                descricao: "Tela de Resumo"
+            }
+        },
     ]
 })

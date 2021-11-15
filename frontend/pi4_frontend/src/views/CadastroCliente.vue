@@ -310,7 +310,6 @@ export default {
         .get("http://localhost:8080/clientes/" + this.id)
         .then((res) => {
           const retorno = res.data;
-          console.log(retorno);
           this.email = retorno.email;
           this.cpf = retorno.cpf;
           this.nomeCliente = retorno.nomeCompleto;

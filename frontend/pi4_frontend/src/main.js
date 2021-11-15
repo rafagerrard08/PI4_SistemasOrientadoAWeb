@@ -23,6 +23,9 @@ var vm = new Vue({
     data: {
         loading: false,
         cart: [],
+        cartTotal: 0,
+        dadosPedido: {},
+        valorFrete: 0,
     },
     render: h => h(App)
 }).$mount('#app');

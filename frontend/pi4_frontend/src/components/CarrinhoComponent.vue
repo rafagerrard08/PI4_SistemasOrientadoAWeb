@@ -144,9 +144,9 @@
             <strong>Total: R$ {{ totalzao }}</strong>
           </td>
           <td>
-            <a href="#" class="btn btn-success btn-block"
+            <button :disabled="valorFreteSelecionado < 1" @click="finalizarPedido()" class="btn btn-success btn-block"
               >Finalizar Pedido <i class="fa fa-angle-right"></i
-            ></a>
+            ></button>
           </td>
         </tr>
       </tfoot>
@@ -200,6 +200,9 @@ export default {
         .get(`http://localhost:8080/clientes/${this.idCliente}`)
         .then((res) => {
           console.log(res);
+         var enderecoPadrao =  res.data.enderecos.find(e => e.padrao == true);
+         this.uf = enderecoPadrao.cidade.uf.nome;
+         this.montarRadioComValores(this.uf);
         })
         .catch((err) => {
           console.log(err);
@@ -222,7 +225,6 @@ export default {
           }
 
           this.valorFreteSelecionado = 0;
-          this.exibirValoresFrete = true;
           this.uf = res.data.uf;
 
           this.montarRadioComValores(this.uf);
@@ -231,7 +233,7 @@ export default {
     },
 
     montarRadioComValores(uf) {
-      
+      this.exibirValoresFrete = true;
       if (uf == "SP") {
         this.valorFast = 15;
         this.valorMedium = 10;
@@ -303,6 +305,22 @@ export default {
       }
       return this.preco;
     },
+
+    finalizarPedido(){
+      if(this.valorFreteSelecionado < 1 ){
+      alertUtils.alertFinalTop("Tipo de frete obrigatorio!","error");
+      return;
+      }
+
+      vm.valorFrete = this.valorFreteSelecionado;
+      if(this.idCliente == null){
+        router.push({ name: "loginCliente" });
+      } else {
+        router.push({ name: "checkout" });
+      }
+
+      
+    }
   },
 };
 </script>
