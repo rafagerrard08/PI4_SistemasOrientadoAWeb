@@ -25,6 +25,9 @@ export default {
             .get("http://localhost:8080/logout")
             .then((res) => {
               sessionStorage.clear();
+              vm.cart = [];
+              vm.cartTotal = 0;
+              vm.dadosPedido = {};
               this.$router.push("/home");
             })
             .catch(() => alert("erro ao fazer logout"));

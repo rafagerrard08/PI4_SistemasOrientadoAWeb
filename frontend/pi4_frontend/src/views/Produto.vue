@@ -1,18 +1,74 @@
 <template>
   <div class="container">
     <NavbarComponent />
-    <div class="principal">
-      <div class="left-column">
-        
-
+    <div v-if="isMobile() == false" class="principal" >
+      <div  class="left-column">
         <div id="carrossel">
           <img
-          id="imgProduto"
-          data-image="red"
-          class="active"
-          :src="imagemPrincipalProduto"
-          alt=""
-        />
+            id="imgProduto"
+            data-image="red"
+            class="active"
+            :src="imagemPrincipalProduto"
+            alt=""
+          />
+          <VueSlickCarousel v-bind="settings">
+            <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
+              <div>
+                <img
+                  class="active imagem-carrossel"
+                  :src="imagem"
+                  @click="setImagem(imagem)"
+                  style="width: "
+                />
+              </div>
+            </div>
+          </VueSlickCarousel>
+        </div>
+      </div>
+      <div class="row right-column">
+        <!-- Product Description -->
+        <div class="product-description">
+          <div>
+            <span>{{ produto.categoria.nome }} </span>
+            <button class="btn btn-primary p-100" v-if="tipoUsuario == 'ADMINISTRADOR'" @click="Editar()">
+              Editar
+            </button>
+          </div>
+          <h1>{{ produto.nome }}</h1>
+          <h3>Marca: {{ produto.marca }}</h3>
+          <h4>Código do produto: {{ produto.id }}</h4>
+          <br />
+          <p>
+            {{ produto.descricao }}
+          </p>
+        </div>
+
+        <!-- Product Configuration -->
+        <div class="product-configuration">
+          <!-- Product Color -->
+          <div class="row">
+            <i class="fas fa-star"></i>
+            <h3>Avaliação dos Usuarios: {{ produto.avaliacao }}</h3>
+          </div>
+          <!-- Cable Configuration -->
+          <div class="product-price">
+          <span>R${{ produto.preco }}</span>
+          <button class="cart-btn" @click.prevent="comprar()">Comprar</button>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+    <div  class="row col-12 justify-content-center">
+        <div id="carrossel">
+          <img
+            id="imgProduto"
+            data-image="red"
+            class="active"
+            :src="imagemPrincipalProduto"
+            style="width: 245px; height: 200px"
+            alt=""
+          />
           <VueSlickCarousel v-bind="settings">
             <div v-for="(imagem, idx) in imagensCarrossel" :key="idx + imagem">
               <div>
@@ -26,14 +82,13 @@
           </VueSlickCarousel>
         </div>
       </div>
-
       <!-- Right Column -->
-      <div class="right-column">
+      <div class="row">
         <!-- Product Description -->
         <div class="product-description">
           <div>
             <span>{{ produto.categoria.nome }} </span>
-            <button class="btn btn-primary p-100" @click="Editar()">
+            <button class="btn btn-primary p-100" v-if="tipoUsuario == 'ADMINISTRADOR'" @click="Editar()">
               Editar
             </button>
           </div>
@@ -59,7 +114,7 @@
         <!-- Product Pricing -->
         <div class="product-price">
           <span>R${{ produto.preco }}</span>
-          <a href="#" class="cart-btn">Comprar</a>
+          <button class="cart-btn" @click.prevent="comprar()">Comprar</button>
         </div>
       </div>
     </div>
@@ -75,6 +130,8 @@ import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import NavbarComponent from "../components/NavbarComponent.vue";
+import alertUtils from "@/utils/alertUtils";
+import carrinhoUtils from "@/utils/carrinhoUtils";
 
 export default {
   name: "Produto",
@@ -94,12 +151,16 @@ export default {
         slidesToScroll: 1,
         touchThreshold: 5,
         swipe: true,
-        
       },
       imagensCarrossel: [],
       imagemPrincipalProduto: null,
       imagensProduto: [],
       imagem: null,
+      item: {
+        produto: null,
+        quantidade: null,
+      },
+      tipoUsuario: "",
     };
   },
 
@@ -108,6 +169,13 @@ export default {
   },
 
   methods: {
+    isMobile() {
+      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
+    },
     buscarDadosProduto() {
       // alert(this.id)
       axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
@@ -122,6 +190,7 @@ export default {
             "http://localhost:8080" + this.produto.imagens[i]
           );
         }
+        this.tipoUsuario = sessionStorage.getItem("tipoUsuario")
       });
     },
     Editar() {
@@ -129,6 +198,19 @@ export default {
     },
     setImagem(imagem) {
       document.getElementById("imgProduto").src = imagem;
+    },
+
+    async comprar() {
+      carrinhoUtils.adicionaAoCarrinho(this.produto);
+
+      const continuarComprando = await alertUtils.alertConfirmacaoTop(
+        "Deseja continuar comprando?"
+      );
+      if(continuarComprando == true){
+         router.push({ name: "home" });
+      } else {
+         router.push({ name: "carrinho" });
+      }
     },
   },
 };
@@ -157,7 +239,6 @@ export default {
 <style scoped>
 #carrossel {
   align-items: center;
-  
 }
 
 .imagem-carrossel {
@@ -171,7 +252,7 @@ export default {
 
 .principal {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 100px auto ;
   padding: 20px;
   display: flex;
 }
@@ -179,7 +260,6 @@ export default {
   width: 65%;
   position: relative;
   margin-top: 60px;
-
 }
 
 .left-column img {

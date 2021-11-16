@@ -15,7 +15,6 @@
 <script>
 import NavbarComponent from "../components/NavbarComponent.vue";
 import LoginClienteComponent from "../components/LoginClienteComponent.vue";
-
 export default {
   components: { NavbarComponent, LoginClienteComponent },
 };

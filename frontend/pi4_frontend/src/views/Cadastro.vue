@@ -70,7 +70,7 @@
                 aria-label=".form-select-sm example"
                 v-model="categoria"
               >
-                <option selected>Selecionle uma categoria</option>
+                <option selected>Selecione uma categoria</option>
                 <option
                   v-for="categoria of categorias"
                   :key="categoria.id"
