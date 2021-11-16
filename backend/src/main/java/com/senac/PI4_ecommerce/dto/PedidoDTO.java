@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import com.senac.PI4_ecommerce.model.Categoria;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
-public class ProdutoDTO implements Serializable {
+public class PedidoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -24,7 +24,7 @@ public class ProdutoDTO implements Serializable {
 	private Integer quantidade;
 	@NotNull(message = "Preco nao pode estar vazio")
 	@Min(value = 0)
-	private Double preco;
+	private BigDecimal preco;
 	@NotBlank(message = "Descricao nao pode estar vazio")
 	private String descricao;
 	
@@ -41,18 +41,18 @@ public class ProdutoDTO implements Serializable {
 
 	private Set<String> imagens = new HashSet<>();
 
-	public ProdutoDTO() {
+	public PedidoDTO() {
 		super();
 	}
 
-	public ProdutoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
+	public PedidoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
 			EstadoCadastro estado, Integer categoriaId,  String imagemPrincipal, Double avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.marca = marca;
 		this.quantidade = quantidade;
-		this.preco = preco;
+		this.preco = BigDecimal.valueOf(preco);
 		this.descricao = descricao;
 		this.estado = estado.getId();
 		this.categoriaId = categoriaId;
@@ -92,11 +92,11 @@ public class ProdutoDTO implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public Double getPreco() {
+	public BigDecimal getPreco() {
 		return preco;
 	}
 
-	public void setPreco(Double preco) {
+	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
 

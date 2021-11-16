@@ -2,6 +2,11 @@ package com.senac.PI4_ecommerce;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,14 +18,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.senac.PI4_ecommerce.model.Categoria;
+import com.senac.PI4_ecommerce.model.Cliente;
+import com.senac.PI4_ecommerce.model.Endereco;
+import com.senac.PI4_ecommerce.model.ItemPedido;
+import com.senac.PI4_ecommerce.model.Pagamento;
+import com.senac.PI4_ecommerce.model.PagamentoComBoleto;
+import com.senac.PI4_ecommerce.model.Pedido;
+import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.Usuario;
+import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 import com.senac.PI4_ecommerce.repository.CategoriaRepository;
-import com.senac.PI4_ecommerce.repository.CidadeRepository;
 import com.senac.PI4_ecommerce.repository.ClienteRepository;
 import com.senac.PI4_ecommerce.repository.EnderecoRepository;
+import com.senac.PI4_ecommerce.repository.ItemPedidoRepository;
+import com.senac.PI4_ecommerce.repository.PagamentoRepository;
+import com.senac.PI4_ecommerce.repository.PedidoRepository;
 import com.senac.PI4_ecommerce.repository.ProdutoRepository;
-import com.senac.PI4_ecommerce.repository.UFRepository;
 import com.senac.PI4_ecommerce.repository.UsuarioRepository;
+import com.senac.PI4_ecommerce.service.ProdutoService;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class Pi4EcommerceApplication implements CommandLineRunner {
@@ -31,21 +46,29 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 		return encoder;
 	}
 
-	@Autowired
-	private ProdutoRepository produtoRepository;
+	
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
-	private UFRepository estadoRepository;
+	private EnderecoRepository enderecoRepository;
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	private ProdutoRepository produtoRepository;
+	
 	@Autowired
 	private ClienteRepository clienteRepository;
 	@Autowired
-	private EnderecoRepository enderecoRepository;
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private ProdutoService produtoService;
+	
+	
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -69,34 +92,48 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 				"$2a$10$$2a$10$WRHMAoesxstlv8dAyOgRFuyfEJ93LIxuwZYjNVMizHgUSC0JCNh12", 1, 1);
 		usuarioRepository.saveAll(Arrays.asList(user1));
 		
+		Cliente cli = clienteRepository.findById(1).get();	
+		Endereco end = enderecoRepository.findById(2).get();	
 
-//		UF est1 = new UF(1, "São Paulo");
-//		estadoRepository.saveAll(Arrays.asList(est1));
-//
-//		Cidade cid1 = new Cidade(1, "São Paulo", est1);
-//		Cidade cid2 = new Cidade(2, "Mongagua", est1);
-//
-//		cidadeRepository.saveAll(Arrays.asList(cid1, cid2));
-//		
-//		//(Integer id, String nome, @Email String email, String cpf, String senha, Endereco enderecoCobranca, EstadoCadastro estado
-//		
-//
-//		Cliente cli1 = new Cliente(1, "Victor", "victor@eloja.com", "00000000000",
-//				"$2a$10$bcRmD4S44LY3bgR6Piia4Oe6W0OE8edW0wCtAd9znb540iEB8j3Wq", EstadoCadastro.ATIVO, "Masculno", sdf.parse("20/10/2017"));
-//		
-//		System.out.println(cli1.getNomeCompleto());
-//		
-//		// (Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade
-//		
-//		Endereco end1 = new Endereco(1, TipoEndereco.FATURAMENTO, "Rua Miguel Yunes", "485", "Torre 3 Apto 175", "Usina Piratininga", "04444000", cid1, cli1);
-//		Endereco end2 = new Endereco(2, TipoEndereco.ENTREGA, "Rua Saint Germain", "120", null, "Jardim Edda", "04844010", cid1, cli1);
-//		Endereco end3 = new Endereco(3, TipoEndereco.ENTREGA, "Rua Dos Bagres", "293", null, "Parque Marinho", "11730-000", cid2, cli1);
-//
-//
-//		cli1.setEnderecos(Arrays.asList(end1, end2, end3));
-//		
-//		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
-//		clienteRepository.save(cli1);
+
+		//public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete, Date data) {
+		Pedido ped1 =  new Pedido(null, cli, end, 5.99, 123.99);
+		
+		Pagamento pgto = new PagamentoComBoleto(null, ped1, sdf.parse("16/11/2021"), "10499.71201 22517.701235 45678.901617 1 69800000012345");
+		ped1.setPagamento(pgto);
+		
+		Produto p2 = produtoService.getProduto(1);
+		Produto p3 = produtoService.getProduto(2);
+		
+
+		//public ItemPedido(Pedido pedido, Integer produto, Integer quantidade, Double preco) {
+		ItemPedido ip2 = new ItemPedido(ped1, p2, 2);
+		ItemPedido ip3 = new ItemPedido(ped1, p3, 1);
+		ped1.getItens().add(ip2);
+		ped1.getItens().add(ip2);
+
+		ped1.getItens().addAll(Arrays.asList(ip2, ip3));
+		
+		
+		pedidoRepository.save(ped1);
+		pagamentoRepository.save(pgto);
+		produtoRepository.saveAll(Arrays.asList(p2, p3));
+		itemPedidoRepository.saveAll(Arrays.asList(ip2, ip3));
+		
+
+		
+		
+		
+
+		
+
+		
+		
+		
+
+		
+		//	public PagamentoComBoleto(Integer id, Pedido pedido, Date dataVencimento, String numero) {
+
 	
 	}
 

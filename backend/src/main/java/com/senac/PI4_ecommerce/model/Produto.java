@@ -1,7 +1,6 @@
 package com.senac.PI4_ecommerce.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
 
 @Entity
@@ -29,8 +31,16 @@ public class Produto implements Serializable {
 	private String nome;
 	@Column(columnDefinition = "VARCHAR(200)")
 	private String marca;
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+
 	private Integer quantidade;
-	private BigDecimal preco;
+	private Double preco;
 	@Column(columnDefinition = "VARCHAR(2000)")
 	private String descricao;
 	private Integer estado;
@@ -46,6 +56,10 @@ public class Produto implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "demais_imagens")
 	private Set<String> imagens = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="id.produto")
+	private Set<ItemPedido> itens = new HashSet<>();
 
 	// Construtores (Nao Incluir coleções)
 	public Produto() {
@@ -59,7 +73,7 @@ public class Produto implements Serializable {
 		this.nome = nome;
 		this.marca = marca;
 		this.quantidade = quantidade;
-		this.preco = BigDecimal.valueOf(preco);
+		this.preco = preco;
 		this.descricao = descricao;
 		this.estado = estado.getId();
 		this.categoria = categoria;
@@ -67,6 +81,7 @@ public class Produto implements Serializable {
 		this.avaliacao = avaliacao;
 
 	}
+
 
 	// Getters e Setters
 	public Integer getId() {
@@ -101,11 +116,11 @@ public class Produto implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public BigDecimal getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 

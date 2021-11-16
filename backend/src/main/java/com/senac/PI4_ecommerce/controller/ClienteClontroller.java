@@ -26,6 +26,7 @@ import com.senac.PI4_ecommerce.dto.ClienteDTO;
 import com.senac.PI4_ecommerce.dto.EnderecoDTO;
 import com.senac.PI4_ecommerce.dto.NovoClienteDTO;
 import com.senac.PI4_ecommerce.model.Cliente;
+import com.senac.PI4_ecommerce.model.Endereco;
 import com.senac.PI4_ecommerce.model.Usuario;
 import com.senac.PI4_ecommerce.repository.ClienteRepository;
 import com.senac.PI4_ecommerce.service.ClienteService;
@@ -100,5 +101,6 @@ public class ClienteClontroller {
 		
 		return ResponseEntity.ok(cliente.get());
 	}
+	
 	
 }
