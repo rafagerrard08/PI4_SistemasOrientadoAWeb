@@ -86,7 +86,7 @@ export default {
           sessionStorage.setItem("idUsuario", res.data.id);
           
           if (vm.cart.length > 0) {
-            this.$router.push("/checkout");
+            this.$router.push("/carrinho");
           }else{
             this.$router.push("/home");
           }

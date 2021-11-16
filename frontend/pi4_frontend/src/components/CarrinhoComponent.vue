@@ -140,7 +140,7 @@
             </router-link>
           </td>
           <td colspan="2" class="hidden-xs"></td>
-          <td class="hidden-xs text-center">
+          <td class=" text-center">
             <strong>Total: R$ {{ totalzao }}</strong>
           </td>
           <td>
@@ -270,6 +270,7 @@ export default {
           break;
         }
       }
+      this.getTotal()
       router.push({ name: "carrinho" });
     },
 
@@ -277,6 +278,7 @@ export default {
       for (var i = 0; i < vm.cart.length; i++) {
         if (vm.cart[i].produto.id == idProduto) {
           vm.cart.splice(i, 1);
+          this.getTotal()
           router.push({ name: "carrinho" });
         }
       }
@@ -293,6 +295,7 @@ export default {
           break;
         }
       }
+      this.getTotal()
       router.push({ name: "carrinho" });
     },
 

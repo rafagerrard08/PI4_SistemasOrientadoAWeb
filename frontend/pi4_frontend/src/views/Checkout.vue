@@ -170,17 +170,18 @@ export default {
 
   data() {
     return {
+      
       cepEntrega: null,
       enderecosEntregas: [],
       idCliente: null,
-      enderecoSelecionado: null,
+      enderecoSelecionado: vm.dadosPedido.enderecoEntrega,
       exibirPagamento: false,
-      pagamentoSelecionado: null,
+      pagamentoSelecionado: vm.dadosPedido.pagamentoSelecionado,
       exibirCamposCartaoCredito: false,
-      numeroCartao: null,
-      codVerificador: null,
-      dataVencimento: null,
-      qtdParcelas: null,
+      numeroCartao: vm.dadosPedido.numeroCartao,
+      codVerificador: vm.dadosPedido.codVerificador,
+      dataVencimento: vm.dadosPedido.dataVencimento,
+      qtdParcelas: vm.dadosPedido.qtdParcelas,
       vezes: [1, 2, 3, 4, 5, 6],
     };
   },
@@ -222,6 +223,13 @@ export default {
           }
 
           this.enderecosEntregas.push(...endsEntregs);
+          for(var i = 0; i < this.enderecosEntregas.length; i++){
+            if (this.enderecosEntregas[i].cep == vm.dadosPedido.enderecoEntrega.cep) {
+              alert(this.enderecosEntregas.indexOf(this.enderecoEntrega))
+              this.enderecoSelecionado = this.enderecosEntregas[i]
+              break;
+            }
+          }
         })
         .catch((err) => alertUtils.alertFinalTop(err, "error"));
     },
@@ -308,17 +316,16 @@ export default {
     },
 
     finalizarPedido() {
-      var dadosCheckout = {};
-      dadosCheckout.pagamentoSelecionado = this.pagamentoSelecionado;
-      dadosCheckout.numeroCartao = this.numeroCartao;
-      dadosCheckout.codVerificador = this.codVerificador;
-      dadosCheckout.dataVencimento = this.dataVencimento;
-      dadosCheckout.qtdParcelas = this.qtdParcelas;
-      dadosCheckout.enderecoEntrega =
+      alert(this.enderecoSelecionado)
+     vm.dadosPedido.pagamentoSelecionado = this.pagamentoSelecionado;
+      vm.dadosPedido.numeroCartao = this.numeroCartao;
+      vm.dadosPedido.codVerificador = this.codVerificador;
+      vm.dadosPedido.dataVencimento = this.dataVencimento;
+      vm.dadosPedido.qtdParcelas = this.qtdParcelas;
+      vm.dadosPedido.enderecoEntrega =
         this.enderecosEntregas[this.enderecoSelecionado];
-      console.log(dadosCheckout);
 
-      vm.dadosPedido = dadosCheckout;
+      //vm.dadosPedido = dadosCheckout;
 
       return router.push({ name: "resumo" });
     },

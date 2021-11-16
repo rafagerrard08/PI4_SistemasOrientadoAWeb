@@ -6,10 +6,96 @@
       <div class="card">
         <div class="card-body">
           <h2 class="card-title">Checkout</h2>
-          "Carrinho: " {{carrinho}} <br/><br/>
-          "Quantidade itens carrinho: " {{totalItensCarrinho}} <br/><br/>
-          "Valor do Frete: " {{valorFrete}} <br/><br/>
-          "Dados checkout: " {{dadosPedido}} <br/>
+          <table id="cart" class="table table-hover table-condensed">
+            <thead>
+              <tr>
+                <th style="width: 40%">Produto</th>
+                <th style="width: 10%">Preco</th>
+                <th style="width: 18%">Quantidade</th>
+                <th style="width: 22%" class="text-center">Subtotal</th>
+                <th style="width: 10%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item of produtosNoCarrinho" :key="item.produto.id">
+                <td data-th="Product">
+                  <div class="row">
+                    <div class="col-sm-2 hidden-xs">
+                      <img
+                        :src="getImagemPrincipal(item.produto.imagemPrincipal)"
+                        alt="..."
+                        class="img-responsive"
+                      />
+                    </div>
+                    <div class="col-sm-10">
+                      <h6 class="nomargin">{{ item.produto.marca }}</h6>
+                      <h5 class="nomargin">{{ item.produto.nome }}</h5>
+                    </div>
+                  </div>
+                </td>
+                <td data-th="Price">R$ {{ item.produto.preco }}</td>
+                <td data-th="Quantity">
+                 
+                  <input
+                    type="text"
+                    min="1"
+                    name="quantidade"
+                    size="1"
+                    :value="item.quantidade"
+                    disabled
+                  />
+                  
+                </td>
+                <td data-th="Subtotal" class="text-center">
+                  R$ {{ getValorProdutos(item.produto.id) }}
+                </td>
+                
+              </tr>
+              <tr>
+                <td><span>Endereço de entrega: {{dadosPedido.enderecoEntrega.logradouro}}, {{dadosPedido.enderecoEntrega.numero}} - {{dadosPedido.enderecoEntrega.bairro}} - {{dadosPedido.enderecoEntrega.cidade}}</span></td>
+              </tr>
+              <tr>  
+                <td>Forma de pagamento: {{dadosPedido.pagamentoSelecionado}}</td>
+              </tr>
+              <tr>
+                <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'"> Número do cartão: {{dadosPedido.numeroCartao}}</td>
+                <td  class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
+                  código verificador: {{dadosPedido.codVerificador}}
+                </td>
+                <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
+                  validade: {{dadosPedido.dataVencimento}}
+                </td>
+                <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
+                  parcelas: {{dadosPedido.qtdParcelas}}x
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              
+              
+              <tr>
+                
+              
+                <td>
+                  <button :disabled="valorFreteSelecionado < 1" @click="voltarPagina()" class="btn btn-danger btn-block"
+                    >Voltar <i class="fa fa-angle-right"></i
+                  ></button>
+                </td>
+                <td  class="visible-xs"></td>
+                <td class=" text-center">
+                  <span>frete: R$ {{ valorFrete }}</span>
+                </td>
+                <td class="text-center">
+                  <strong>Total R${{ totalzao }}</strong>
+                </td>
+                <td>
+                  <button :disabled="valorFreteSelecionado < 1" @click="finalizarPedido()" class="btn btn-success btn-block"
+                    >Finalizar Pedido <i class="fa fa-angle-right"></i
+                  ></button>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     </div>
@@ -30,10 +116,12 @@ export default {
 
   data() {
     return {
-      carrinho: vm.cart,
+      produtosNoCarrinho: vm.cart,
       totalItensCarrinho: vm.cartTotal, 
       dadosPedido: vm.dadosPedido,
       valorFrete: vm.valorFrete,
+      totalzao: 0,
+      totalItens: 0,
 
     };
   },
@@ -48,9 +136,40 @@ export default {
     }
 
   },
-
+  mounted(){
+    //alert(JSON.stringify(vm))
+    this.getTotal()
+  },
   methods: {
-    
+    getValorProdutos(idProduto) {
+      for (var i = 0; i < vm.cart.length; i++) {
+        if (vm.cart[i].produto.id == idProduto) {
+          this.preco = vm.cart[i].produto.preco * vm.cart[i].quantidade;
+          break;
+        }
+      }
+      return this.preco;
+    },
+    getImagemPrincipal(str) {
+      return "http://localhost:8080/" + str;
+    },
+    atualizarTotalzao() {
+      this.totalzao = this.totalItens + vm.valorFrete;
+
+    },
+
+    getTotal() {
+      this.totalItens = 0;
+
+      for (var i = 0; i < vm.cart.length; i++) {
+        this.totalItens += this.getValorProdutos(vm.cart[i].produto.id);
+      }
+      alert(JSON.stringify(vm.dadosPedido))
+      this.atualizarTotalzao();
+    },
+    voltarPagina(){
+      this.$router.push('/checkout')
+    }
   },
 };
 </script>

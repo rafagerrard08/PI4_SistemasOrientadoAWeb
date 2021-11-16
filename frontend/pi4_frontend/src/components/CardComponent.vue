@@ -107,12 +107,10 @@ export default {
 }
 
 #card {
-  max-width: 400px;
-  min-height: 400px;
+  width: 330px;
+  height: 440px;
 
   margin: 15px;
-  width: 100%;
-  height: 100%;
 
   border: 2px solid gray;
   border-radius: 5px;
