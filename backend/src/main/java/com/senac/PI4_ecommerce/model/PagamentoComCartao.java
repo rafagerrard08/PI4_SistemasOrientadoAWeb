@@ -13,13 +13,13 @@ public class PagamentoComCartao extends Pagamento {
 
 	private Integer numeroDeParcelas;
 	private String numeroCartao;
-	private Integer codVerificador;
+	private String codVerificador;
 	private Date dataVencimento;
 	
 	public PagamentoComCartao() {
 	}
 
-	public PagamentoComCartao(Integer id, Pedido pedido, Integer numeroDeParcelas, String numeroCartao, Integer codVerificador, Date dataVencimento) {
+	public PagamentoComCartao(Integer id, Pedido pedido, Integer numeroDeParcelas, String numeroCartao, String codVerificador, Date dataVencimento) {
 		super(id, pedido);
 		this.numeroDeParcelas = numeroDeParcelas;
 		this.numeroCartao = numeroCartao;
@@ -43,11 +43,11 @@ public class PagamentoComCartao extends Pagamento {
 		this.numeroCartao = numeroCartao;
 	}
 
-	public Integer getCodVerificador() {
+	public String getCodVerificador() {
 		return codVerificador;
 	}
 
-	public void setCodVerificador(Integer codVerificador) {
+	public void setCodVerificador(String codVerificador) {
 		this.codVerificador = codVerificador;
 	}
 

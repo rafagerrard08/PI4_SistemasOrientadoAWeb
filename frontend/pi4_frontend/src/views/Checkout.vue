@@ -221,11 +221,11 @@ export default {
             e.cidade = cidade;
             e.uf = uf;
           }
-
+          
           this.enderecosEntregas.push(...endsEntregs);
           for(var i = 0; i < this.enderecosEntregas.length; i++){
-            if (this.enderecosEntregas[i].cep == vm.dadosPedido.enderecoEntrega.cep) {
-              alert(this.enderecosEntregas.indexOf(this.enderecoEntrega))
+            if (vm.dadosPedido.enderecoEntrega != undefined && (this.enderecosEntregas[i].cep == vm.dadosPedido.enderecoEntrega.cep)) {
+              //alert(this.enderecosEntregas.indexOf(this.enderecoEntrega))
               this.enderecoSelecionado = this.enderecosEntregas[i]
               break;
             }
@@ -316,7 +316,7 @@ export default {
     },
 
     finalizarPedido() {
-      alert(this.enderecoSelecionado)
+     // alert(this.enderecoSelecionado)
      vm.dadosPedido.pagamentoSelecionado = this.pagamentoSelecionado;
       vm.dadosPedido.numeroCartao = this.numeroCartao;
       vm.dadosPedido.codVerificador = this.codVerificador;
