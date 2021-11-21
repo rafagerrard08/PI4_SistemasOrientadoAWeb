@@ -199,15 +199,15 @@ export default {
 
       pedido.valorFrete = vm.valorFrete;
 
-      console.log(JSON.stringify(pedido))
-
       axios
         .post(`http://localhost:8080/pedidos`, pedido)
         .then((res) => {
-          console.log("funfou");
+          alert(JSON.stringify(res.data))
+          alertUtils.alertFinalTop("PEDIDO CONFIRMADO!! O numero do seu pedido é " + res.data ,  "success");
         })
         .catch((err) => {
           alertUtils.alertFinalTop(err, "error")
+          alert(JSON.stringify(pedido))
         });
     },
   },

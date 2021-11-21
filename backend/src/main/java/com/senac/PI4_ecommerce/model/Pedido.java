@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoPedido;
 
 @Entity
@@ -47,6 +48,7 @@ public class Pedido implements Serializable {
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Pedido() {
+		this.setEstadoPedido(EstadoPedido.AGUARDANDO_PAGAMENTO);
 	}
 
 	public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete,Double total) {
@@ -59,12 +61,24 @@ public class Pedido implements Serializable {
 		this.total = total;
 	}
 
-	public double getValorTotal() {
+	public Double getValorFrete() {
+		return valorFrete;
+	}
+
+	public void setValorFrete(Double valorFrete) {
+		this.valorFrete = valorFrete;
+	}
+
+	public void calculaValorTotal() {
 		double soma = valorFrete;
 		for (ItemPedido ip : itens) {
 			soma = soma + ip.getSubTotal();
 		}
-		return soma;
+		this.setTotal(soma);
+	}
+	
+	public void incluiItem(ItemPedido ip) {
+		this.itens.add(ip);
 	}
 	
 	public Integer getId() {

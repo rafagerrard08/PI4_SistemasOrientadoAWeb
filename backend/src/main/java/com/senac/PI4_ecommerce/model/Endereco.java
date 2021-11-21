@@ -1,6 +1,8 @@
 package com.senac.PI4_ecommerce.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.senac.PI4_ecommerce.dto.EnderecoDTO;
@@ -42,10 +45,11 @@ public class Endereco implements Serializable {
 		super();
 	}
 
-	public Endereco(Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente, Boolean padrao) {
+	public Endereco(Integer id, TipoEndereco tipo, String logradouro, String numero, String complemento, String bairro,
+			String cep, Cidade cidade, Cliente cliente, Boolean padrao) {
 		super();
 		this.id = id;
-		this.tipo=tipo.getId();
+		this.tipo = tipo.getId();
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.complemento = complemento;
@@ -55,10 +59,10 @@ public class Endereco implements Serializable {
 		this.cliente = cliente;
 		this.setPadrao(padrao);
 	}
-	
+
 	public Endereco(EnderecoDTO enderecoDTO, Cidade cidade, Cliente cliente) {
 		this.id = enderecoDTO.getId();
-		this.tipo=enderecoDTO.getTipo().getId();
+		this.tipo = enderecoDTO.getTipo().getId();
 		this.logradouro = enderecoDTO.getLogradouro();
 		this.numero = enderecoDTO.getNumero();
 		this.complemento = enderecoDTO.getComplemento();
@@ -66,7 +70,7 @@ public class Endereco implements Serializable {
 		this.cep = enderecoDTO.getCep();
 		this.setCidade(cidade);
 		this.cliente = cliente;
-		this.padrao=enderecoDTO.getPadrao();
+		this.padrao = enderecoDTO.getPadrao();
 	}
 
 	public Integer getId() {
@@ -170,4 +174,10 @@ public class Endereco implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		return "Endereco [id=" + id + ", tipo=" + tipo + ", logradouro=" + logradouro + ", numero=" + numero
+				+ ", complemento=" + complemento + ", bairro=" + bairro + ", cep=" + cep + ", padrao=" + padrao
+				+ ", cliente=" + cliente + ", cidade=" + cidade + "]";
+	}
 }
