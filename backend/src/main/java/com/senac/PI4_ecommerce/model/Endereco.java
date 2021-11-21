@@ -27,7 +27,7 @@ public class Endereco implements Serializable {
 	private String complemento;
 	private String bairro;
 	private String cep;
-	private Boolean padrao;
+	private boolean padrao;
 
 	@JsonBackReference
 	@ManyToOne
@@ -145,11 +145,11 @@ public class Endereco implements Serializable {
 		this.tipo = tipo.getId();
 	}
 
-	public Boolean getPadrao() {
+	public boolean getPadrao() {
 		return padrao;
 	}
 
-	public void setPadrao(Boolean padrao) {
+	public void setPadrao(boolean padrao) {
 		this.padrao = padrao;
 	}
 

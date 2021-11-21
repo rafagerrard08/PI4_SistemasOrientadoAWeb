@@ -1,159 +1,134 @@
 package com.senac.PI4_ecommerce.dto;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.List;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import com.senac.PI4_ecommerce.model.Categoria;
-import com.senac.PI4_ecommerce.model.enums.EstadoCadastro;
+/*{
+    "itens": [
+        {
+            "idProduto": 16,
+            "quantidade": 1
+        },
+        {
+            "idProduto": 17,
+            "quantidade": 1
+        }
+    ],
+    "dadosPagamento": {
+        "forma": "credito",
+        "numeroCartao": "12345678",
+        "codVerificador": "321",
+        "dataVencimento": "2021-11-30",
+        "qtdParcelas": 6
+    },
+    "enderecoEntrega": {
+        "id": 26,
+        "tipo": "ENTREGA",
+        "logradouro": "Rua Geraldo Martins dos Santos",
+        "numero": "30",
+        "complemento": null,
+        "bairro": "Parque Grajaú",
+        "cep": "04843-620",
+        "padrao": true,
+        "cidade": "São Paulo",
+        "uf": "SP"
+    },
+    "valorFrete": 15
+}*/
 
-public class PedidoDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+//        # JSON TEST SALVAR PEDIDO /\ 
 
-	private Integer id;
-	@NotBlank(message = "Nome nao pode estar vazio")
-	private String nome;
-	@NotBlank(message = "Marca nao pode estar vazio")
-	private String marca;
-	@NotNull(message = "Quantidade nao pode estar vazio")
-	private Integer quantidade;
-	@NotNull(message = "Preco nao pode estar vazio")
-	@Min(value = 0)
-	private BigDecimal preco;
-	@NotBlank(message = "Descricao nao pode estar vazio")
-	private String descricao;
-	
-	private Integer estado;
-	
-	private Double avaliacao;
+public class PedidoDTO {
 
-	private Categoria categoria;
-	
-	@NotNull(message = "CategoriaId nao pode estar vazio")
-	private Integer categoriaId;
-	
-	private String imagemPrincipal;
+	private List<ItensDTO> itens;
+	private EnderecoDTO enderecoEntrega;
+	private PagamentoDTO dadosPagamento;
+	private Double valorFrete;
 
-	private Set<String> imagens = new HashSet<>();
-
-	public PedidoDTO() {
-		super();
+	public List<ItensDTO> getItens() {
+		return itens;
 	}
 
-	public PedidoDTO(Integer id, String nome, String marca, Integer quantidade, Double preco, String descricao,
-			EstadoCadastro estado, Integer categoriaId,  String imagemPrincipal, Double avaliacao) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.marca = marca;
-		this.quantidade = quantidade;
-		this.preco = BigDecimal.valueOf(preco);
-		this.descricao = descricao;
-		this.estado = estado.getId();
-		this.categoriaId = categoriaId;
-		this.avaliacao = avaliacao;
+	public void setItens(List<ItensDTO> itens) {
+		this.itens = itens;
 	}
 
-	// Getters e Setters
-	public Integer getId() {
-		return id;
+	public EnderecoDTO getEnderecoEntrega() {
+		return enderecoEntrega;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setEnderecoEntrega(EnderecoDTO enderecoEntrega) {
+		this.enderecoEntrega = enderecoEntrega;
 	}
 
-	public String getNome() {
-		return nome;
+	public PagamentoDTO getDadosPagamento() {
+		return dadosPagamento;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDadosPagamento(PagamentoDTO dadosPagamento) {
+		this.dadosPagamento = dadosPagamento;
 	}
 
-	public String getMarca() {
-		return marca;
+	public Double getValorFrete() {
+		return valorFrete;
 	}
 
-	public void setMarca(String marca) {
-		this.marca = marca;
+	public void setValorFrete(Double valorFrete) {
+		this.valorFrete = valorFrete;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
+	public class PagamentoDTO {
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
+		private String forma;
+		private String numeroCartao;
+		private String codVerificador;
+		private LocalDate dataVencimento;
+		private Integer qtdParcelas;
 
-	public BigDecimal getPreco() {
-		return preco;
-	}
+		public String getForma() {
+			return forma;
+		}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
+		public void setForma(String forma) {
+			this.forma = forma;
+		}
 
-	public String getDescricao() {
-		return descricao;
-	}
+		public String getNumeroCartao() {
+			return numeroCartao;
+		}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+		public void setNumeroCartao(String numeroCartao) {
+			this.numeroCartao = numeroCartao;
+		}
 
-	public EstadoCadastro getEstado() {
-		return EstadoCadastro.toEnum(estado);
-	}
+		public String getCodVerificador() {
+			return codVerificador;
+		}
 
-	public void setEstado(EstadoCadastro estado) {
-		this.estado = estado.getId();
-	}
+		public void setCodVerificador(String codVerificador) {
+			this.codVerificador = codVerificador;
+		}
 
-	public Set<String> getImagens() {
-		return imagens;
-	}
+		public LocalDate getDataVencimento() {
+			return dataVencimento;
+		}
 
-	public void setImagens(Set<String> imagens) {
-		this.imagens = imagens;
-	}
+		public void setDataVencimento(LocalDate dataVencimento) {
+			this.dataVencimento = dataVencimento;
+		}
 
-	public Integer getCategoriaId() {
-		return categoriaId;
-	}
+		public Integer getQtdParcelas() {
+			return qtdParcelas;
+		}
 
-	public void setCategoriaId(Integer catgoriaId) {
-		this.categoriaId = catgoriaId;
-	}
+		public void setQtdParcelas(Integer qtdParcelas) {
+			this.qtdParcelas = qtdParcelas;
+		}
 
-	public Double getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Double avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-	
-	public String getImagemPrincipal() {
-		return imagemPrincipal;
-	}
-
-	public void setImagemPrincipal(String imagemPrincipal) {
-		this.imagemPrincipal = imagemPrincipal;
 	}
 
 }
