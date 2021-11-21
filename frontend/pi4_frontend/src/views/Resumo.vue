@@ -58,12 +58,9 @@
                 <td>Forma de pagamento: {{dadosPedido.pagamentoSelecionado}}</td>
               </tr>
               <tr>
-                <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'"> Número do cartão: {{dadosPedido.numeroCartao}}</td>
-                <td  class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
-                  código verificador: {{dadosPedido.codVerificador}}
-                </td>
+                <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'"> Número do cartão: {{numeroCartao}}</td>
                 <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
-                  validade: {{dadosPedido.dataVencimento}}
+                  validade: {{dadosPedido.dataVencimento.split("-").reverse().join("/")}}
                 </td>
                 <td class="col-4" v-if="dadosPedido.pagamentoSelecionado == 'credito'">
                   parcelas: {{dadosPedido.qtdParcelas}}x
@@ -72,12 +69,9 @@
             </tbody>
             <tfoot>
               
-              
               <tr>
-                
-              
                 <td>
-                  <button :disabled="valorFreteSelecionado < 1" @click="voltarPagina()" class="btn btn-danger btn-block"
+                  <button @click="voltarPagina()" class="btn btn-danger btn-block"
                     >Voltar <i class="fa fa-angle-right"></i
                   ></button>
                 </td>
@@ -89,7 +83,7 @@
                   <strong>Total R${{ totalzao }}</strong>
                 </td>
                 <td>
-                  <button :disabled="valorFreteSelecionado < 1" @click="finalizarPedido()" class="btn btn-success btn-block"
+                  <button @click="finalizarPedido()" class="btn btn-success btn-block"
                     >Finalizar Pedido <i class="fa fa-angle-right"></i
                   ></button>
                 </td>
@@ -126,7 +120,18 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+
+    numeroCartao() {
+
+      if(this.dadosPedido.numeroCartao.length <= 4) {
+        return "**** **** **** "+this.dadosPedido.numeroCartao;
+      }
+
+      let nrCard = this.dadosPedido.numeroCartao;
+      return "**** **** **** "+ nrCard.substring(nrCard.length-4)
+    }
+  },
 
   created() {
     this.idCliente = sessionStorage.getItem("idUsuario");
@@ -164,12 +169,47 @@ export default {
       for (var i = 0; i < vm.cart.length; i++) {
         this.totalItens += this.getValorProdutos(vm.cart[i].produto.id);
       }
-      alert(JSON.stringify(vm.dadosPedido))
+      //alert(JSON.stringify(vm.dadosPedido))
       this.atualizarTotalzao();
     },
     voltarPagina(){
       this.$router.push('/checkout')
-    }
+    },
+
+    finalizarPedido() {
+
+      const pedido = {};
+
+      const itens = [];
+      for (const item of vm.cart) {
+        itens.push({idProduto: item.produto.id, quantidade: item.quantidade})
+      }
+      pedido.itens = itens;
+
+      const pagamento = {}
+      pagamento.forma = vm.dadosPedido.pagamentoSelecionado;
+      pagamento.numeroCartao = vm.dadosPedido.numeroCartao;
+      pagamento.codVerificador = vm.dadosPedido.codVerificador;
+      pagamento.dataVencimento = vm.dadosPedido.dataVencimento;
+      pagamento.qtdParcelas = vm.dadosPedido.qtdParcelas;
+      
+      pedido.dadosPagamento = pagamento;
+      
+      pedido.enderecoEntrega = vm.dadosPedido.enderecoEntrega;
+
+      pedido.valorFrete = vm.valorFrete;
+
+      console.log(JSON.stringify(pedido))
+
+      axios
+        .post(`http://localhost:8080/pedidos`, pedido)
+        .then((res) => {
+          console.log("funfou");
+        })
+        .catch((err) => {
+          alertUtils.alertFinalTop(err, "error")
+        });
+    },
   },
 };
 </script>

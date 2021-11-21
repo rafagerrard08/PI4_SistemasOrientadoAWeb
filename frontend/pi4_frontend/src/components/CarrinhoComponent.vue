@@ -38,7 +38,7 @@
             :value="valorMedium"
             @change="atualizarTotalzao()"
           >
-            Sedex Fast Motion R$ {{ valorMedium }}</b-form-radio
+            Sedex Medium Motion R$ {{ valorMedium }}</b-form-radio
           >
           <b-form-radio
             v-model="valorFreteSelecionado"
@@ -47,7 +47,7 @@
             :value="valorSlow"
             @change="atualizarTotalzao()"
           >
-            Sedex Fast Motion R$ {{ valorSlow }}</b-form-radio
+            Sedex Slow Motion R$ {{ valorSlow }}</b-form-radio
           >
         </b-form-group>
       </div>
@@ -199,7 +199,7 @@ export default {
       axios
         .get(`http://localhost:8080/clientes/${this.idCliente}`)
         .then((res) => {
-          console.log(res);
+          
          var enderecoPadrao =  res.data.enderecos.find(e => e.padrao == true);
          this.uf = enderecoPadrao.cidade.uf.nome;
          this.montarRadioComValores(this.uf);
@@ -246,17 +246,29 @@ export default {
     },
 
     atualizarTotalzao() {
+      // debugger
       this.totalzao = this.totalItens + this.valorFreteSelecionado;
     },
 
     getTotal() {
+      
       this.totalItens = 0;
 
       for (var i = 0; i < vm.cart.length; i++) {
-        this.totalItens += this.getValorProdutos(vm.cart[i].produto.id);
+        this.totalItens += vm.cart[i].produto.preco * vm.cart[i].quantidade;
       }
 
       this.atualizarTotalzao();
+    },
+
+    getValorProdutos(idProduto) {
+      for (var i = 0; i < vm.cart.length; i++) {
+        if (vm.cart[i].produto.id == idProduto) {
+          this.preco = vm.cart[i].produto.preco * vm.cart[i].quantidade;
+          break;
+        }
+      }
+      return this.preco;
     },
 
     getImagemPrincipal(str) {
@@ -297,16 +309,6 @@ export default {
       }
       this.getTotal()
       router.push({ name: "carrinho" });
-    },
-
-    getValorProdutos(idProduto) {
-      for (var i = 0; i < vm.cart.length; i++) {
-        if (vm.cart[i].produto.id == idProduto) {
-          this.preco = vm.cart[i].produto.preco * vm.cart[i].quantidade;
-          break;
-        }
-      }
-      return this.preco;
     },
 
     finalizarPedido(){
