@@ -135,7 +135,6 @@ public class PedidoController {
 		if (dto.getDadosPagamento().getForma() == "boleto") {
 			pgto = new PagamentoComBoleto(null, pedido, sdf.parse("16/11/2021"),
 					"10499.71201 22517.701235 45678.901617 1 69800000012345");
-			pedido.setPagamento(pgto);
 			pagamentoRepository.save(pgto);
 
 		} else if (dto.getDadosPagamento().getForma() == "credito") {
@@ -144,7 +143,6 @@ public class PedidoController {
 			pgto = new PagamentoComCartao(null, pedido, dto.getDadosPagamento().getQtdParcelas(),
 					dto.getDadosPagamento().getNumeroCartao(), dto.getDadosPagamento().getCodVerificador(),
 					dataVencimento);
-			pedido.setPagamento(pgto);
 			pagamentoRepository.save(pgto);
 		}
 		pedido.setPagamento(pgto);

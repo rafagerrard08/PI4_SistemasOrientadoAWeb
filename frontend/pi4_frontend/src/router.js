@@ -43,6 +43,15 @@ export default new Router({
             }
         },
         {
+            path: '/pedidos',
+            name: 'pedidos',
+            component: () =>
+                import ( /* webpackChunkName: "home" */ './views/Pedidos'),
+            meta: {
+                descricao: "Tela de Pedidos"
+            }
+        },
+        {
             path: '/cadastro/:id',
             name: 'cadastro',
             component: () =>

@@ -204,6 +204,8 @@ export default {
         .then((res) => {
           alert(JSON.stringify(res.data))
           alertUtils.alertFinalTop("PEDIDO CONFIRMADO!! O numero do seu pedido é " + res.data ,  "success");
+          vm.cart = []
+          vm.cartTotal = 0
         })
         .catch((err) => {
           alertUtils.alertFinalTop(err, "error")

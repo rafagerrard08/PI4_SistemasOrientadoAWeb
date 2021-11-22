@@ -79,46 +79,46 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Categoria cat1 = new Categoria(1, "Eletrodomésticos");
-		Categoria cat2 = new Categoria(2, "Celulares e Smartphones");
-		Categoria cat3 = new Categoria(3, "TV e Vídeo");
-		Categoria cat4 = new Categoria(4, "Esporte e Lazer");
-		Categoria cat5 = new Categoria(5, "Móveis");
-		Categoria cat6 = new Categoria(6, "Informática");
-		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6));
-		
-
-		Usuario user1 = new Usuario(1, "admin", "admin@eloja.com", "00000000000",
-				"$2a$10$$2a$10$WRHMAoesxstlv8dAyOgRFuyfEJ93LIxuwZYjNVMizHgUSC0JCNh12", 1, 1);
-		usuarioRepository.saveAll(Arrays.asList(user1));
-		
-		Cliente cli = clienteRepository.findById(1).get();	
-		Endereco end = enderecoRepository.findById(2).get();	
-
-
-		//public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete, Date data) {
-		Pedido ped1 =  new Pedido(null, cli, end, 5.99, 123.99);
-		
-		Pagamento pgto = new PagamentoComBoleto(null, ped1, sdf.parse("16/11/2021"), "10499.71201 22517.701235 45678.901617 1 69800000012345");
-		ped1.setPagamento(pgto);
-		
-		Produto p2 = produtoService.getProduto(1);
-		Produto p3 = produtoService.getProduto(2);
-		
-
-		//public ItemPedido(Pedido pedido, Integer produto, Integer quantidade, Double preco) {
-		ItemPedido ip2 = new ItemPedido(ped1, p2, 2);
-		ItemPedido ip3 = new ItemPedido(ped1, p3, 1);
-		ped1.getItens().add(ip2);
-		ped1.getItens().add(ip2);
-
-		ped1.getItens().addAll(Arrays.asList(ip2, ip3));
-		
-		
-		pedidoRepository.save(ped1);
-		pagamentoRepository.save(pgto);
-		produtoRepository.saveAll(Arrays.asList(p2, p3));
-		itemPedidoRepository.saveAll(Arrays.asList(ip2, ip3));
+//		Categoria cat1 = new Categoria(1, "Eletrodomésticos");
+//		Categoria cat2 = new Categoria(2, "Celulares e Smartphones");
+//		Categoria cat3 = new Categoria(3, "TV e Vídeo");
+//		Categoria cat4 = new Categoria(4, "Esporte e Lazer");
+//		Categoria cat5 = new Categoria(5, "Móveis");
+//		Categoria cat6 = new Categoria(6, "Informática");
+//		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6));
+//		
+//
+//		Usuario user1 = new Usuario(1, "admin", "admin@eloja.com", "00000000000",
+//				"$2a$10$$2a$10$WRHMAoesxstlv8dAyOgRFuyfEJ93LIxuwZYjNVMizHgUSC0JCNh12", 1, 1);
+//		usuarioRepository.saveAll(Arrays.asList(user1));
+//		
+//		Cliente cli = clienteRepository.findById(1).get();	
+//		Endereco end = enderecoRepository.findById(2).get();	
+//
+//
+//		//public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete, Date data) {
+//		Pedido ped1 =  new Pedido(null, cli, end, 5.99, 123.99);
+//		
+//		Pagamento pgto = new PagamentoComBoleto(null, ped1, sdf.parse("16/11/2021"), "10499.71201 22517.701235 45678.901617 1 69800000012345");
+//		ped1.setPagamento(pgto);
+//		
+//		Produto p2 = produtoService.getProduto(1);
+//		Produto p3 = produtoService.getProduto(2);
+//		
+//
+//		//public ItemPedido(Pedido pedido, Integer produto, Integer quantidade, Double preco) {
+//		ItemPedido ip2 = new ItemPedido(ped1, p2, 2);
+//		ItemPedido ip3 = new ItemPedido(ped1, p3, 1);
+//		ped1.getItens().add(ip2);
+//		ped1.getItens().add(ip2);
+//
+//		ped1.getItens().addAll(Arrays.asList(ip2, ip3));
+//		
+//		
+//		pedidoRepository.save(ped1);
+//		pagamentoRepository.save(pgto);
+//		produtoRepository.saveAll(Arrays.asList(p2, p3));
+//		itemPedidoRepository.saveAll(Arrays.asList(ip2, ip3));
 		
 
 		

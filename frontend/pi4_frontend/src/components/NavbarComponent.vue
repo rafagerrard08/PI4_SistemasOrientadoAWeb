@@ -14,19 +14,19 @@
         </button>
 
         <router-link to="/home">
-            <span class="navbar-brand">
-                <img class="img img-logo" src="../assets/imagens/logo.png"
-        /></span>
+          <span class="navbar-brand">
+            <img class="img img-logo" src="../assets/imagens/logo.png"
+          /></span>
         </router-link>
       </div>
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="nav navbar-nav navbar-right">
           <li>
             <router-link to="/carrinho">
-            <span class="glyphicon glyphicon-shopping-cart">
-               {{ qtdItens }} Carrinho</span>
+              <span class="glyphicon glyphicon-shopping-cart">
+                {{ qtdItens }} Carrinho</span
+              >
             </router-link>
-
           </li>
 
           <li v-if="sessao == 'ADMINISTRADOR' || sessao == 'ESTOQUISTA'">
@@ -35,9 +35,14 @@
             </router-link>
           </li>
           <li v-if="sessao == 'CLIENTE'">
-            <router-link :to="telaClientes">
-              <span class="glyphicon glyphicon-user"> Atualizar-dados</span>
-            </router-link>
+            <b-dropdown id="dropdown-1" text="Area Do Cliente" class="m-md-2">
+              <router-link :to="pedidos">
+                  <span><b-dropdown-item>Meus Pedidos</b-dropdown-item></span>
+              </router-link>
+              <router-link :to="telaClientes">
+                  <span><b-dropdown-item>Atualizar Dados</b-dropdown-item></span>
+              </router-link>
+            </b-dropdown>
           </li>
           <li v-else>
             <router-link to="/loginCliente">
@@ -61,8 +66,7 @@ export default {
 
   created() {},
   data() {
-    return {
-    };
+    return {};
   },
 
   computed: {
@@ -74,9 +78,13 @@ export default {
       return "/clientes/" + sessionStorage.getItem("idUsuario");
     },
 
+    pedidos() {
+      return "/pedidos";
+    },
+
     qtdItens() {
       return vm.cartTotal;
-    }
+    },
   },
 };
 </script>
