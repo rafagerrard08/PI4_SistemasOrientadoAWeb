@@ -55,8 +55,6 @@
 
 <script>
 import NavbarComponent from "../components/NavbarComponent.vue";
-import ModalDetalhes from "../components/ModalDetalhes.vue";
-import router from "../router.js";
 import alertUtils from "@/utils/alertUtils";
 import axios from "axios";
 export default {
@@ -101,7 +99,6 @@ export default {
       const htmlItens = await this.montarHTMLItens(pedido.itens);
       const htmlPagamento = this.montarHTMLPagamento(pedido.pagamento);
 
-      debugger
       const htmlBody = `
       <div class="row" style="font-size: 20px;">
         <h2>Produtos: </h2>
@@ -138,7 +135,6 @@ export default {
       </div>
       `;
 
-      debugger
       alertUtils.alertHTML("DETALHES", htmlBody);
     },
 
