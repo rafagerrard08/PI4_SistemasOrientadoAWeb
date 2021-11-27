@@ -5,7 +5,7 @@
     <div class="content">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">Checkout</h2>
+          <h2 class="card-title">Resumo do Pedido</h2>
           <table id="cart" class="table table-hover table-condensed">
             <thead>
               <tr>
@@ -142,7 +142,6 @@ export default {
 
   },
   mounted(){
-    //alert(JSON.stringify(vm))
     this.getTotal()
   },
   methods: {
@@ -202,14 +201,13 @@ export default {
       axios
         .post(`http://localhost:8080/pedidos`, pedido)
         .then((res) => {
-          alert(JSON.stringify(res.data))
           alertUtils.alertFinalTop("PEDIDO CONFIRMADO!! O numero do seu pedido é " + res.data ,  "success");
           vm.cart = []
           vm.cartTotal = 0
+          router.push({ name: "home" });
         })
         .catch((err) => {
           alertUtils.alertFinalTop(err, "error")
-          alert(JSON.stringify(pedido))
         });
     },
   },

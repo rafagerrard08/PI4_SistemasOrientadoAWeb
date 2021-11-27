@@ -127,31 +127,32 @@ public class PedidoController {
 			ItemPedido ip = new ItemPedido(pedido, produto, item.getQuantidade());
 			listaProdutos.add(ip);
 		}
-
 		pedido.setItens(listaProdutos);
 
 		Pagamento pgto = null;
-		System.out.println(dto.getDadosPagamento().getForma());
-		if (dto.getDadosPagamento().getForma() == "boleto") {
+		if (dto.getDadosPagamento().getForma().equals("boleto")) {
 			pgto = new PagamentoComBoleto(null, pedido, sdf.parse("16/11/2021"),
 					"10499.71201 22517.701235 45678.901617 1 69800000012345");
-			pagamentoRepository.save(pgto);
 
-		} else if (dto.getDadosPagamento().getForma() == "credito") {
+		} else if (dto.getDadosPagamento().getForma().equals("credito")) {
 			Date dataVencimento = Date
 					.from(dto.getDadosPagamento().getDataVencimento().atStartOfDay(ZoneId.systemDefault()).toInstant());
 			pgto = new PagamentoComCartao(null, pedido, dto.getDadosPagamento().getQtdParcelas(),
 					dto.getDadosPagamento().getNumeroCartao(), dto.getDadosPagamento().getCodVerificador(),
 					dataVencimento);
-			pagamentoRepository.save(pgto);
 		}
+		pagamentoRepository.save(pgto);
+
 		pedido.setPagamento(pgto);
+
 
 		pedido.setValorFrete(dto.getValorFrete());
 		pedido.calculaValorTotal();
+		
+		System.out.println(pedido);
 
-		pedido = pedidoRepository.save(pedido);
 		itemPedidoRepository.saveAll(listaProdutos);
+		pedido = pedidoRepository.save(pedido);
 
 		return ResponseEntity.ok().body(pedido.getId());
 	}

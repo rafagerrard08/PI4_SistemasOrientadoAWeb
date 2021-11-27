@@ -1,5 +1,6 @@
 package com.senac.PI4_ecommerce.model;
 
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ public class PagamentoComCartao extends Pagamento {
 		this.numeroCartao = numeroCartao;
 		this.codVerificador = codVerificador;
 		this.dataVencimento = dataVencimento;
+		this.numeroDeParcelas = numeroDeParcelas;
 	}
 
 	public Integer getNumeroDeParcelas() {
@@ -35,20 +37,20 @@ public class PagamentoComCartao extends Pagamento {
 		this.numeroDeParcelas = numeroDeParcelas;
 	}
 
-	public String getNumeroCartao() {
-		return numeroCartao;
-	}
-
-	public void setNumeroCartao(String numeroCartao) {
-		this.numeroCartao = numeroCartao;
-	}
-
 	public String getCodVerificador() {
 		return codVerificador;
 	}
 
 	public void setCodVerificador(String codVerificador) {
 		this.codVerificador = codVerificador;
+	}
+
+	public String getNumeroCartao() {
+		return numeroCartao;
+	}
+
+	public void setNumeroCartao(String numeroCartao) {
+		this.numeroCartao = numeroCartao;
 	}
 
 	public Date getDataVencimento() {
@@ -58,9 +60,7 @@ public class PagamentoComCartao extends Pagamento {
 	public void setDataVencimento(Date dataVencimento) {
 		this.dataVencimento = dataVencimento;
 	}
-
 	
 	
 		
 }
-

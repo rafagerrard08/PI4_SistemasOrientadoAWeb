@@ -2,7 +2,6 @@ package com.senac.PI4_ecommerce.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.senac.PI4_ecommerce.model.enums.EstadoPedido;
 
 @Entity
@@ -135,6 +133,13 @@ public class Pedido implements Serializable {
 
 	public void setEstadoPedido(EstadoPedido estadoPedido) {
 		this.estadoPedido = estadoPedido.getCod();
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", valorFrete=" + valorFrete + ", total=" + total + ", estadoPedido=" + estadoPedido
+				+ ", data=" + data + ", pagamento=" + pagamento + ", cliente=" + cliente + ", enderecoDeEntrega="
+				+ enderecoDeEntrega + ", itens=" + itens + "]";
 	}
 
 	public LocalDate getData() {

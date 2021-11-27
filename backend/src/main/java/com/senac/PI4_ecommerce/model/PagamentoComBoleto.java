@@ -22,8 +22,8 @@ public class PagamentoComBoleto extends Pagamento {
 
 	public PagamentoComBoleto(Integer id, Pedido pedido, Date dataVencimento, String numero) {
 		super(id, pedido);
-		this.dataVencimento = dataVencimento;
 		this.numero = numero;
+		this.dataVencimento = dataVencimento;
 	}
 
 	public Date getDataVencimento() {
@@ -34,14 +34,12 @@ public class PagamentoComBoleto extends Pagamento {
 		this.dataVencimento = dataVencimento;
 	}
 
-	public String getNumero() {
+	public String getNuemro() {
 		return numero;
 	}
 
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-
-	
+	}	
 	
 }
