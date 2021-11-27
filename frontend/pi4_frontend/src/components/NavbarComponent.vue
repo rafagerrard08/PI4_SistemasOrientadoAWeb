@@ -36,12 +36,17 @@
           </li>
           <li v-if="sessao == 'CLIENTE'">
             <b-dropdown id="dropdown-1" text="Area Do Cliente" class="m-md-2">
-              <router-link :to="pedidos">
-                  <span><b-dropdown-item>Meus Pedidos</b-dropdown-item></span>
-              </router-link>
-              <router-link :to="telaClientes">
-                  <span><b-dropdown-item>Atualizar Dados</b-dropdown-item></span>
-              </router-link>
+              <span
+                ><b-dropdown-item @click="pedidos"
+                  >Meus Pedidos</b-dropdown-item
+                ></span
+              >
+
+              <span
+                ><b-dropdown-item @click="telaClientes"
+                  >Atualizar Dados</b-dropdown-item
+                ></span
+              >
             </b-dropdown>
           </li>
           <li v-else>
@@ -74,16 +79,23 @@ export default {
       return sessionStorage.getItem("tipoUsuario");
     },
 
-    telaClientes() {
-      return "/clientes/" + sessionStorage.getItem("idUsuario");
-    },
-
-    pedidos() {
-      return "/pedidos";
-    },
-
     qtdItens() {
       return vm.cartTotal;
+    },
+  },
+
+  methods: {
+    pedidos() {
+      return this.$router.push("/pedidos/");
+    },
+
+    telaClientes() {
+      const idCliente = sessionStorage.getItem("idUsuario");
+      if (idCliente == null) {
+        return this.$router.push("/loginCliente");
+      }
+
+      return this.$router.push("/clientes/" + idCliente);
     },
   },
 };

@@ -61,4 +61,18 @@ export default {
         });  
     },
 
+    alertHTML: function(title, body) {
+
+        swal.fire({
+            title: `<strong style="font-size: 33px;">${title}</strong>`,
+            // type: 'info',
+            customClass: 'swal-wide',
+            heightAuto: false,
+            width: 900,
+            html: body,
+            focusConfirm: true,
+
+          })
+    },
+
 }
