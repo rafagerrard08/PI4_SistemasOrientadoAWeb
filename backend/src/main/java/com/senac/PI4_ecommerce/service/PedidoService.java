@@ -32,5 +32,11 @@ public class PedidoService {
 		} else throw new ObjectNotFoundException("Nenhum cliente com id [" + idCliente + "] cadastrado!");
 		
 	}
-
+	
+	public Pedido getPedido(Integer nroPedido) {
+		Optional<Pedido> pedido = pedidoRepository.findById(nroPedido);
+		if(!pedido.isEmpty()) {
+			return pedido.get();
+		} else throw new ObjectNotFoundException("Nenhum pedido cadastrado com id [" + nroPedido + "]!");
+	}
 }

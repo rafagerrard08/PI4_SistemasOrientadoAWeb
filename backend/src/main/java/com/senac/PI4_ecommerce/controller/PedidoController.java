@@ -75,6 +75,13 @@ public class PedidoController {
 		return ResponseEntity.ok().body(pedidos);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/pedido/{nroPedido}")
+	public ResponseEntity<?> getPedido(@PathVariable Integer nroPedido) {
+		Pedido pedido = pedidoService.getPedido(nroPedido);
+
+		return ResponseEntity.ok().body(pedido);
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> salvar(@RequestBody PedidoDTO dto, HttpServletRequest req) throws ParseException {
 
@@ -145,10 +152,9 @@ public class PedidoController {
 
 		pedido.setPagamento(pgto);
 
-
 		pedido.setValorFrete(dto.getValorFrete());
 		pedido.calculaValorTotal();
-		
+
 		System.out.println(pedido);
 
 		itemPedidoRepository.saveAll(listaProdutos);
@@ -156,6 +162,5 @@ public class PedidoController {
 
 		return ResponseEntity.ok().body(pedido.getId());
 	}
-
 
 }
