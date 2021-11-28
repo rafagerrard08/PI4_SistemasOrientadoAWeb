@@ -31,8 +31,6 @@ public class ProdutoService {
 
 	public Page<Produto> searchProdutos(String nome, Integer pagina, Integer itensPorPagina, String ordenarPor,
 			String direcao, String estado) {
-		System.out.println("Iniciou Service");
-
 		if (pagina < 0) {
 			// Implementar erro
 		}

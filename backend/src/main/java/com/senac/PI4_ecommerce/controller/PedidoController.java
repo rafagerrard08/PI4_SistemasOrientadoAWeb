@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senac.PI4_ecommerce.Utils.SessaoUtils;
@@ -67,6 +68,13 @@ public class PedidoController {
 	private PagamentoRepository pagamentoRepository;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<?> getPedidos(@RequestParam(value = "direcao", defaultValue = "DESC") String direcao) {
+		List<Pedido> pedidos = pedidoService.getPedidos(direcao);
+
+		return ResponseEntity.ok().body(pedidos);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{idCliente}")
 	public ResponseEntity<?> getPedidos(@PathVariable Integer idCliente) {
