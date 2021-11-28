@@ -5,9 +5,13 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Usuarios</h4>
-          <router-link id="linkCadastrar" to="cadastroUsuario"
-            ><img src="https://img.icons8.com/ios-filled/50/000000/plus.png"
-          /></router-link>
+          <div v-if="sessao == 'ADMINISTRADOR'">
+            <router-link id="linkCadastrar" to="cadastroUsuario"
+              ><img id="iconeAdd" src="https://img.icons8.com/ios-filled/50/000000/plus.png"
+            />
+            </router-link>
+          </div>
+
           <input
             class="form-control mr-sm-2"
             type="text"
@@ -104,23 +108,28 @@ export default {
     };
   },
 
+  computed: {
+    sessao() {
+      return sessionStorage.getItem("tipoUsuario");
+    },
+  },
+
   mounted() {
     this.ListaUsuarios();
   },
 
   methods: {
     ListaUsuarios() {
-      if(this.campoBuscar === null){
+      if (this.campoBuscar === null) {
         this.uriBase = "http://localhost:8080/usuarios";
-      } else{
-        this.uriBase = "http://localhost:8080/usuarios?nome=" + this.campoBuscar;
+      } else {
+        this.uriBase =
+          "http://localhost:8080/usuarios?nome=" + this.campoBuscar;
       }
 
-      axios
-        .get(this.uriBase)
-        .then((res) => {
-          this.usuarios = res.data.content;
-        });
+      axios.get(this.uriBase).then((res) => {
+        this.usuarios = res.data.content;
+      });
     },
 
     pesquisarUsuaio() {
@@ -183,5 +192,9 @@ export default {
 <style>
 .content {
   padding-top: 50px;
+}
+
+#iconeAdd {
+  padding: 10px ;
 }
 </style>
