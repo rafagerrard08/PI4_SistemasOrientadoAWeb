@@ -46,7 +46,7 @@ export default new Router({
             path: '/pedidos',
             name: 'pedidos',
             component: () =>
-                import ( /* webpackChunkName: "home" */ './views/Pedidos'),
+                import ( /* webpackChunkName: "pedidos" */ './views/Pedidos'),
             meta: {
                 descricao: "Tela de Pedidos"
             }
