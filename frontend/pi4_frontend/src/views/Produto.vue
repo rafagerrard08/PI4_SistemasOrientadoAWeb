@@ -164,8 +164,8 @@ export default {
     };
   },
 
-  mounted() {
-    this.buscarDadosProduto();
+  async mounted() {
+    await this.buscarDadosProduto();
   },
 
   methods: {
@@ -176,11 +176,12 @@ export default {
         return false
       }
     },
-    buscarDadosProduto() {
-      // alert(this.id)
-      axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
-        this.produto = res.data;
 
+    async buscarDadosProduto() {
+      // alert(this.id)
+      await axios.get("http://localhost:8080/produtos/" + this.id).then((res) => {
+        this.produto = res.data;
+        debugger
         this.imagemPrincipalProduto =
           "http://localhost:8080" + this.produto.imagemPrincipal;
 

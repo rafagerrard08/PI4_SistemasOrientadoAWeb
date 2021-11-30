@@ -7,8 +7,10 @@
           <h4 class="card-title">Usuarios</h4>
           <div v-if="sessao == 'ADMINISTRADOR'">
             <router-link id="linkCadastrar" to="cadastroUsuario"
-              ><img id="iconeAdd" src="https://img.icons8.com/ios-filled/50/000000/plus.png"
-            />
+              ><img
+                id="iconeAdd"
+                src="https://img.icons8.com/ios-filled/50/000000/plus.png"
+              />
             </router-link>
           </div>
 
@@ -114,7 +116,16 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
+    if (this.sessao == "CLIENTE" || this.sessao == null) {
+      alertUtils.alertFinalMid(
+        "Clientes não podem acessar o Backoffice!!",
+        "Ok",
+        "error"
+      );
+      return this.$router.push("/home");
+    }
+
     this.ListaUsuarios();
   },
 
@@ -195,6 +206,6 @@ export default {
 }
 
 #iconeAdd {
-  padding: 10px ;
+  padding: 10px;
 }
 </style>

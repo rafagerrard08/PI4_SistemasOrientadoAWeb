@@ -9,44 +9,33 @@
           <table id="cart" class="table table-hover table-condensed">
             <thead>
               <tr>
-                <th style="width: 25%">Numero</th>
-                <th style="width: 16%">Data</th>
-                <th style="width: 15%">Subtotal</th>
-                <th style="width: 15%">Status</th>
-                <th style="width: 15%"></th>
-                <th style="width: 15%"></th>
+                <th>Numero</th>
+                <th>Data</th>
+                <th>Subtotal</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="pedido of listaDePedidos" :key="pedido.id">
                 <td data-th="Product">
-                  <h5>Numero do Pedido: {{ pedido.id }}</h5>
+                  <h5>{{ pedido.id }}</h5>
                 </td>
-                <td data-th="Date">{{ pedido.data }}</td>
-                <td data-th="Price">R$ {{ pedido.total }}</td>
+                <td data-th="Date">
+                  {{ pedido.data.split("-").reverse().join("/") }}
+                </td>
+                <td data-th="Price">
+                  R$ {{ pedido.total + pedido.valorFrete }}
+                </td>
+                <td data-th="Status">{{ pedido.estadoPedido }}</td>
 
-                <td data-th="Status">
-                  <b-form-select v-model="selected" class="mb-3">
-                    <div v-for="opt of options" :key=opt.value>
-                      <b-form-select-option :value=opt.value>{{opt.text}}</b-form-select-option>
-                    </div>
-                  </b-form-select>
-                </td>
-                <td data-th="Save" v-if="statusSelecionado != null">
-                  <b-button variant="info" @click="salvarEstado"
-                    >Salvar</b-button
-                  >
-                </td>
-
-                <td data-th="Detail">
+                <td data-th="Edit">
                   <button
                     class="btn btn-info btn-sm"
-                    @click="detalhePedido(pedido)"
+                    @click="alterarStatus(pedido)"
                   >
-                    <b-icon icon="eye-fill"></b-icon>
+                    <span class="glyphicon glyphicon-edit"></span>
                   </button>
                 </td>
-                <br />
               </tr>
             </tbody>
             <tfoot>
@@ -71,11 +60,20 @@
 <script>
 import NavbarComponent from "../components/NavbarComponent.vue";
 import alertUtils from "@/utils/alertUtils";
+import modalUtils from "@/utils/modalUtils";
+import swal from "sweetalert2";
 import axios from "axios";
 export default {
   name: "GerenciamentosPedidos",
 
   components: { NavbarComponent },
+
+  // { value: "AGUARDANDO_PAGAMENTO", text: "Aguardando Pagamento" },
+  // { value: "PAGAMENTO_REJEITADO", text: "Pagamento Rejeitado" },
+  // { value: "PAGAMENTO_APROVADO", text: "Pagamento Aprovado" },
+  // { value: "AGUARDANDO_RETIRADA", text: "Aguardando Retirada" },
+  // { value: "EM_TRANSITO", text: "Em Transito" },
+  // { value: "ENTREGUE", text: "Entregue" },
 
   data() {
     return {
@@ -83,7 +81,15 @@ export default {
       idUsuario: null,
       showModal: false,
       statusSelecionado: null,
-      options: [],
+      selected: null,
+      options: [
+        "AGUARDANDO_PAGAMENTO",
+        "PAGAMENTO_REJEITADO",
+        "PAGAMENTO_APROVADO",
+        "AGUARDANDO_RETIRADA",
+        "EM_TRANSITO",
+        "ENTREGUE",
+      ],
     };
   },
 
@@ -101,15 +107,6 @@ export default {
     }
 
     this.buscarPedidos(this.idUsuario);
-
-    this.options = [
-      { value: "AGUARDANDO_PAGAMENTO", text: "Aguardando Pagamento" },
-      { value: "PAGAMENTO_REJEITADO", text: "Pagamento Rejeitado" },
-      { value: "PAGAMENTO_APROVADO", text: "Pagamento Aprovado" },
-      { value: "AGUARDANDO_RETIRADA", text: "Aguardando Retirada" },
-      { value: "EM_TRANSITO", text: "Em Transito" },
-      { value: "ENTREGUE", text: "Entregue" },
-    ];
   },
 
   methods: {
@@ -119,118 +116,56 @@ export default {
       });
     },
 
-    async detalhePedido(pedido) {
-      const htmlItens = await this.montarHTMLItens(pedido.itens);
-      const htmlPagamento = this.montarHTMLPagamento(pedido.pagamento);
+    async alterarStatus(pedido) {
+      const statusPossiveis = this.options.filter(
+        (opt) => opt != pedido.estadoPedido
+      );
 
-      const htmlBody = `
-      <div class="row" style="font-size: 20px;">
-        <h2>Produtos: </h2>
-          <span  >${htmlItens} </span>
-      </div>
-      <div class="row" style="font-size: 20px;">
-        <h2>Frete: </h2>
-        R$ ${pedido.valorFrete}.00
-      </div>
-      <div class="row" style="font-size: 20px;">
-        <h2>Total pedido: </h2>
-        R$ ${pedido.total} 
-      </div>
+      let novoStatus = null;
 
-      <div class="row" style="font-size: 20px;">
-        <h2>Endereço entrega: </h2>
-        <div class="row">
-          Logradouro: ${pedido.enderecoDeEntrega.logradouro}, ${pedido.enderecoDeEntrega.numero}
-        </div>
-        <div class="row">
-          Bairro: ${pedido.enderecoDeEntrega.bairro}
-        </div>
-        <div class="row">
-          CEP: ${pedido.enderecoDeEntrega.cep}
-        </div>
-        <div class="row">
-          Localidade: ${pedido.enderecoDeEntrega.cidade.nome} - ${pedido.enderecoDeEntrega.cidade.uf.nome}
-        </div>
-      </div>
+      const htmlSelect = this.criarSelect(statusPossiveis);
 
-      <div class="row" style="font-size: 20px;">
-        <h2>Dados pagamento: </h2>
-          ${htmlPagamento}
-      </div>
+      await swal
+        .fire({
+          title: "Escolha o novo status",
+          html: htmlSelect,
+          confirmButtonText: "OK",
+          focusConfirm: false,
+          preConfirm: () => {
+            const status = swal.getPopup().querySelector("#status").value;
+            if (!status) {
+              swal.showValidationMessage(`Opção inválida`);
+            }
+            return status;
+          },
+        })
+        .then((result) => {
+          novoStatus = result.value;
+          this.atualizarStatus(pedido.id, novoStatus);
+        });
+    },
+
+    criarSelect(statuses) {
+      let html = `
+          <select id="status" style="font-size:20px;" class="form-select" aria-label="Default select example">
+          <option selected>Selecione</option>
       `;
 
-      alertUtils.alertHTML("DETALHES", htmlBody);
+      for (const status of statuses) {
+        html = html + `<option value="${status}">${status}</option>`;
+      }
+
+      html = html + "</select>";
+
+      return html;
     },
 
-    async montarHTMLItens(itens) {
-      const itensDetalhado = [];
-      for (const item of itens) {
-        await axios
-          .get("http://localhost:8080/produtos/" + item.itemId)
-          .then((res) => {
-            const it = {
-              nome: res.data.nome,
-              marca: res.data.marca,
-              qtd: item.quantidade,
-              valorTotal: item.subTotal,
-            };
-            itensDetalhado.push(it);
-          });
-      }
-
-      let htmlItens = "";
-      for (const item of itensDetalhado) {
-        const linha = `
-        <div class="row">
-          Nome: ${item.nome}
-          | Marca: ${item.marca}
-          | Quantidade: ${item.qtd}
-          | Valor total: ${item.valorTotal}
-        </div>
-        `;
-
-        htmlItens = `${htmlItens} ${linha}`;
-      }
-
-      return htmlItens;
-    },
-
-    montarHTMLPagamento(pagamento) {
-      if (pagamento.codVerificador != undefined) {
-        return `
-        <div class="row">
-          Forma pagamento: Cartão crédito
-        </div>
-        <div class="row">
-          Numero cartão: ${this.numeroCartao(pagamento.numeroCartao)}
-        </div>
-        <div class="row">
-          Quantidade parcelas: ${pagamento.numeroDeParcelas}
-        </div>
-        `;
-      }
-
-      // "dataVencimento":"16/11/2021",
-      // "nuemro":"10499.71201 22517.701235 45678.901617 1 69800000012345"
-      return `
-        <div class="row">
-          Forma pagamento: Boleto
-        </div>
-        <div class="row">
-          Código de pagamento: ${pagamento.nuemro}
-        </div>
-        <div class="row">
-          Data vencimento: ${pagamento.dataVencimento}
-        </div>
-      `;
-    },
-
-    numeroCartao(numero) {
-      if (numero.length <= 4) {
-        return "**** **** **** " + numero;
-      }
-
-      return "**** **** **** " + numero.substring(numero.length - 4);
+    atualizarStatus(idPedido, novoStatus) {
+      axios
+        .put(`http://localhost:8080/pedidos/${idPedido}/status/${novoStatus}`)
+        .then((res) => {
+          this.buscarPedidos();
+        });
     },
 
     voltarPagina() {
