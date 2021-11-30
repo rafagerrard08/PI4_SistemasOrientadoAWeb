@@ -34,6 +34,7 @@ import com.senac.PI4_ecommerce.model.PagamentoComCartao;
 import com.senac.PI4_ecommerce.model.Pedido;
 import com.senac.PI4_ecommerce.model.Produto;
 import com.senac.PI4_ecommerce.model.UF;
+import com.senac.PI4_ecommerce.model.enums.EstadoPedido;
 import com.senac.PI4_ecommerce.repository.ClienteRepository;
 import com.senac.PI4_ecommerce.repository.EnderecoRepository;
 import com.senac.PI4_ecommerce.repository.ItemPedidoRepository;
@@ -99,6 +100,7 @@ public class PedidoController {
 		// Definido Pedido
 		Pedido pedido = new Pedido();
 		pedido.setCliente(clienteDaSessao);
+		pedido.setEstadoPedido(EstadoPedido.AGUARDANDO_PAGAMENTO);
 
 		// validar se endereço possui id, se nao existir primeiro o ideal é criar esse
 		// endereço
