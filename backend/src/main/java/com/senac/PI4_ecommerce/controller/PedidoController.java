@@ -172,5 +172,17 @@ public class PedidoController {
 
 		return ResponseEntity.ok().body(pedido.getId());
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{idPedido}/status/{novoStatus}")
+	public ResponseEntity<?> atualizarStatus(@PathVariable Integer idPedido, @PathVariable EstadoPedido novoStatus, HttpServletRequest req) throws ParseException {
+		
+		Pedido pedido = pedidoService.getPedido(idPedido);
+		
+		pedido.setEstadoPedido(novoStatus);
+		
+		pedidoRepository.save(pedido);
+		
+		return ResponseEntity.ok().build();
+	}
 
 }

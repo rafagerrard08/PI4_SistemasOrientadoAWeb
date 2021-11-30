@@ -88,9 +88,9 @@ public class Pi4EcommerceApplication implements CommandLineRunner {
 //		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6));
 //		
 //
-		Usuario user1 = new Usuario(1, "admin", "admin@eloja.com", "00000000000",
-				"$2a$10$$2a$10$WRHMAoesxstlv8dAyOgRFuyfEJ93LIxuwZYjNVMizHgUSC0JCNh12", 1, 1);
-		usuarioRepository.saveAll(Arrays.asList(user1));
+//		Usuario user1 = new Usuario(1, "admin", "admin@eloja.com", "00000000000",
+//				"$2a$10$$2a$10$WRHMAoesxstlv8dAyOgRFuyfEJ93LIxuwZYjNVMizHgUSC0JCNh12", 1, 1);
+//		usuarioRepository.saveAll(Arrays.asList(user1));
 //		
 //		Cliente cli = clienteRepository.findById(1).get();	
 //		Endereco end = enderecoRepository.findById(2).get();	
