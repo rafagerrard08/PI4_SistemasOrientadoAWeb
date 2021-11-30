@@ -12,8 +12,9 @@
                 <th style="width: 25%">Numero</th>
                 <th style="width: 16%">Data</th>
                 <th style="width: 15%">Subtotal</th>
-                <th style="width: 25%">Status</th>
-                <th style="width: 20%"></th>
+                <th style="width: 15%">Status</th>
+                <th style="width: 15%"></th>
+                <th style="width: 15%"></th>
               </tr>
             </thead>
             <tbody>
@@ -23,7 +24,19 @@
                 </td>
                 <td data-th="Date">{{ pedido.data }}</td>
                 <td data-th="Price">R$ {{ pedido.total }}</td>
-                <td data-th="Status">{{ pedido.estadoPedido }}</td>
+
+                <td data-th="Status">
+                  <b-form-select v-model="selected" class="mb-3">
+                    <div v-for="opt of options" :key=opt.value>
+                      <b-form-select-option :value=opt.value>{{opt.text}}</b-form-select-option>
+                    </div>
+                  </b-form-select>
+                </td>
+                <td data-th="Save" v-if="statusSelecionado != null">
+                  <b-button variant="info" @click="salvarEstado"
+                    >Salvar</b-button
+                  >
+                </td>
 
                 <td data-th="Detail">
                   <button
@@ -60,24 +73,26 @@ import NavbarComponent from "../components/NavbarComponent.vue";
 import alertUtils from "@/utils/alertUtils";
 import axios from "axios";
 export default {
-  name: "Pedidos",
+  name: "GerenciamentosPedidos",
 
   components: { NavbarComponent },
 
   data() {
     return {
       listaDePedidos: [],
-      idCliente: null,
+      idUsuario: null,
       showModal: false,
+      statusSelecionado: null,
+      options: [],
     };
   },
 
   created() {
-    this.idCliente = sessionStorage.getItem("idUsuario");
+    this.idUsuario = sessionStorage.getItem("idUsuario");
 
-    if (this.idCliente == null) {
+    if (this.idUsuario == null) {
       alertUtils.alertFinalMid(
-        "Não foi possivel obter o id do cliente da sessão",
+        "Não foi possivel obter o id do usuario da sessão",
         "Ok",
         "error"
       );
@@ -85,16 +100,23 @@ export default {
       return this.$router.push("/loginCliente");
     }
 
-    this.buscarPedidos(this.idCliente);
+    this.buscarPedidos(this.idUsuario);
+
+    this.options = [
+      { value: "AGUARDANDO_PAGAMENTO", text: "Aguardando Pagamento" },
+      { value: "PAGAMENTO_REJEITADO", text: "Pagamento Rejeitado" },
+      { value: "PAGAMENTO_APROVADO", text: "Pagamento Aprovado" },
+      { value: "AGUARDANDO_RETIRADA", text: "Aguardando Retirada" },
+      { value: "EM_TRANSITO", text: "Em Transito" },
+      { value: "ENTREGUE", text: "Entregue" },
+    ];
   },
 
   methods: {
     buscarPedidos() {
-      axios
-        .get("http://localhost:8080/pedidos/" + this.idCliente)
-        .then((res) => {
-          this.listaDePedidos = res.data;
-        });
+      axios.get("http://localhost:8080/pedidos").then((res) => {
+        this.listaDePedidos = res.data;
+      });
     },
 
     async detalhePedido(pedido) {
@@ -213,6 +235,10 @@ export default {
 
     voltarPagina() {
       this.$router.push("/home");
+    },
+
+    salvarEstado() {
+      alert("Salvar estado");
     },
   },
 };

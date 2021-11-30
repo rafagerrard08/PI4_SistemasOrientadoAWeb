@@ -52,6 +52,15 @@ export default new Router({
             }
         },
         {
+            path: '/gerenciamentopedidos',
+            name: 'gerenciamentopedidos',
+            component: () =>
+                import ( /* webpackChunkName: "gerenciamentopedidos" */ './views/GerenciamentoPedidos'),
+            meta: {
+                descricao: "Tela de Gerenciamento de Pedidos"
+            }
+        },
+        {
             path: '/cadastro/:id',
             name: 'cadastro',
             component: () =>

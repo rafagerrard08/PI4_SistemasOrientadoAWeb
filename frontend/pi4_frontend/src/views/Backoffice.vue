@@ -9,7 +9,7 @@
           <br />
           <router-link to="/usuarios">Lista de Usuarios</router-link> <br/>
           <div v-if="sessao == 'ESTOQUISTA'">
-          <router-link to="/pedidosGerenciamento">Gereniamento de Pedidos</router-link> <br/>
+          <router-link to="/gerenciamentopedidos">Gereniamento de Pedidos</router-link> <br/>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@
           />
           <p class="erro" v-if="!valido">Usuario ou senha invalido</p>
           <div class="text-center mt-4">
-            <button class="btn btn-indigo" type="submit" @click="validarLogin()">Entrar</button>
+            <button class="btn btn-indigo" type="submit" @click.prevent="validarLogin()">Entrar</button>
           </div>
         </form>
       </div>
