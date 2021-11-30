@@ -46,13 +46,12 @@ public class Pedido implements Serializable {
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Pedido() {
-		this.setEstadoPedido(EstadoPedido.AGUARDANDO_PAGAMENTO);
 	}
 
-	public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete,Double total) {
+	public Pedido(Integer id, Cliente cliente, Endereco enderecoDeEntrega, Double valorFrete,Double total, EstadoPedido estadoPedido) {
 		super();
 		this.id = id;
-		this.setEstadoPedido(EstadoPedido.AGUARDANDO_PAGAMENTO);
+		this.estadoPedido = estadoPedido.getCod();
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 		this.valorFrete = valorFrete;
